@@ -8,24 +8,27 @@
 <meta name="color-scheme" content="light">
 <style>
   :root {
-    --brand: #2453C7;
-    --brand-d: #173A94;
-    --brand-l: #EAF0FF;
-    --brand-ll: #F5F8FF;
+    --brand: #1F5A45;
+    --brand-mid: #2F7A5C;
+    --brand-d: #123A2C;
+    --grad-brand: linear-gradient(135deg, #2F7A5C 0%, #1F5A45 55%, #123A2C 100%);
+    --grad-brand-hover: linear-gradient(135deg, #276B50 0%, #183F31 60%, #0E2E23 100%);
+    --brand-l: #E4F0E9;
+    --brand-ll: #F3F8F5;
     --accent: #FFD43B;
-    --ok: #1F9D61;
-    --ok-l: #E5F6EE;
-    --wip: #B86E00;
+    --ok: #1F5A45;
+    --ok-l: #E4F0E9;
+    --wip: #9A5B00;
     --wip-l: #FFF3DD;
-    --ink: #17202E;
-    --ink-2: #4B5563;
-    --ink-3: #8A93A1;
-    --line: #E3E8F0;
+    --ink: #16211B;
+    --ink-2: #4A5550;
+    --ink-3: #67716B;
+    --line: #E1E8E3;
     --bg: #FFFFFF;
-    --bg-2: #F6F8FB;
+    --bg-2: #F4F7F5;
     --radius: 16px;
-    --shadow: 0 10px 30px rgba(23, 42, 90, .10);
-    --shadow-s: 0 4px 14px rgba(23, 42, 90, .08);
+    --shadow: 0 10px 30px rgba(18, 58, 44, .10);
+    --shadow-s: 0 4px 14px rgba(18, 58, 44, .08);
     --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   }
@@ -43,7 +46,7 @@
   }
   img, svg { display: block; }
   a { color: inherit; }
-  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
   .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
   @media (min-width: 768px) { .container { padding: 0 32px; } }
 
@@ -56,8 +59,8 @@
     white-space: nowrap;
   }
   .btn:hover { transform: translateY(-1px); }
-  .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36, 83, 199, .3); }
-  .btn-primary:hover { background: var(--brand-d); }
+  .btn-primary { background: var(--grad-brand); color: #fff; box-shadow: 0 6px 16px rgba(31, 90, 69, .3); }
+  .btn-primary:hover { background: var(--grad-brand-hover); }
   .btn-ghost { background: #fff; color: var(--brand); border: 2px solid var(--brand); }
   .btn-ghost:hover { background: var(--brand-l); }
   .btn-lg { padding: 1.05em 2.2em; font-size: 1.0625rem; }
@@ -79,7 +82,7 @@
   }
   .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 1.125rem; letter-spacing: .02em; }
-  .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; flex: none; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--grad-brand); display: grid; place-items: center; flex: none; }
   .logo-mark svg { width: 20px; height: 20px; }
   .logo small { display: block; font-size: .625rem; font-weight: 500; color: var(--ink-3); letter-spacing: .04em; line-height: 1.2; }
   .nav { display: none; gap: 28px; font-size: .875rem; font-weight: 600; }
@@ -97,7 +100,7 @@
   .hero {
     position: relative; overflow: hidden;
     background:
-      radial-gradient(1200px 500px at 85% -10%, #DCE6FF 0%, transparent 60%),
+      radial-gradient(1200px 500px at 85% -10%, #D6EADF 0%, transparent 60%),
       linear-gradient(180deg, var(--brand-ll) 0%, #fff 100%);
     padding: 48px 0 88px;
   }
@@ -108,7 +111,7 @@
     border-radius: 999px; padding: 6px 14px 6px 6px; font-size: .8125rem; font-weight: 700; color: var(--ink-2);
     box-shadow: var(--shadow-s);
   }
-  .tag b { background: var(--brand); color: #fff; border-radius: 999px; padding: 2px 10px; font-size: .75rem; }
+  .tag b { background: var(--grad-brand); color: #fff; border-radius: 999px; padding: 2px 10px; font-size: .75rem; }
   .hero h1 {
     font-size: clamp(1.75rem, 4.2vw, 3rem); line-height: 1.36; font-weight: 800; letter-spacing: .01em;
     margin: 20px 0 20px;
@@ -212,7 +215,7 @@
   .journey::before { content: ""; position: absolute; left: 10%; right: 10%; top: 27px; height: 3px; background: var(--line); }
   .journey li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
   .j-dot { width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 3px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: .8125rem; color: var(--ink-3); position: relative; }
-  .journey li.on .j-dot { background: var(--brand); border-color: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36,83,199,.3); }
+  .journey li.on .j-dot { background: var(--grad-brand); border-color: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(31,90,69,.3); }
   .j-t { font-size: .8125rem; font-weight: 700; color: var(--ink-2); line-height: 1.5; }
   .journey li.on .j-t { color: var(--brand); }
   @media (max-width: 559px) { .j-dot { width: 46px; height: 46px; font-size: .6875rem; } .journey::before { top: 22px; } .j-t { font-size: .6875rem; } }
@@ -267,7 +270,7 @@
   .tm:last-child { border-bottom: 0; }
   .tm.parent { background: var(--brand-ll); }
   .av { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: .6875rem; font-weight: 800; }
-  .av.bot { background: var(--brand); color: #fff; }
+  .av.bot { background: var(--grad-brand); color: #fff; }
   .av.hum { background: var(--wip-l); color: var(--wip); }
   .tm .name { font-weight: 800; font-size: .8125rem; }
   .tm .name time { font-weight: 500; color: var(--ink-3); font-size: .75rem; margin-left: 8px; }
@@ -307,7 +310,7 @@
   .flow { max-width: 860px; margin: 0 auto; }
   .flow ol { padding: 0; margin: 0; display: grid; gap: 12px; }
   .flow li { list-style: none; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
-  .flow .n { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: var(--mono); font-size: 1.0625rem; }
+  .flow .n { width: 52px; height: 52px; border-radius: 50%; background: var(--grad-brand); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: var(--mono); font-size: 1.0625rem; }
   .flow p { color: var(--ink-2); font-size: .9375rem; margin-top: 4px; }
 
   /* ── 料金 ── */
@@ -334,17 +337,18 @@
   .faq details p { padding: 0 0 20px 34px; color: var(--ink-2); font-size: .9375rem; }
 
   /* ── 最後のCTA ── */
-  .final { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-d) 100%); color: #fff; text-align: center; }
+  .final { background: var(--grad-brand); color: #fff; text-align: center; }
   .final h2 { color: #fff; }
   .final p { opacity: .92; max-width: 40em; margin: 0 auto; }
   .final .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 32px; align-items: flex-end; }
   .final .btn-primary { background: #fff; color: var(--brand); box-shadow: 0 8px 20px rgba(0,0,0,.18); }
   .final .btn-primary:hover { background: var(--accent); color: var(--ink); }
+  .final a:focus-visible { outline-color: var(--accent); }
   .final .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
   .final .btn-ghost:hover { background: rgba(255,255,255,.12); }
-  .final .meta { font-size: .8125rem; opacity: .8; margin-top: 18px; }
+  .final .meta { font-size: .8125rem; opacity: .95; margin-top: 18px; }
 
-  footer.site { background: #0F1A33; color: #AEB8CC; padding: 40px 0 96px; font-size: .8125rem; }
+  footer.site { background: #0E2A20; color: #A9BDB3; padding: 40px 0 96px; font-size: .8125rem; }
   footer.site .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
   footer.site a { color: #fff; text-decoration: none; }
   footer.site a:hover { text-decoration: underline; }
@@ -352,11 +356,11 @@
   /* ── 追従CTA ── */
   .floating {
     position: fixed; right: 16px; bottom: 16px; z-index: 60;
-    display: flex; align-items: center; gap: 10px; background: var(--brand); color: #fff; text-decoration: none;
-    border-radius: 999px; padding: 8px 18px 8px 8px; box-shadow: 0 10px 24px rgba(23, 42, 90, .3);
+    display: flex; align-items: center; gap: 10px; background: var(--grad-brand); color: #fff; text-decoration: none;
+    border-radius: 999px; padding: 8px 18px 8px 8px; box-shadow: 0 10px 24px rgba(18, 58, 44, .3);
     font-weight: 800; font-size: .875rem; line-height: 1.3; transition: transform .15s ease, background .15s ease;
   }
-  .floating:hover { transform: translateY(-2px); background: var(--brand-d); }
+  .floating:hover { transform: translateY(-2px); background: var(--grad-brand-hover); }
   .floating .ic { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; }
   .floating .ic svg { width: 18px; height: 18px; }
   .floating small { display: block; font-size: .6875rem; font-weight: 600; opacity: .85; }
@@ -509,27 +513,28 @@
       <div class="hub reveal">
         <svg viewBox="0 0 860 370" role="img" aria-label="中央の受付番号から、ホームページ、LINE、Slackの3つに矢印が伸びる図">
           <defs>
-            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2453C7"/></marker>
+            <linearGradient id="hubg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F7A5C"/><stop offset=".55" stop-color="#1F5A45"/><stop offset="1" stop-color="#123A2C"/></linearGradient>
+            <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#1F5A45"/></marker>
           </defs>
-          <g stroke="#2453C7" stroke-width="2.5" stroke-dasharray="6 6" fill="none" marker-end="url(#ah)">
+          <g stroke="#1F5A45" stroke-width="2.5" stroke-dasharray="6 6" fill="none" marker-end="url(#ah)">
             <path d="M345 165 L228 118"/>
             <path d="M515 165 L632 118"/>
             <path d="M430 274 L430 288"/>
           </g>
-          <circle cx="430" cy="180" r="92" fill="#EAF0FF"/>
-          <circle cx="430" cy="180" r="70" fill="#2453C7"/>
+          <circle cx="430" cy="180" r="92" fill="#E4F0E9"/>
+          <circle cx="430" cy="180" r="70" fill="url(#hubg)"/>
           <text x="430" y="172" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Hiragino Sans, Yu Gothic, sans-serif">受付番号</text>
           <text x="430" y="198" text-anchor="middle" fill="#FFD43B" font-size="16" font-weight="800" font-family="ui-monospace, Menlo, monospace">K7M2-Q9PX</text>
           <g font-family="Hiragino Sans, Yu Gothic, sans-serif">
-            <rect x="20" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
-            <text x="120" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">ホームページ</text>
-            <text x="120" y="120" text-anchor="middle" font-size="13" fill="#4B5563">申込を受け、番号を発行</text>
-            <rect x="640" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
-            <text x="740" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">LINE</text>
-            <text x="740" y="120" text-anchor="middle" font-size="13" fill="#4B5563">お客様と連絡・リマインド</text>
-            <rect x="330" y="292" width="200" height="72" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
-            <text x="430" y="324" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">Slack</text>
-            <text x="430" y="348" text-anchor="middle" font-size="13" fill="#4B5563">担当者のやりとりを集約</text>
+            <rect x="20" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E1E8E3" stroke-width="1.5"/>
+            <text x="120" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#16211B">ホームページ</text>
+            <text x="120" y="120" text-anchor="middle" font-size="13" fill="#4A5550">申込を受け、番号を発行</text>
+            <rect x="640" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E1E8E3" stroke-width="1.5"/>
+            <text x="740" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#16211B">LINE</text>
+            <text x="740" y="120" text-anchor="middle" font-size="13" fill="#4A5550">お客様と連絡・リマインド</text>
+            <rect x="330" y="292" width="200" height="72" rx="16" fill="#fff" stroke="#E1E8E3" stroke-width="1.5"/>
+            <text x="430" y="324" text-anchor="middle" font-size="19" font-weight="800" fill="#16211B">Slack</text>
+            <text x="430" y="348" text-anchor="middle" font-size="13" fill="#4A5550">担当者のやりとりを集約</text>
           </g>
         </svg>
         <div class="hub-legend">
