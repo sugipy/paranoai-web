@@ -145,16 +145,42 @@
   .msg-r, .msg-l { max-width: 85%; padding: 7px 10px; border-radius: 12px; }
   .msg-r { align-self: flex-end; background: #BFEBC4; border-bottom-right-radius: 4px; }
   .msg-l { align-self: flex-start; background: #fff; border-bottom-left-radius: 4px; }
-  .v-thread { position: absolute; left: 8%; bottom: 0; width: 72%; padding: 12px 14px; font-size: .75rem; line-height: 1.55; }
-  .v-thread .t-head { font-size: .6875rem; color: var(--ink-3); font-weight: 700; margin-bottom: 6px; }
-  .t-row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--line); }
-  .t-row:first-of-type { border-top: 0; }
-  .t-av { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-l); color: var(--brand); font-size: .5625rem; font-weight: 800; display: grid; place-items: center; }
-  .t-row .m { color: var(--brand); font-weight: 700; }
+  .v-thread { position: absolute; z-index: 2; left: 6%; bottom: -8px; width: 76%; padding: 0; overflow: hidden; font-size: .75rem; line-height: 1.5; }
+  .v-thread .sk-pane-head { padding: 8px 12px; }
+  .v-thread .sk-msg { grid-template-columns: 26px minmax(0, 1fr); gap: 8px; padding: 6px 12px; }
+  .v-thread .sk-av { width: 26px; height: 26px; border-radius: 6px; }
+  .v-thread .sk-av svg { width: 15px; height: 15px; }
+
+  /* ── Slack風の画面（ヒーロー・デモ共通） ── */
+  .sk { --sk-ink: #1D1C1D; --sk-ink-2: #616061; --sk-line: #E2E2E2; --sk-blue: #1264A3; font-family: "Lato", var(--font); color: var(--sk-ink); }
+  .sk-pane-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--sk-line); }
+  .sk-pane-head b { font-weight: 900; font-size: .9375em; }
+  .sk-pane-head .ch { color: var(--sk-ink-2); font-size: .875em; }
+  .sk-pane-head .x { margin-left: auto; color: var(--sk-ink-2); font-size: 1.1em; line-height: 1; }
+  .sk-msg { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 10px; padding: 8px 16px; }
+  .sk-msg:hover { background: #F8F8F8; }
+  .sk-av { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; overflow: hidden; }
+  .sk-av svg { width: 20px; height: 20px; }
+  .sk-av.bot { background: var(--grad-brand); color: #fff; }
+  .sk-av.hum { background: #E8D5B5; color: #8A6A3D; }
+  .sk-av.hum svg { width: 100%; height: 100%; margin-top: 18%; }
+  .sk-who { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 6px; line-height: 1.4; }
+  .sk-who b { font-weight: 900; }
+  .sk-app { align-self: center; background: #E8E8E8; color: var(--sk-ink-2); font-size: .6875em; font-weight: 700; border-radius: 3px; padding: 0 4px; line-height: 1.5; }
+  .sk-who time { color: var(--sk-ink-2); font-size: .8em; }
+  .sk-text { color: var(--sk-ink); }
+  .sk-men { color: var(--sk-blue); background: rgba(29, 155, 209, .1); border-radius: 3px; padding: 0 2px; font-weight: 500; }
+  .sk-code { font-family: var(--mono); font-size: .85em; color: #E01E5A; background: #F8F8F8; border: 1px solid #DDDDDD; border-radius: 3px; padding: 1px 4px; white-space: nowrap; }
+  .sk-quote { border-left: 4px solid #DDDDDD; padding-left: 10px; margin-top: 4px; color: var(--sk-ink); }
+  .sk-reacts { display: flex; gap: 4px; margin-top: 4px; }
+  .sk-react { display: inline-flex; align-items: center; gap: 4px; border: 1px solid #DDDDDD; background: #F8F8F8; border-radius: 24px; padding: 0 7px; font-size: .75rem; line-height: 1.6; color: var(--sk-ink-2); }
+  .sk-react.on { background: #E8F5FA; border-color: #1D9BD1; color: var(--sk-blue); }
+  .sk-replies { display: flex; align-items: center; gap: 10px; padding: 4px 16px; color: var(--sk-ink-2); font-size: .8125em; }
+  .sk-replies::after { content: ""; flex: 1; height: 1px; background: var(--sk-line); }
   .img-note { position: absolute; right: 0; bottom: -26px; font-size: .6875rem; color: var(--ink-3); }
   .float-badge {
-    position: absolute; right: 0; bottom: 34%; background: var(--accent); font-weight: 800; font-size: .8125rem;
-    border-radius: 12px; padding: 8px 12px; box-shadow: var(--shadow-s); line-height: 1.4;
+    position: absolute; right: 0; bottom: 44%; background: var(--accent); font-weight: 800; font-size: .8125rem;
+    border-radius: 12px; padding: 8px 12px; box-shadow: var(--shadow-s); line-height: 1.4; z-index: 3;
   }
   @media (max-width: 559px) {
     .visual { min-height: 0; display: grid; gap: 14px; }
@@ -263,20 +289,23 @@
   .checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
   .checks li { display: flex; gap: 10px; font-weight: 600; }
   .checks svg { flex: none; width: 22px; height: 22px; color: var(--brand); margin-top: 3px; }
-  .thread { padding: 0; overflow: hidden; }
-  .thread-top { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--line); font-weight: 700; font-size: .8125rem; color: var(--ink-2); background: var(--bg-2); }
-  .thread-top i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
-  .tm { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: .875rem; line-height: 1.65; }
-  .tm:last-child { border-bottom: 0; }
-  .tm.parent { background: var(--brand-ll); }
-  .av { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: .6875rem; font-weight: 800; }
-  .av.bot { background: var(--grad-brand); color: #fff; }
-  .av.hum { background: var(--wip-l); color: var(--wip); }
-  .tm .name { font-weight: 800; font-size: .8125rem; }
-  .tm .name time { font-weight: 500; color: var(--ink-3); font-size: .75rem; margin-left: 8px; }
-  .tm .body { color: var(--ink-2); }
-  .tm .m { color: var(--brand); font-weight: 700; }
-  .tm .q { border-left: 3px solid var(--line); padding-left: 10px; margin-top: 4px; color: var(--ink-3); }
+  .sk-win { padding: 0; overflow: hidden; font-size: .875rem; line-height: 1.55; border-radius: 12px; }
+  .sk-top { display: flex; align-items: center; gap: 10px; background: #350D36; padding: 8px 12px; }
+  .sk-top .dots { display: flex; gap: 6px; }
+  .sk-top .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.25); }
+  .sk-top .search { flex: 1; max-width: 60%; margin: 0 auto; background: rgba(255,255,255,.18); color: rgba(255,255,255,.8); border-radius: 6px; font-size: .75rem; padding: 3px 10px; text-align: center; }
+  .sk-body { display: grid; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 640px) { .sk-body { grid-template-columns: 150px minmax(0, 1fr); } }
+  .sk-side { display: none; background: #3F0E40; color: rgba(255,255,255,.72); padding: 12px 0; font-size: .8125rem; }
+  @media (min-width: 640px) { .sk-side { display: block; } }
+  .sk-side .ws { color: #fff; font-weight: 900; font-size: .9375rem; padding: 0 14px 10px; border-bottom: 1px solid rgba(255,255,255,.12); margin-bottom: 10px; }
+  .sk-side .grp { padding: 6px 14px 2px; font-size: .75rem; }
+  .sk-side .chn { padding: 2px 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sk-side .chn.on { background: #1164A3; color: #fff; font-weight: 700; }
+  .sk-side .chn.unread { color: #fff; font-weight: 700; }
+  .sk-main { min-width: 0; background: #fff; }
+  .sk-composer { margin: 8px 16px 14px; border: 1px solid #BBBBBB; border-radius: 8px; padding: 8px 10px; color: #8D8D8D; font-size: .8125rem; display: flex; justify-content: space-between; align-items: center; }
+  .sk-composer .send { width: 26px; height: 22px; border-radius: 4px; background: #007A5A; opacity: .35; }
   .demo-note { font-size: .75rem; color: var(--ink-3); margin-top: 10px; }
 
   /* ── 機能 ── */
@@ -379,6 +408,8 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-sk-bot" viewBox="0 0 24 24"><path fill="currentColor" d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-7l-4.5 3.6V17H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><circle cx="9" cy="10.5" r="1.4" fill="#1F5A45"/><circle cx="15" cy="10.5" r="1.4" fill="#1F5A45"/></symbol>
+    <symbol id="i-sk-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5" fill="currentColor"/><path fill="currentColor" d="M2 24c0-6 4.5-9 10-9s10 3 10 9z"/></symbol>
     <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7.5 12.3l3 3 6-6.3"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></g></symbol>
     <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -462,11 +493,11 @@
           </div>
         </div>
         <div class="float-badge">前日に<br>自動リマインド</div>
-        <div class="card v-thread">
-          <div class="t-head"># 体験申込通知 ／ スレッド</div>
-          <div class="t-row"><span class="t-av">BOT</span><span><span class="m">@担当者</span> 🔗 LINEとつながりました</span></div>
-          <div class="t-row"><span class="t-av">担</span><span><span class="code">確定 10/14 10:00</span></span></div>
-          <div class="t-row"><span class="t-av">BOT</span><span><span class="m">@担当者</span> 📅 10/14（水）10:00 で確定しました</span></div>
+        <div class="card v-thread sk">
+          <div class="sk-pane-head"><b>スレッド</b><span class="ch"># 体験申込通知</span><span class="x" aria-hidden="true">×</span></div>
+          <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 🔗 LINEとつながりました</div></div></div>
+          <div class="sk-msg"><span class="sk-av hum"><svg aria-hidden="true"><use href="#i-sk-person"/></svg></span><div><div class="sk-who"><b>担当者</b><time>10:40</time></div><div class="sk-text"><span class="sk-code">確定 10/14 10:00</span></div></div></div>
+          <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:40</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 📅 10/14（水）10:00 で確定しました</div><div class="sk-reacts"><span class="sk-react on">✅ 1</span></div></div></div>
         </div>
         <p class="img-note">※画面はイメージです</p>
       </div>
@@ -666,14 +697,31 @@
         </ul>
       </div>
       <div class="reveal">
-        <div class="card thread" role="img" aria-label="申込スレッドの見本。申込通知のあとに、LINE連携、お客様のメッセージ、担当者の確定、確定の返信、前日リマインドの通知が続く。">
-          <div class="thread-top"><i></i># 体験申込通知 ／ スレッド（見本）</div>
-          <div class="tm parent"><span class="av bot">BOT</span><div><div class="name">申込受付<time>10:02</time></div><div class="body">【体験申込】受付番号 K7M2-Q9PX ／ 山田 花子 様 ／ 希望: 平日午前<br>LINE連携: 受付番号の送信待ち</div></div></div>
-          <div class="tm"><span class="av bot">BOT</span><div><div class="name">申込受付<time>10:05</time></div><div class="body"><span class="m">@担当者</span> 🔗 この申込がLINEとつながりました</div></div></div>
-          <div class="tm"><span class="av bot">BOT</span><div><div class="name">申込受付<time>10:31</time></div><div class="body"><span class="m">@担当者</span> 💬 LINEでメッセージが届きました<div class="q">水曜の10時は空いていますか？</div></div></div></div>
-          <div class="tm"><span class="av hum">担</span><div><div class="name">担当者<time>10:40</time></div><div class="body"><span class="code">確定 10/14 10:00</span></div></div></div>
-          <div class="tm"><span class="av bot">BOT</span><div><div class="name">申込受付<time>10:40</time></div><div class="body"><span class="m">@担当者</span> 📅 10月14日（水）10:00 で確定しました。前日18時にLINEでリマインドします</div></div></div>
-          <div class="tm"><span class="av bot">BOT</span><div><div class="name">申込受付<time>10/13 18:00</time></div><div class="body"><span class="m">@担当者</span> 📩 LINEでリマインドを送りました</div></div></div>
+        <div class="card sk sk-win" role="img" aria-label="Slack風の画面で見た申込スレッドの見本。申込通知のあとに、LINE連携、お客様のメッセージ、担当者の確定、確定の返信、前日リマインドの通知が続く。">
+          <div class="sk-top"><span class="dots"><i></i><i></i><i></i></span><span class="search">〇〇スクール 内を検索</span></div>
+          <div class="sk-body">
+            <div class="sk-side" aria-hidden="true">
+              <div class="ws">〇〇スクール</div>
+              <div class="grp">▾ チャンネル</div>
+              <div class="chn"># 全体連絡</div>
+              <div class="chn on"># 体験申込通知</div>
+              <div class="chn unread"># シフト調整</div>
+              <div class="chn"># 備品・設備</div>
+              <div class="grp">▾ ダイレクトメッセージ</div>
+              <div class="chn">● 担当者</div>
+            </div>
+            <div class="sk-main">
+              <div class="sk-pane-head"><b>スレッド</b><span class="ch"># 体験申込通知（見本）</span><span class="x" aria-hidden="true">×</span></div>
+              <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:02</time></div><div class="sk-text">【体験申込】受付番号 K7M2-Q9PX ／ 山田 花子 様 ／ 希望: 平日午前<br>LINE連携: 受付番号の送信待ち</div></div></div>
+              <div class="sk-replies">5件の返信</div>
+              <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 🔗 この申込がLINEとつながりました</div></div></div>
+              <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:31</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 💬 LINEでメッセージが届きました<div class="sk-quote">水曜の10時は空いていますか？</div></div><div class="sk-reacts"><span class="sk-react">👀 1</span></div></div></div>
+              <div class="sk-msg"><span class="sk-av hum"><svg aria-hidden="true"><use href="#i-sk-person"/></svg></span><div><div class="sk-who"><b>担当者</b><time>10:40</time></div><div class="sk-text"><span class="sk-code">確定 10/14 10:00</span></div></div></div>
+              <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10:40</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 📅 10月14日（水）10:00 で確定しました。前日18時にLINEでリマインドします</div><div class="sk-reacts"><span class="sk-react on">✅ 1</span></div></div></div>
+              <div class="sk-msg"><span class="sk-av bot"><svg aria-hidden="true"><use href="#i-sk-bot"/></svg></span><div><div class="sk-who"><b>申込受付</b><span class="sk-app">アプリ</span><time>10/13 18:00</time></div><div class="sk-text"><span class="sk-men">@担当者</span> 📩 LINEでリマインドを送りました</div></div></div>
+              <div class="sk-composer" aria-hidden="true"><span>返信する…</span><span class="send"></span></div>
+            </div>
+          </div>
         </div>
         <p class="demo-note">表示内容は説明用の見本です。お名前・文言は導入先に合わせて設定します。</p>
       </div>
