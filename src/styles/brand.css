@@ -1,0 +1,91 @@
+  /* ParanoAI スタイルガイド準拠: https://claude.ai/artifact/RybqLTfsoDZ2QeSwMLuFuw
+     ホーム: 深緑のヘッダー → 名前と続けた日のマス → 3つの製品を台帳の行で → 運営者 → 連絡先 */
+  :root {
+    --paper: #ffffff; --paper-raised: #ffffff; --paper-sunken: #eef2f7;
+    --ink: #2a3350; --ink-2: #4b5572; --ink-3: #6b7590; --rule: #d3dae4;
+    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #e4e9f0; --on-green: #ffffff;
+    --gold: #f28a3c; --link: #2457b0; --focus: #2457b0;
+    --radius-sm: 4px; --radius-md: 10px; --radius-lg: 20px; --radius-pill: 999px;
+    --shadow-raise: 0 1px 2px rgba(42,51,80,.06), 0 8px 24px -12px rgba(42,51,80,.18);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --page: 68rem;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); }
+  body { color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.85; font-feature-settings: "palt" 1; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); }
+  a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .wrap { max-width: var(--page); margin: 0 auto; padding-inline: 1.5rem; }
+
+  .pa-header { background: var(--green); color: var(--on-green); padding: 0.85rem 1.5rem; }
+  .pa-header .inner { max-width: var(--page); margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .pa-brand { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--on-green); text-decoration: none; letter-spacing: .01em; }
+  .pa-header nav { display: flex; gap: 1.25rem; font-size: .875rem; flex-wrap: wrap; }
+  .pa-header nav a { color: var(--on-green); text-decoration: none; opacity: .88; }
+  .pa-header nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .pa-header a:focus-visible { outline-color: var(--on-green); }
+
+  /* ── ヒーロー：名前と、続けた日のマス ── */
+  .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: 3rem; align-items: end; padding-block: clamp(3.5rem, 10vh, 6rem) 3.5rem; }
+  .hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.25; letter-spacing: .01em; margin: 0 0 1.5rem; text-wrap: balance; }
+  .hero h1 b { color: var(--green-ink); font-weight: 700; }
+  .hero .lead { font-size: 1.0625rem; color: var(--ink-2); max-width: 34rem; margin: 0; }
+  .hero .lead strong { color: var(--ink); }
+  .streak-cap { margin: .75rem 0 0; font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; color: var(--ink-3); }
+
+  /* ── 製品：台帳の行（ラベル｜中身） ── */
+  section { border-top: 1px solid var(--rule); padding-block: 4rem; }
+  .sec-label { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; color: var(--ink-3); margin: 0 0 .5rem; }
+  h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 3.2vw, 2rem); line-height: 1.45; margin: 0 0 2rem; text-wrap: balance; }
+  .products { display: flex; flex-direction: column; gap: 1.5rem; }
+  .product { display: grid; grid-template-columns: 4rem minmax(0, 1fr) auto; gap: 1.5rem; align-items: start; background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius-md); box-shadow: var(--shadow-raise); padding: 1.75rem; }
+  .product .no { font-family: var(--font-mono); font-weight: 500; font-size: 2rem; line-height: 1; color: var(--green-ink); font-variant-numeric: tabular-nums; }
+  .product .body { min-width: 0; display: flex; flex-direction: column; gap: .6rem; }
+  .product .for { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .08em; color: var(--ink-3); }
+  .product h3 { font-size: 1.375rem; font-weight: 700; line-height: 1.5; margin: 0; }
+  .product p { margin: 0; color: var(--ink-2); max-width: 38rem; }
+  .product ul { margin: .25rem 0 0; padding-left: 1.1rem; color: var(--ink-2); font-size: .9375rem; }
+  .product li { margin-bottom: .15rem; }
+  .sub { margin-top: .75rem; padding: 1rem 1.25rem; border-radius: var(--radius-md); background: var(--green-tint); display: flex; flex-direction: column; gap: .35rem; }
+  .sub .tag { font-size: .8125rem; font-weight: 700; color: var(--green-ink); }
+  .sub strong { font-size: 1.0625rem; color: var(--ink); }
+  .sub p { font-size: .9375rem; }
+  .works { display: flex; flex-wrap: wrap; gap: .4rem .6rem; margin-top: .25rem; }
+  .works a { font-size: .875rem; padding: .2rem .75rem; border-radius: var(--radius-pill); background: var(--paper-sunken); color: var(--ink-2); text-decoration: none; }
+  .works a:hover { color: var(--link); }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; background: var(--green); color: var(--on-green); text-decoration: none; font-weight: 700; font-size: .9375rem; padding: .75rem 1.25rem; border-radius: var(--radius-md); }
+  .btn:hover { background: var(--green-strong); }
+  .btn.ghost { background: transparent; color: var(--green-ink); border: 1px solid var(--rule); }
+  .btn.ghost:hover { background: var(--green-tint); }
+  .text-link { font-weight: 700; font-size: .9375rem; text-decoration: none; }
+  .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ── 運営者・連絡先 ── */
+  .about { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; max-width: 40rem; }
+  .about p { margin: 0; color: var(--ink-2); }
+  .mail { font-family: var(--font-mono); font-size: clamp(1rem, 3.4vw, 1.375rem); color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: .3rem; align-self: flex-start; word-break: break-all; }
+  .note { font-size: .8125rem; color: var(--ink-3); margin: 0; }
+  footer { border-top: 1px solid var(--rule); padding-block: 1.75rem 3rem; font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: .75rem 2rem; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+    .streak-box { overflow: hidden; }
+    .product { grid-template-columns: minmax(0, 1fr); gap: 1rem; padding: 1.25rem; }
+    .product .no { font-size: 1.5rem; }
+    section { padding-block: 3rem; }
+  }
+
+  /* ── Arc UI のトークンをブランドに合わせる（foundation.css の後に読む） ── */
+  :root {
+    --background: var(--paper); --surface: var(--paper); --surface-raised: var(--paper-raised); --surface-muted: var(--paper-sunken);
+    --foreground: var(--ink); --text-secondary: var(--ink-2); --text-muted: var(--ink-3);
+    --border: var(--rule); --border-strong: #b7c1cf;
+    --accent: var(--green); --accent-strong: var(--green-strong); --accent-subtle: var(--green-tint); --accent-foreground: var(--on-green);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+  }
+  .streak-box { --cell-max: 18px; }
+  .hero h1 > span:nth-child(2) > span { color: var(--green-ink); }
