@@ -18,13 +18,13 @@
   /* ParanoAI スタイルガイド準拠: https://claude.ai/artifact/RybqLTfsoDZ2QeSwMLuFuw
      地 paper ／ 深緑 green（Cosense sugipy のヘッダー色）／ 文字 ink。リンクは青、節目の印は金。 */
   :root {
-    --paper: #f4f6f3; --paper-raised: #ffffff; --paper-sunken: #e8eee9;
-    --ink: #15211b; --ink-2: #46544c; --ink-3: #66736b;
-    --rule: #cfd8d1; --rule-2: #dfe6e0;
-    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #dfeae3; --on-green: #ffffff;
-    --gold: #a36f12; --link: #2457b0; --focus: #2457b0;
+    --paper: #ffffff; --paper-raised: #ffffff; --paper-sunken: #eef2f7;
+    --ink: #2a3350; --ink-2: #4b5572; --ink-3: #6b7590;
+    --rule: #d3dae4; --rule-2: #e4e9f0;
+    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #e4e9f0; --on-green: #ffffff;
+    --gold: #f28a3c; --link: #2457b0; --focus: #2457b0;
     --radius-sm: 4px; --radius-md: 10px; --radius-lg: 20px; --radius-pill: 999px;
-    --shadow-raise: 0 1px 2px rgba(21,33,27,.06), 0 8px 24px -12px rgba(21,33,27,.18);
+    --shadow-raise: 0 1px 2px rgba(42,51,80,.06), 0 8px 24px -12px rgba(42,51,80,.18);
 
     --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
     --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
@@ -32,26 +32,7 @@
 
     --measure: 34rem;
     --page: 68rem;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper: #0f1613; --paper-raised: #16201b; --paper-sunken: #1b2721;
-      --ink: #e6ece7; --ink-2: #a9b8af; --ink-3: #86958c;
-      --rule: #2a3830; --rule-2: #212d27;
-      --green: #2e7558; --green-strong: #1f5a45; --green-ink: #8fd0b0; --green-tint: #1a2b23;
-      --gold: #d6b25e; --link: #8fb3ec; --focus: #8fb3ec;
-      --shadow-raise: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #0f1613; --paper-raised: #16201b; --paper-sunken: #1b2721;
-    --ink: #e6ece7; --ink-2: #a9b8af; --ink-3: #86958c;
-    --rule: #2a3830; --rule-2: #212d27;
-    --green: #2e7558; --green-strong: #1f5a45; --green-ink: #8fd0b0; --green-tint: #1a2b23;
-    --gold: #d6b25e; --link: #8fb3ec; --focus: #8fb3ec;
-    --shadow-raise: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
-    color-scheme: dark;
+    color-scheme: light;
   }
   html, body { margin: 0; background: var(--paper); }
 
