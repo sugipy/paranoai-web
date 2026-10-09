@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ParanoAI 導入支援｜Claude Code 導入研修</title>
+<meta name="description" content="外注に頼らず、自社の業務ツールを自分たちで作る。その第一歩を2日間で。ParanoAI 導入支援の Claude Code 導入研修。">
+<meta property="og:title" content="ParanoAI 導入支援｜Claude Code 導入研修">
+<meta property="og:description" content="外注に頼らず、自社の業務ツールを自分たちで作る。その第一歩を2日間で。">
+<meta property="og:url" content="https://paranoai.jp/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  /* ParanoAI スタイルガイド準拠: https://claude.ai/artifact/RybqLTfsoDZ2QeSwMLuFuw
+     地 paper ／ 深緑 green（Cosense sugipy のヘッダー色）／ 文字 ink。リンクは青、節目の印は金。 */
+  :root {
+    --paper: #f4f6f3; --paper-raised: #ffffff; --paper-sunken: #e8eee9;
+    --ink: #15211b; --ink-2: #46544c; --ink-3: #66736b;
+    --rule: #cfd8d1; --rule-2: #dfe6e0;
+    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #dfeae3; --on-green: #ffffff;
+    --gold: #a36f12; --link: #2457b0; --focus: #2457b0;
+    --radius-sm: 4px; --radius-md: 10px; --radius-lg: 20px; --radius-pill: 999px;
+    --shadow-raise: 0 1px 2px rgba(21,33,27,.06), 0 8px 24px -12px rgba(21,33,27,.18);
+
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --measure: 34rem;
+    --page: 68rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0f1613; --paper-raised: #16201b; --paper-sunken: #1b2721;
+      --ink: #e6ece7; --ink-2: #a9b8af; --ink-3: #86958c;
+      --rule: #2a3830; --rule-2: #212d27;
+      --green: #2e7558; --green-strong: #1f5a45; --green-ink: #8fd0b0; --green-tint: #1a2b23;
+      --gold: #d6b25e; --link: #8fb3ec; --focus: #8fb3ec;
+      --shadow-raise: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0f1613; --paper-raised: #16201b; --paper-sunken: #1b2721;
+    --ink: #e6ece7; --ink-2: #a9b8af; --ink-3: #86958c;
+    --rule: #2a3830; --rule-2: #212d27;
+    --green: #2e7558; --green-strong: #1f5a45; --green-ink: #8fd0b0; --green-tint: #1a2b23;
+    --gold: #d6b25e; --link: #8fb3ec; --focus: #8fb3ec;
+    --shadow-raise: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+  html, body { margin: 0; background: var(--paper); }
+
+  /* ── 深緑のヘッダー帯（スタイルガイド Header） ── */
+  .pa-header { background: var(--green); color: var(--on-green); padding: 0.85rem 1.5rem; }
+  .pa-header .inner { max-width: var(--page); margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .pa-brand { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--on-green); text-decoration: none; letter-spacing: .01em; }
+  .pa-brand small { font-family: var(--font-body); font-weight: 500; font-size: .875rem; margin-left: .5rem; opacity: .9; }
+  .pa-header nav { display: flex; gap: 1.25rem; font-size: .875rem; }
+  .pa-header nav a { color: var(--on-green); text-decoration: none; opacity: .88; }
+  .pa-header nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .pa-header a:focus-visible { outline: 2px solid var(--on-green); outline-offset: 3px; }
+
+  .page {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.85;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 1.5rem 5rem;
+  }
+  .page * { box-sizing: border-box; }
+
+  .wrap {
+    max-width: var(--page);
+    margin: 0 auto;
+  }
+
+  /* ── 帯：台帳の行のように、ラベルと本文を左右に分ける ── */
+  .band {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1.25rem 3.5rem;
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+  .band > .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.7rem;
+    line-height: 1.6;
+  }
+  .band > .body { min-width: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  p { margin: 0; max-width: var(--measure); color: var(--ink-2); }
+  p.lead { color: var(--ink); font-size: 1.0625rem; }
+  a { color: var(--link); }
+  .sites a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* ── ヒーロー ── */
+  .hero { padding: clamp(4rem, 12vh, 7.5rem) 0 3.5rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--green-ink);
+    margin: 0 0 1.75rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.6vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.34;
+    letter-spacing: 0.005em;
+    margin: 0 0 1.75rem;
+    max-width: 22em;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    box-shadow: inset 0 -0.42em 0 var(--green-tint);
+  }
+  .hero p { font-size: 1.0625rem; max-width: 36rem; }
+
+  /* ── 数字の帯 ── */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0;
+    margin-top: 3.5rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .facts div {
+    padding: 1.25rem 1.5rem 1.25rem 0;
+    border-right: 1px solid var(--rule-2);
+  }
+  .facts div:last-child { border-right: 0; }
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin: 0 0 0.35rem;
+  }
+  .facts dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .facts dd small {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin-left: 0.3em;
+  }
+
+  /* ── CTA ── */
+  .cta-row { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 2.5rem; }
+  .btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--on-green);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.95rem 2rem;
+    border: 1px solid var(--green);
+    transition: background 140ms ease, color 140ms ease;
+  }
+  .btn:hover { background: var(--green-strong); border-color: var(--green-strong); }
+  .note { font-size: 0.8125rem; color: var(--ink-3); margin: 0; }
+
+  /* ── 課題リスト ── */
+  .problems { display: flex; flex-direction: column; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .problems li {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px dashed var(--rule);
+    max-width: 40rem;
+    color: var(--ink-2);
+  }
+  .problems li::before {
+    content: "×";
+    font-family: var(--font-mono);
+    color: var(--green-ink);
+    line-height: 1.85;
+  }
+
+  /* ── 成果カード ── */
+  .outcomes { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2.25rem 2.5rem; }
+  .outcomes > div { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 1rem; border-top: 2px solid var(--green); }
+  .outcomes p { font-size: 0.9375rem; }
+
+  /* ── カリキュラム（本当に順序があるので番号を振る） ── */
+  .days { display: flex; flex-direction: column; gap: 0; }
+  .day {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .day:first-child { border-top: 1px solid var(--rule-2); }
+  .day .no {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--green-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .day .no span { display: block; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em; color: var(--ink-3); margin-top: 0.5rem; }
+  .day .detail { display: flex; flex-direction: column; gap: 0.5rem; }
+  .day ul { margin: 0.25rem 0 0; padding-left: 1.1rem; color: var(--ink-2); font-size: 0.9375rem; }
+  .day li { margin-bottom: 0.15rem; }
+
+  /* ── 実績台帳 ── */
+  .ledger-scroll { overflow-x: auto; border-top: 2px solid var(--green); }
+  table { border-collapse: collapse; width: 100%; min-width: 46rem; font-size: 0.875rem; }
+  thead th {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 400;
+    text-align: left;
+    padding: 0.85rem 1rem 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td { padding: 0.95rem 1rem 0.95rem 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; color: var(--ink-2); }
+  tbody td:first-child { color: var(--ink); font-weight: 700; white-space: nowrap; }
+  tbody tr:hover td { background: var(--paper-2); }
+  .chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--paper-sunken);
+    white-space: nowrap;
+    color: var(--ink-2);
+  }
+  .chip.is-live { background: var(--green-tint); color: var(--green-ink); }
+  td .url { font-family: var(--font-mono); font-size: 0.75rem; color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  td .url:hover { border-bottom-color: var(--link); }
+
+  /* ── 制作サイト ── */
+  .sites { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem 2.5rem; }
+  .sites a {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    text-decoration: none;
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .sites a:hover strong { color: var(--link); }
+  .sites strong { font-size: 1rem; transition: color 140ms ease; }
+  .sites span { font-size: 0.875rem; color: var(--ink-2); }
+  .sites code { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-3); }
+
+  /* ── 費用 ── */
+  .price {
+    display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap;
+    font-family: var(--font-display);
+  }
+  .price .amount { font-size: clamp(2.75rem, 7vw, 4rem); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .price .unit { font-family: var(--font-body); font-size: 1rem; color: var(--ink-2); }
+  .price-notes { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9375rem; color: var(--ink-2); max-width: 34rem; }
+  .price-notes b { color: var(--ink); }
+
+  /* ── 講師 ── */
+  .profile { display: flex; flex-direction: column; gap: 1.25rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack span {
+    font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em;
+    padding: 0.2rem 0.7rem; border-radius: var(--radius-pill); background: var(--paper-sunken); color: var(--ink-2);
+  }
+
+  /* ── 問い合わせ ── */
+  .contact { padding-bottom: 0; }
+  .contact-card { display: flex; flex-direction: column; gap: 1.25rem; }
+  .mail {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 3.4vw, 1.5rem);
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.4rem;
+    align-self: flex-start;
+    word-break: break-all;
+  }
+  .mail:hover { border-bottom-color: var(--link); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 4rem;
+    padding-top: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    display: flex; flex-wrap: wrap; gap: 0.75rem 2rem;
+  }
+
+  /* ── 導入時のわずかな立ち上がり ── */
+  .rise { opacity: 0; transform: translateY(0.6rem); animation: rise 620ms cubic-bezier(.2,.7,.3,1) forwards; }
+  .rise:nth-child(2) { animation-delay: 70ms; }
+  .rise:nth-child(3) { animation-delay: 140ms; }
+  .rise:nth-child(4) { animation-delay: 210ms; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; opacity: 1; transform: none; }
+    * { transition-duration: 1ms !important; }
+  }
+
+  @media (max-width: 720px) {
+    .band { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; padding: 3.25rem 0; }
+    .band > .label { padding-top: 0; }
+    .facts div { border-right: 0; border-bottom: 1px solid var(--rule-2); padding-right: 0; }
+    .facts div:last-child { border-bottom: 0; }
+    .day { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+    .day .no { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.5rem; }
+    .day .no span { margin-top: 0; }
+  }
+</style>
+
+</head>
+<body>
+<header class="pa-header">
+  <div class="inner">
+    <a class="pa-brand" href="/">ParanoAI<small>導入支援</small></a>
+    <nav aria-label="ページ内"><a href="#price">費用</a><a href="#works">実績</a><a href="#contact">お問い合わせ</a></nav>
+  </div>
+</header>
+<div class="page">
+  <div class="wrap">
+
+    <header class="hero">
+      <p class="eyebrow rise">ParanoAI 導入支援 ／ Claude Code 導入研修</p>
+      <h1 class="rise">外注に頼らず、<em>自社の業務ツールを自分たちで作る</em>。<br>その第一歩を、2日間で。</h1>
+      <p class="lead rise">エンジニアが社内にいない会社でも、AIを使えば見積書も、顧客台帳も、日報の集計も、自分たちの手で形にできます。実際に9つのシステムを一人で作って動かしてきた人間が、その手順をそのままお渡しする研修です。</p>
+      <div class="cta-row rise">
+        <a class="btn" href="mailto:hunterpresident@gmail.com?subject=Claude%20Code%E5%B0%8E%E5%85%A5%E7%A0%94%E4%BF%AE%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">研修について相談する</a>
+        <p class="note">まずは現状のお困りごとを伺うところから。ご相談は無料です。</p>
+      </div>
+
+      <dl class="facts rise">
+        <div><dt>研修期間</dt><dd>2<small>日間・計8時間</small></dd></div>
+        <div><dt>費用</dt><dd>6<small>万円〜（税込）</small></dd></div>
+        <div><dt>構築システム</dt><dd>9<small>件</small></dd></div>
+        <div><dt>形式</dt><dd><span style="font-size:1.75rem">対面</span><small>貴社にて実施</small></dd></div>
+      </dl>
+    </header>
+
+    <section class="band">
+      <p class="label">課題</p>
+      <div class="body">
+        <h2>「これ、システム化したいんだけど」で止まっている業務はありませんか。</h2>
+        <ul class="problems">
+          <li>Excelとホワイトボードと紙が混在していて、誰も全体を把握できていない</li>
+          <li>見積書・請求書・報告書を、毎回手打ちで作り直している</li>
+          <li>業者に見積もりを取ったら数百万円。しかも作った後の修正でまた費用がかかる</li>
+          <li>社内にエンジニアがいないので、そもそも何をどう頼めばいいか分からない</li>
+          <li>ツールは入れたが現場が使わず、結局もとのやり方に戻った</li>
+        </ul>
+        <p>これらに共通しているのは、技術力ではなく<b>「自社の業務を、自社の言葉のまま形にできる人がいない」</b>ことです。業務を一番よく分かっているのは、外部の開発会社ではなく現場の皆さんです。</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">研修後の姿</p>
+      <div class="body">
+        <h2>2日後、貴社に残るもの。</h2>
+        <div class="outcomes">
+          <div>
+            <h3>実際に動くツールが1つ</h3>
+            <p>研修は座学ではありません。貴社の実業務から1つテーマを選び、その場で動くところまで作ります。持ち帰るのは資料ではなく成果物です。</p>
+          </div>
+          <div>
+            <h3>作り直せる状態</h3>
+            <p>「仕様が変わったから直したい」を自分たちでできるように。AIへの指示の出し方、詰まったときの切り分け方まで手を動かして覚えます。</p>
+          </div>
+          <div>
+            <h3>次に何を作るかの地図</h3>
+            <p>社内の業務を棚卸しし、AIで巻き取れるもの・人がやるべきものを仕分けします。研修後に着手する順番まで一緒に決めます。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">内容</p>
+      <div class="body">
+        <h2>1日4時間 × 2日間。手を動かす時間が大半です。</h2>
+        <p>下記は標準的な進め方です。企業の状態や作りたいものに合わせて、事前の打ち合わせで組み替えます。</p>
+        <div class="days">
+          <div class="day">
+            <div class="no">1<span>DAY 01</span></div>
+            <div class="detail">
+              <h3>環境を整え、業務を棚卸しする</h3>
+              <p>Claude Code のセットアップから、基本的な指示の出し方まで。あわせて社内業務を洗い出し、初日のうちに「何を作るか」を決めきります。</p>
+              <ul>
+                <li>導入と初期設定（PCさえあれば大丈夫です）</li>
+                <li>AIに伝わる指示・伝わらない指示の違い</li>
+                <li>業務の棚卸しと、作るものの決定</li>
+              </ul>
+            </div>
+          </div>
+          <div class="day">
+            <div class="no">2<span>DAY 02</span></div>
+            <div class="detail">
+              <h3>実際に作り、現場で使える状態にする</h3>
+              <p>決めたテーマを、その場で動く形まで持っていきます。講師が代わりに作るのではなく、皆さんが打ち、詰まったところを一緒に解きます。最後に、研修後に自走するための段取りを一緒に引きます。</p>
+              <ul>
+                <li>画面を作る／データを保存する／一覧で見る</li>
+                <li>思い通りに動かないときの直し方</li>
+                <li>公開・共有と、やってはいけないこと（情報の扱い・安全面）</li>
+                <li>次に作るものの優先順位と、進め方の型</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="works">
+      <p class="label">実績</p>
+      <div class="body">
+        <h2>「教えられる」ではなく、「作って動かしてきた」。</h2>
+        <p>研修でお伝えするのは、すべて自分の手で作り、運用まで持っていった経験からのものです。以下は Claude Code を使って企画・実装・公開・運用まで一人で行ったシステムです。</p>
+        <div class="ledger-scroll">
+          <table>
+            <thead>
+              <tr><th scope="col">名称</th><th scope="col">内容</th><th scope="col">状態</th><th scope="col">公開先</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SALES OPS</td>
+                <td>営業外回り・現場管理ツール。企業／商品／案件／現場の台帳、外回りマップ、ガント、OCR取込、カレンダー連携</td>
+                <td><span class="chip is-live">本番運用中</span></td>
+                <td><a class="url" href="https://salesops-demo.smashcore.app" target="_blank" rel="noopener noreferrer">salesops-demo.smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>取次営業支援ツール</td>
+                <td>条件を選ぶと台本・金額・確認事項を自動生成。実績ダッシュボードとAI月次サマリ付き</td>
+                <td><span class="chip">デモ公開中</span></td>
+                <td>単一HTMLで動作</td>
+              </tr>
+              <tr>
+                <td>AUTO COACHING LOG</td>
+                <td>音声セッションの自動ドキュメント化。文字起こし・話者分離・要約・課題抽出・通知</td>
+                <td><span class="chip is-live">運用中（非公開）</span></td>
+                <td>社内利用</td>
+              </tr>
+              <tr>
+                <td>SMASHCORE</td>
+                <td>対戦ゲーム上達コーチングの基盤。AIコーチチャット、動画分析、課題管理、戦績連携</td>
+                <td><span class="chip is-live">β運用中</span></td>
+                <td><a class="url" href="https://smashcore.app" target="_blank" rel="noopener noreferrer">smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>LIFE DISCOVER</td>
+                <td>やりたいこと探索×人生設計。曼荼羅チャート、目標・タスク進捗、カレンダー連携</td>
+                <td><span class="chip is-live">運用中</span></td>
+                <td><a class="url" href="https://discover.smashcore.app" target="_blank" rel="noopener noreferrer">discover.smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>SMASHCAD</td>
+                <td>ブラウザで動く2D CAD。作図・編集・DXF入出力に、設計の壁打ちAIを搭載</td>
+                <td><span class="chip is-live">公開中</span></td>
+                <td><a class="url" href="https://cad.smashcore.app" target="_blank" rel="noopener noreferrer">cad.smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>乙4合格伴走ツール</td>
+                <td>危険物取扱者 乙種第4類の学習支援。単語帳、例題、指定数量ドリル、模試、間違い復習</td>
+                <td><span class="chip is-live">運用中</span></td>
+                <td><a class="url" href="https://kiken-o4.smashcore.app" target="_blank" rel="noopener noreferrer">kiken-o4.smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>下水道3種合格伴走ツール</td>
+                <td>下水道技術検定 第3種の学習支援。例題、ドリル、単語帳、参考書、模試</td>
+                <td><span class="chip is-live">運用中</span></td>
+                <td><a class="url" href="https://gesui-3shu.smashcore.app" target="_blank" rel="noopener noreferrer">gesui-3shu.smashcore.app</a></td>
+              </tr>
+              <tr>
+                <td>ボイラー2級合格伴走ツール</td>
+                <td>二級ボイラー技士の学習支援。4科目・各10問の模試、単語帳、ドリル、参考書</td>
+                <td><span class="chip is-live">運用中</span></td>
+                <td><a class="url" href="https://boiler-2kyu.smashcore.app" target="_blank" rel="noopener noreferrer">boiler-2kyu.smashcore.app</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">一覧：<a href="https://discover.smashcore.app/portfolio-1fb6be41187b.html" target="_blank" rel="noopener noreferrer">ポートフォリオ</a>／今後も随時追加します。</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">制作サイト</p>
+      <div class="body">
+        <h2>業務ツールだけでなく、お客様の顔となるサイトも。</h2>
+        <div class="sites">
+          <a href="https://www.okuribi.jp/" target="_blank" rel="noopener noreferrer">
+            <strong>遺品整理のおくりび</strong>
+            <span>写真見積もり・明朗会計を軸にした、遺品整理サービスのサイト</span>
+            <code>okuribi.jp</code>
+          </a>
+          <a href="https://cpa-shibata.jp/" target="_blank" rel="noopener noreferrer">
+            <strong>柴田公認会計士事務所</strong>
+            <span>月次顧問・CFO代行・IPO準備を扱う会計事務所のコーポレートサイト</span>
+            <code>cpa-shibata.jp</code>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="price">
+      <p class="label">費用</p>
+      <div class="body">
+        <h2>2日間・計8時間で、6万円（税込）から。</h2>
+        <p class="price"><span class="amount">60,000</span><span class="unit">円（税込）〜 ／ 2日間・計8時間・対面</span></p>
+        <div class="price-notes">
+          <p><b>含まれるもの：</b>事前の打ち合わせ、業務内容のヒアリングと研修設計、2日間の対面研修、研修中に作ったツール一式。</p>
+          <p><b>金額が変わる場合：</b>参加人数が多い場合、作るものの規模が大きい場合、遠方への出張が必要な場合は、お見積もりのうえで調整させていただきます。</p>
+          <p><b>補助金について：</b>IT導入補助金などの活用可否は、業種・導入内容によって異なります。ご希望があれば、対象になり得るかを一緒に確認します。</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="mailto:hunterpresident@gmail.com?subject=Claude%20Code%E5%B0%8E%E5%85%A5%E7%A0%94%E4%BF%AE%E3%81%AE%E3%81%8A%E8%A6%8B%E7%A9%8D%E3%82%82%E3%82%8A%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">見積もりを依頼する</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">講師</p>
+      <div class="body">
+        <h2>杉田 光</h2>
+        <div class="profile">
+          <p>生成AI（Claude Code）を用いて、企画から実装・公開・運用までを一人で行っています。営業現場の管理ツール、音声の自動議事録化、資格学習の伴走アプリ、ブラウザで動くCADなど、分野を問わず<b>実際に人が使っているものを作り続けてきました</b>。</p>
+          <p>小さな会社・お店向けのオーダーメイドAI業務ツール「事業のマゴノテ」も提供しています。顧客台帳、見積書・請求書の自動化、予約受付とリマインド、報告書の自動生成など、現場の面倒をそのまま巻き取る作り方が専門です。</p>
+          <p>ホームページの申込をLINEとSlackにつなぎ、前日リマインドまで自動で送る仕組みも構築しています。→ <a href="https://sugipy.github.io/ai-training-lp/line-flow/">問い合わせ連携ワークフロー</a></p>
+          <div class="stack">
+            <span>Next.js</span><span>React</span><span>FastAPI</span><span>Python</span><span>SQLite</span><span>Linux VPS</span><span>Cloudflare</span><span>Claude Code</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band contact" id="contact">
+      <p class="label">お問い合わせ</p>
+      <div class="body">
+        <h2>まずは、困っている業務を1つ聞かせてください。</h2>
+        <div class="contact-card">
+          <p>「これはAIでできるのか」という段階のご相談で構いません。内容を伺ったうえで、研修が向いているのか、それとも作ってお渡しする方が早いのかも含めてお答えします。</p>
+          <a class="mail" href="mailto:hunterpresident@gmail.com?subject=Claude%20Code%E5%B0%8E%E5%85%A5%E7%A0%94%E4%BF%AE%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">hunterpresident@gmail.com</a>
+          <p class="note">担当：杉田 光 ／ 通常2営業日以内にご返信します。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>ParanoAI 導入支援</span>
+      <span>CLAUDE CODE 導入研修</span>
+      <span>杉田 光</span>
+      <span>hunterpresident@gmail.com</span>
+    </footer>
+
+  </div>
+</div>
+</body>
+</html>
