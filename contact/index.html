@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>お問い合わせ｜ParanoAI</title>
+<meta name="description" content="ParanoAI（AI導入研修・AI HP制作・LINEお問い合わせツール・リマインド人）へのご相談・お問い合わせはこちらから。">
+<meta property="og:title" content="お問い合わせ｜ParanoAI">
+<meta property="og:url" content="https://parano-ai.com/contact/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://parano-ai.com/contact/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* ParanoAI スタイルガイド準拠（トップページと同じ値）: https://claude.ai/artifact/RybqLTfsoDZ2QeSwMLuFuw
+     送信先: https://api.parano-ai.com/contact（Cloudflare Worker paranoai-contact → Discord） */
+  :root {
+    --paper: #ffffff; --paper-sunken: #eef2f7;
+    --ink: #2a3350; --ink-2: #4b5572; --ink-3: #6b7590; --rule: #d3dae4;
+    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #e4e9f0; --on-green: #ffffff;
+    --gold: #f28a3c; --link: #2457b0; --focus: #2457b0; --danger: #b3261e;
+    --radius-sm: 4px; --radius-md: 10px;
+    --shadow-raise: 0 1px 2px rgba(42,51,80,.06), 0 8px 24px -12px rgba(42,51,80,.18);
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --page: 68rem;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); }
+  body { color: var(--ink); font-family: var(--font-body); font-size: 1rem; line-height: 1.85; font-feature-settings: "palt" 1; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .wrap { max-width: var(--page); margin: 0 auto; padding-inline: 1.5rem; }
+
+  .pa-header { background: var(--green); color: var(--on-green); padding: 0.85rem 1.5rem; }
+  .pa-header .inner { max-width: var(--page); margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .pa-brand { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--on-green); text-decoration: none; letter-spacing: .01em; }
+  .pa-header nav { display: flex; gap: 1.25rem; font-size: .875rem; flex-wrap: wrap; }
+  .pa-header nav a { color: var(--on-green); text-decoration: none; opacity: .88; }
+  .pa-header nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .pa-header a:focus-visible { outline-color: var(--on-green); }
+
+  .intro { padding-block: clamp(3rem, 8vh, 5rem) 2rem; max-width: 40rem; }
+  .sec-label { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .12em; color: var(--ink-3); margin: 0 0 .5rem; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.75rem, 4.5vw, 2.5rem); line-height: 1.4; margin: 0 0 1rem; text-wrap: balance; }
+  .intro p { margin: 0; color: var(--ink-2); }
+
+  .card { max-width: 40rem; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius-md); box-shadow: var(--shadow-raise); padding: clamp(1.25rem, 4vw, 2rem); margin-bottom: 2rem; }
+  form { display: flex; flex-direction: column; gap: 1.4rem; }
+  .field { display: flex; flex-direction: column; gap: .4rem; }
+  label, .legend { font-weight: 700; font-size: .9375rem; }
+  .req, .opt { font-size: .75rem; font-weight: 500; margin-left: .5rem; padding: .05rem .5rem; border-radius: var(--radius-sm); }
+  .req { background: var(--green); color: var(--on-green); }
+  .opt { background: var(--paper-sunken); color: var(--ink-3); }
+  input[type=text], input[type=email], select, textarea {
+    font: inherit; font-size: 1rem; color: var(--ink); background: var(--paper);
+    border: 1px solid var(--rule); border-radius: var(--radius-md); padding: .7rem .9rem; width: 100%;
+  }
+  textarea { min-height: 11rem; resize: vertical; line-height: 1.7; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--focus); }
+  .hint { font-size: .8125rem; color: var(--ink-3); margin: 0; }
+  .field.invalid input, .field.invalid textarea { border-color: var(--danger); }
+  .err { font-size: .8125rem; color: var(--danger); margin: 0; display: none; }
+  .field.invalid .err { display: block; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+  .btn { align-self: flex-start; display: inline-flex; align-items: center; gap: .4rem; background: var(--green); color: var(--on-green); border: 0; cursor: pointer; font: inherit; font-weight: 700; font-size: 1rem; padding: .85rem 1.75rem; border-radius: var(--radius-md); }
+  .btn:hover { background: var(--green-strong); }
+  .btn[disabled] { opacity: .6; cursor: progress; }
+  .status { margin: 0; font-size: .9375rem; }
+  .status.ng { color: var(--danger); }
+  .done { display: none; flex-direction: column; gap: .75rem; }
+  .done h2 { font-family: var(--font-display); font-size: 1.5rem; margin: 0; color: var(--green-ink); }
+  .done p { margin: 0; color: var(--ink-2); }
+  .card.sent form { display: none; }
+  .card.sent .done { display: flex; }
+
+  .alt { max-width: 40rem; padding-bottom: 3rem; }
+  .alt p { margin: 0 0 .5rem; color: var(--ink-2); font-size: .9375rem; }
+  .mail { font-family: var(--font-mono); font-size: 1.0625rem; color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  footer { border-top: 1px solid var(--rule); padding-block: 1.75rem 3rem; font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: .75rem 2rem; }
+</style>
+</head>
+<body>
+<header class="pa-header">
+  <div class="inner">
+    <a class="pa-brand" href="/">ParanoAI</a>
+    <nav aria-label="サイト内"><a href="/#products">製品</a><a href="/#about">運営者</a><a href="/contact/" aria-current="page">お問い合わせ</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="sec-label">お問い合わせ</p>
+    <h1>どの製品が合うか分からない段階でも、ご相談ください。</h1>
+    <p>困っている業務を1つ伺えれば、研修・制作・ツール導入のどれが向いているかを含めてお答えします。通常2営業日以内に、ご入力のメールアドレスへ返信します。</p>
+  </div>
+
+  <div class="card" id="card">
+    <form id="contact-form" novalidate>
+      <div class="field">
+        <label for="topic">ご相談の種類</label>
+        <select id="topic" name="topic">
+          <option value="その他・まだ決まっていない">まだ決まっていない・その他</option>
+          <option value="AI導入研修">AI導入研修</option>
+          <option value="AI HP制作">AI HP制作</option>
+          <option value="LINEお問い合わせツール">LINEお問い合わせツール</option>
+          <option value="リマインド人">リマインド人</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="name">お名前<span class="req">必須</span></label>
+        <input id="name" name="name" type="text" autocomplete="name" maxlength="100" required>
+        <p class="err">お名前を入力してください。</p>
+      </div>
+      <div class="field">
+        <label for="company">会社・団体名<span class="opt">任意</span></label>
+        <input id="company" name="company" type="text" autocomplete="organization" maxlength="100">
+      </div>
+      <div class="field">
+        <label for="email">メールアドレス<span class="req">必須</span></label>
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" required>
+        <p class="err">返信先のメールアドレスを正しく入力してください。</p>
+      </div>
+      <div class="field">
+        <label for="message">ご相談内容<span class="req">必須</span></label>
+        <textarea id="message" name="message" maxlength="3000" required placeholder="例）問い合わせの返信が担当者任せで漏れることがある。何から手をつければよいか相談したい。"></textarea>
+        <p class="hint">箇条書きや短い文で構いません。</p>
+        <p class="err">ご相談内容を入力してください。</p>
+      </div>
+      <div class="hp" aria-hidden="true">
+        <label for="website">ウェブサイト（入力しないでください）</label>
+        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+      <button class="btn" type="submit" id="submit">送信する</button>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+    <div class="done" tabindex="-1" id="done">
+      <h2>送信しました。ありがとうございます。</h2>
+      <p>内容を確認のうえ、通常2営業日以内にご入力のメールアドレスへ返信します。<br>数日たっても返信が届かない場合は、お手数ですが下のメールアドレスへご連絡ください。</p>
+    </div>
+  </div>
+
+  <div class="alt">
+    <p>メールでのご相談も受け付けています。</p>
+    <a class="mail" href="mailto:contact@parano-ai.com?subject=ParanoAI%E3%81%B8%E3%81%AE%E3%81%94%E7%9B%B8%E8%AB%87">contact@parano-ai.com</a>
+  </div>
+
+  <footer>
+    <span>ParanoAI</span>
+    <span>杉田 光</span>
+    <span>contact@parano-ai.com</span>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const ENDPOINT = "https://api.parano-ai.com/contact";
+  const TOPIC_BY_KEY = { training: "AI導入研修", hp: "AI HP制作", line: "LINEお問い合わせツール", remind: "リマインド人" };
+  const opened = Date.now();
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("status");
+  const btn = document.getElementById("submit");
+
+  // ?topic=training などで種類を選んだ状態にする（各ページの「相談する」ボタンから）
+  const key = new URLSearchParams(location.search).get("topic");
+  if (key && TOPIC_BY_KEY[key]) form.topic.value = TOPIC_BY_KEY[key];
+
+  const checks = {
+    name: (v) => v.trim() !== "",
+    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    message: (v) => v.trim() !== "",
+  };
+  function validate() {
+    let first = null;
+    for (const [name, ok] of Object.entries(checks)) {
+      const el = form.elements[name];
+      const bad = !ok(el.value);
+      el.closest(".field").classList.toggle("invalid", bad);
+      el.setAttribute("aria-invalid", bad ? "true" : "false");
+      if (bad && !first) first = el;
+    }
+    if (first) first.focus();
+    return !first;
+  }
+  for (const name of Object.keys(checks)) {
+    form.elements[name].addEventListener("input", (e) => {
+      const f = e.target.closest(".field");
+      if (f.classList.contains("invalid") && checks[name](e.target.value)) f.classList.remove("invalid");
+    });
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    status.textContent = ""; status.className = "status";
+    if (!validate()) return;
+    btn.disabled = true; btn.textContent = "送信しています…";
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.elapsed_ms = Date.now() - opened;
+    try {
+      const res = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error(String(res.status));
+      document.getElementById("card").classList.add("sent");
+      document.getElementById("done").focus();
+    } catch (err) {
+      status.className = "status ng";
+      status.textContent = "送信できませんでした。時間をおいてもう一度お試しいただくか、contact@parano-ai.com へメールでお送りください。";
+      btn.disabled = false; btn.textContent = "送信する";
+    }
+  });
+})();
+</script>
+</body>
+</html>
