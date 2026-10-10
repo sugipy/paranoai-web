@@ -1,0 +1,984 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>リマインド人 — Slackの依頼を、完了まで見届ける</title>
+<meta name="description" content="Slackで受けた依頼を、メンション1つでタスクに。期限の前後に自動でリマインドして、完了まで見届けるSlackアプリ「リマインド人」の導入支援。">
+<meta name="color-scheme" content="light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #2453C7;
+    --brand-d: #173A94;
+    --brand-l: #EAF0FF;
+    --brand-ll: #F5F8FF;
+    --accent: #FFD43B;
+    --ok: #1F9D61;
+    --ok-l: #E5F6EE;
+    --wip: #B86E00;
+    --wip-l: #FFF3DD;
+    --ink: #17202E;
+    --ink-2: #4B5563;
+    --ink-3: #8A93A1;
+    --line: #E3E8F0;
+    --bg: #FFFFFF;
+    --bg-2: #F6F8FB;
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(23, 42, 90, .10);
+    --shadow-s: 0 4px 14px rgba(23, 42, 90, .08);
+    --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+  img, svg { display: block; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+  /* ── ボタン ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+    border-radius: 999px; font-weight: 700; text-decoration: none; letter-spacing: .02em;
+    padding: .9em 1.8em; font-size: 1rem; line-height: 1.2;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36, 83, 199, .3); }
+  .btn-primary:hover { background: var(--brand-d); }
+  .btn-ghost { background: #fff; color: var(--brand); border: 2px solid var(--brand); }
+  .btn-ghost:hover { background: var(--brand-l); }
+  .btn-lg { padding: 1.05em 2.2em; font-size: 1.0625rem; }
+  .btn svg { width: 1.1em; height: 1.1em; }
+  .btn-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bubble {
+    position: relative; background: var(--accent); color: var(--ink); font-size: .75rem; font-weight: 700;
+    border-radius: 999px; padding: .2em .9em; line-height: 1.6;
+  }
+  .bubble::after {
+    content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--accent); border-bottom: 0;
+  }
+
+  /* ── ヘッダー ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.94);
+    backdrop-filter: saturate(1.4) blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 1.125rem; letter-spacing: .02em; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; flex: none; }
+  .logo-mark svg { width: 20px; height: 20px; }
+  img.logo-mark { background: #dde1f4; object-fit: cover; }
+  .logo small { display: block; font-size: .625rem; font-weight: 500; color: var(--ink-3); letter-spacing: .04em; line-height: 1.2; }
+  .nav { display: none; gap: 28px; font-size: .875rem; font-weight: 600; }
+  .nav a { text-decoration: none; color: var(--ink-2); }
+  .nav a:hover { color: var(--brand); }
+  .header-cta { display: flex; gap: 8px; }
+  .header-cta .btn { padding: .6em 1.2em; font-size: .875rem; }
+  .header-cta .btn-ghost { display: none; }
+  @media (min-width: 960px) { .nav { display: flex; } }
+  .logo > span:last-child { white-space: nowrap; }
+  @media (max-width: 400px) { .logo { font-size: .9375rem; gap: 8px; } .header-cta .btn { padding: .55em 1em; font-size: .8125rem; } }
+  @media (min-width: 560px) { .header-cta .btn-ghost { display: inline-flex; } }
+
+  /* ── ヒーロー ── */
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(1200px 500px at 85% -10%, #DCE6FF 0%, transparent 60%),
+      linear-gradient(180deg, var(--brand-ll) 0%, #fff 100%);
+    padding: 48px 0 88px;
+  }
+  .hero .container { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .hero { padding: 72px 0 120px; } .hero .container { grid-template-columns: 1.05fr 1fr; gap: 48px; } }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 14px 6px 6px; font-size: .8125rem; font-weight: 700; color: var(--ink-2);
+    box-shadow: var(--shadow-s);
+  }
+  .tag b { background: var(--brand); color: #fff; border-radius: 999px; padding: 2px 10px; font-size: .75rem; }
+  .hero h1 {
+    font-size: clamp(1.75rem, 4.2vw, 3rem); line-height: 1.36; font-weight: 800; letter-spacing: .01em;
+    margin: 20px 0 20px;
+  }
+  .nw { white-space: nowrap; }
+  .hl { background: linear-gradient(transparent 62%, var(--accent) 62%); }
+  .hero h1 .blue { color: var(--brand); }
+  .hero .lead { font-size: 1.0625rem; color: var(--ink-2); margin: 0 0 32px; max-width: 34em; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .hero-points { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 28px 0 0; padding: 0; list-style: none; font-size: .875rem; font-weight: 600; color: var(--ink-2); }
+  .hero-points li { display: flex; align-items: center; gap: 6px; }
+  .hero-points svg { width: 18px; height: 18px; color: var(--ok); flex: none; }
+
+  /* ヒーローの画面イメージ */
+  .visual { position: relative; min-height: 440px; }
+  .card { background: #fff; border-radius: 14px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .v-form { position: absolute; left: 0; top: 10px; width: 62%; padding: 16px 18px; }
+  .v-form .bar { display: flex; gap: 5px; margin-bottom: 12px; }
+  .v-form .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .v-form .done { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: .9375rem; }
+  .v-form .done svg { width: 22px; height: 22px; color: var(--ok); flex: none; }
+  .v-form .label { font-size: .6875rem; color: var(--ink-3); margin-top: 10px; }
+  .v-form .num { font-family: var(--mono); font-size: 1.25rem; font-weight: 700; letter-spacing: .06em; color: var(--brand); }
+  .v-form .linebtn { margin-top: 10px; background: var(--ok); color: #fff; font-size: .75rem; font-weight: 700; border-radius: 999px; padding: 6px 12px; display: inline-block; }
+  .v-phone {
+    position: absolute; right: 2%; top: 0; width: 42%; max-width: 210px; aspect-ratio: 9 / 18;
+    background: #111827; border-radius: 30px; padding: 9px; box-shadow: var(--shadow);
+  }
+  .v-phone .screen { background: #EEF2F7; border-radius: 22px; height: 100%; padding: 14px 10px 10px; display: flex; flex-direction: column; gap: 8px; font-size: .6875rem; line-height: 1.5; }
+  .v-phone .head { text-align: center; font-weight: 700; font-size: .6875rem; color: var(--ink-2); margin-bottom: 4px; }
+  .msg-r, .msg-l { max-width: 85%; padding: 7px 10px; border-radius: 12px; }
+  .msg-r { align-self: flex-end; background: #BFEBC4; border-bottom-right-radius: 4px; }
+  .msg-l { align-self: flex-start; background: #fff; border-bottom-left-radius: 4px; }
+  .v-thread { position: absolute; left: 8%; bottom: 0; width: 72%; padding: 12px 14px; font-size: .75rem; line-height: 1.55; }
+  .v-thread .t-head { font-size: .6875rem; color: var(--ink-3); font-weight: 700; margin-bottom: 6px; }
+  .t-row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--line); }
+  .t-row:first-of-type { border-top: 0; }
+  .t-av { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-l); color: var(--brand); font-size: .5625rem; font-weight: 800; display: grid; place-items: center; }
+  img.t-av { background: #dde1f4; object-fit: cover; flex: none; }
+  .t-row .m { color: var(--brand); font-weight: 700; }
+  .img-note { position: absolute; right: 0; bottom: -26px; font-size: .6875rem; color: var(--ink-3); }
+  .float-badge {
+    position: absolute; right: 0; bottom: 34%; background: var(--accent); font-weight: 800; font-size: .8125rem;
+    border-radius: 12px; padding: 8px 12px; box-shadow: var(--shadow-s); line-height: 1.4;
+  }
+  @media (max-width: 559px) {
+    .visual { min-height: 0; display: grid; gap: 14px; }
+    .v-form, .v-phone, .v-thread, .float-badge, .img-note { position: static; width: auto; max-width: none; }
+    .v-phone { display: none; }
+    .float-badge { justify-self: start; }
+  }
+
+  /* ── 共通セクション ── */
+  section { padding: 72px 0; }
+  @media (min-width: 960px) { section { padding: 104px 0; } }
+  .sec-bg { background: var(--bg-2); }
+  .sec-head { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+  .eyebrow { display: inline-block; color: var(--brand); font-weight: 800; font-size: .8125rem; letter-spacing: .14em; margin-bottom: 10px; }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 2.25rem); line-height: 1.45; font-weight: 800; margin: 0 0 16px; letter-spacing: .01em; }
+  h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.55; margin: 0; }
+  .sec-head p { color: var(--ink-2); margin: 0; }
+  p { margin: 0; }
+
+  /* ── 数字の帯 ── */
+  .stats { margin-top: -48px; position: relative; z-index: 2; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden;
+  }
+  @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+  .stat { padding: 22px 14px; text-align: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat:nth-child(2n) { border-right: 0; }
+  @media (min-width: 768px) { .stat { border-bottom: 0; } .stat:nth-child(2n) { border-right: 1px solid var(--line); } .stat:last-child { border-right: 0; } }
+  .stat .k { font-size: .75rem; color: var(--ink-3); font-weight: 700; }
+  .stat .v { font-size: 1.75rem; font-weight: 800; color: var(--brand); line-height: 1.3; }
+  .stat .v small { font-size: .875rem; color: var(--ink); margin-left: 2px; }
+  .after-stats { margin-top: -56px; padding-top: 128px; }
+
+  /* ── お悩み ── */
+  .pains { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .pains { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .pains { grid-template-columns: repeat(3, 1fr); } }
+  .pain { background: #fff; border-radius: var(--radius); padding: 24px; border: 1px solid var(--line); display: flex; gap: 14px; align-items: flex-start; }
+  .pain .ic { flex: none; width: 44px; height: 44px; border-radius: 12px; background: #FFF1F1; color: #D14343; display: grid; place-items: center; }
+  .pain .ic svg { width: 22px; height: 22px; }
+  .pain p { font-weight: 700; line-height: 1.65; }
+  .arrow-down { display: grid; place-items: center; margin: 40px auto 0; color: var(--brand); }
+  .arrow-down svg { width: 40px; height: 40px; }
+  .answer { text-align: center; margin-top: 12px; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 800; line-height: 1.6; }
+
+  /* ── ハブ図 ── */
+  .hub { max-width: 860px; margin: 0 auto; }
+  .hub > svg { width: 100%; height: auto; }
+  .hub-legend { display: grid; gap: 16px; margin-top: 32px; }
+  @media (min-width: 768px) { .hub-legend { grid-template-columns: repeat(3, 1fr); } }
+  .hub-legend div { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); }
+  .hub-legend b { color: var(--brand); }
+  .hub-legend p { font-size: .9375rem; color: var(--ink-2); margin-top: 6px; }
+
+  /* ── できること ── */
+  .journey { list-style: none; padding: 0; margin: 0 auto 56px; max-width: 880px; display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+  .journey::before { content: ""; position: absolute; left: 10%; right: 10%; top: 27px; height: 3px; background: var(--line); }
+  .journey li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .j-dot { width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 3px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: .8125rem; color: var(--ink-3); position: relative; }
+  .journey li.on .j-dot { background: var(--brand); border-color: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36,83,199,.3); }
+  .j-t { font-size: .8125rem; font-weight: 700; color: var(--ink-2); line-height: 1.5; }
+  .journey li.on .j-t { color: var(--brand); }
+  @media (max-width: 559px) { .j-dot { width: 46px; height: 46px; font-size: .6875rem; } .journey::before { top: 22px; } .j-t { font-size: .6875rem; } }
+  .benefit { display: grid; gap: 28px; align-items: center; padding: 40px 0; border-top: 1px solid var(--line); }
+  .benefit:first-of-type { border-top: 0; }
+  @media (min-width: 900px) { .benefit { grid-template-columns: 1.15fr .85fr; gap: 64px; padding: 56px 0; } .benefit.rev .b-text { order: 2; } }
+  .b-no { font-family: var(--mono); font-weight: 800; font-size: 2.75rem; color: var(--brand); line-height: 1; margin-right: 12px; vertical-align: middle; }
+  .b-when { display: inline-block; vertical-align: middle; background: var(--accent); font-weight: 800; font-size: .875rem; border-radius: 999px; padding: 3px 14px; }
+  .benefit h3 { font-size: clamp(1.375rem, 3vw, 1.875rem); line-height: 1.45; margin: 16px 0 14px; }
+  .benefit p { color: var(--ink-2); }
+  .b-list { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+  .b-list li { display: flex; gap: 10px; font-weight: 600; font-size: .9375rem; }
+  .b-list svg { flex: none; width: 20px; height: 20px; color: var(--brand); margin-top: 4px; }
+  .b-visual { background: linear-gradient(160deg, var(--brand-l), var(--brand-ll)); border-radius: 24px; padding: 32px 16px; display: grid; place-items: center; }
+  .phone-s { width: 100%; max-width: 250px; background: #111827; border-radius: 32px; padding: 9px; box-shadow: var(--shadow); }
+  .phone-s .scr { background: #EEF2F7; border-radius: 24px; min-height: 360px; padding: 18px 12px; display: flex; flex-direction: column; gap: 10px; font-size: .75rem; line-height: 1.55; }
+  .p-time { align-self: center; font-size: .625rem; color: var(--ink-3); background: rgba(255,255,255,.7); border-radius: 999px; padding: 1px 10px; }
+  .form-s { background: #fff; border-radius: 12px; padding: 12px; display: grid; gap: 6px; }
+  .f-q { font-weight: 700; font-size: .6875rem; }
+  .f-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .f-scale span { border: 1px solid var(--line); border-radius: 6px; text-align: center; font-size: .6875rem; padding: 2px 0; }
+  .f-scale span.on { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 700; }
+  .b-note { text-align: center; font-size: .875rem; color: var(--ink-2); background: var(--wip-l); border-radius: 12px; padding: 12px 16px; margin: 8px auto 12px; max-width: 760px; }
+  .f-opt { border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: .6875rem; }
+  .f-opt.on { border-color: var(--brand); background: var(--brand-l); color: var(--brand); font-weight: 700; }
+  .f-btn { background: var(--brand); color: #fff; text-align: center; border-radius: 999px; padding: 5px; font-weight: 700; font-size: .6875rem; margin-top: 4px; }
+
+  /* ── ステップ ── */
+  .steps { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .steps { grid-template-columns: repeat(5, 1fr); gap: 14px; } }
+  .step { position: relative; background: #fff; border-radius: var(--radius); padding: 22px 20px; border: 1px solid var(--line); box-shadow: var(--shadow-s); }
+  .step .num { font-family: var(--mono); font-weight: 800; color: var(--brand); font-size: .8125rem; letter-spacing: .1em; }
+  .step h3 { font-size: 1rem; margin: 6px 0 8px; }
+  .step p { font-size: .875rem; color: var(--ink-2); line-height: 1.7; }
+  .who { display: inline-block; font-size: .6875rem; font-weight: 800; border-radius: 999px; padding: 2px 10px; margin-top: 10px; }
+  .who.cus { background: var(--brand-l); color: var(--brand); }
+  .who.auto { background: var(--ok-l); color: var(--ok); }
+  .who.staff { background: var(--wip-l); color: var(--wip); }
+  .code { font-family: var(--mono); background: var(--bg-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; font-size: .8125rem; color: var(--ink); white-space: nowrap; }
+
+  /* ── デモ（スレッド） ── */
+  .demo { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .demo { grid-template-columns: 1fr 1.15fr; gap: 56px; } }
+  .checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+  .checks li { display: flex; gap: 10px; font-weight: 600; }
+  .checks svg { flex: none; width: 22px; height: 22px; color: var(--brand); margin-top: 3px; }
+  .thread { padding: 0; overflow: hidden; }
+  .thread-top { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--line); font-weight: 700; font-size: .8125rem; color: var(--ink-2); background: var(--bg-2); }
+  .thread-top i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .tm { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: .875rem; line-height: 1.65; }
+  .tm:last-child { border-bottom: 0; }
+  .tm.parent { background: var(--brand-ll); }
+  .av { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: .6875rem; font-weight: 800; }
+  .av.bot { background: var(--brand); color: #fff; }
+  img.av.bot { background: #dde1f4; object-fit: cover; }
+  .av.hum { background: var(--wip-l); color: var(--wip); }
+  .tm .name { font-weight: 800; font-size: .8125rem; }
+  .tm .name time { font-weight: 500; color: var(--ink-3); font-size: .75rem; margin-left: 8px; }
+  .tm .body { color: var(--ink-2); }
+  .tm .m { color: var(--brand); font-weight: 700; }
+  .tm .q { border-left: 3px solid var(--line); padding-left: 10px; margin-top: 4px; color: var(--ink-3); }
+  .demo-note { font-size: .75rem; color: var(--ink-3); margin-top: 10px; }
+
+  /* ── 機能 ── */
+  .features { display: grid; gap: 20px; }
+  @media (min-width: 640px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .features { grid-template-columns: repeat(3, 1fr); } }
+  .feature { background: #fff; border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--line); }
+  .feature .ic { width: 52px; height: 52px; border-radius: 14px; background: var(--brand-l); color: var(--brand); display: grid; place-items: center; margin-bottom: 16px; }
+  .feature .ic svg { width: 26px; height: 26px; }
+  .feature p { color: var(--ink-2); font-size: .9375rem; margin-top: 8px; }
+
+  /* ── 業種 ── */
+  .inds { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 768px) { .inds { grid-template-columns: repeat(3, 1fr); } }
+  .ind { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 12px; text-align: center; font-weight: 700; font-size: .9375rem; line-height: 1.6; }
+  .ind .ic { width: 48px; height: 48px; margin: 0 auto 10px; border-radius: 50%; background: var(--brand-l); color: var(--brand); display: grid; place-items: center; }
+  .ind .ic svg { width: 24px; height: 24px; }
+  .ind-note { text-align: center; color: var(--ink-2); font-size: .875rem; margin-top: 24px; }
+
+  /* ── 選ばれる理由 ── */
+  .reasons { display: grid; gap: 20px; }
+  @media (min-width: 960px) { .reasons { grid-template-columns: repeat(3, 1fr); } }
+  .reason { background: #fff; border-radius: var(--radius); padding: 32px 26px; border: 1px solid var(--line); position: relative; }
+  .reason .no { font-size: 3rem; font-weight: 800; color: var(--brand-l); line-height: 1; position: absolute; right: 22px; top: 18px; font-family: var(--mono); }
+  .reason .lbl { color: var(--brand); font-weight: 800; font-size: .75rem; letter-spacing: .14em; }
+  .reason h3 { font-size: 1.25rem; margin: 6px 0 12px; position: relative; }
+  .reason p { color: var(--ink-2); font-size: .9375rem; }
+  .reason a { color: var(--brand); font-weight: 700; }
+
+  /* ── 導入の流れ ── */
+  .flow { max-width: 860px; margin: 0 auto; }
+  .flow ol { padding: 0; margin: 0; display: grid; gap: 12px; }
+  .flow li { list-style: none; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .flow .n { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: var(--mono); font-size: 1.0625rem; }
+  .flow p { color: var(--ink-2); font-size: .9375rem; margin-top: 4px; }
+
+  /* ── 料金 ── */
+  .plans { display: grid; gap: 20px; max-width: 960px; margin: 0 auto; }
+  @media (min-width: 768px) { .plans { grid-template-columns: 1fr 1fr; } }
+  .plan { background: #fff; border-radius: 20px; padding: 32px 26px; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .plan.main { border: 2px solid var(--brand); box-shadow: var(--shadow); }
+  .plan .pl { font-weight: 800; color: var(--brand); font-size: .875rem; }
+  .plan .price { font-size: 1.75rem; font-weight: 800; line-height: 1.3; }
+  .plan .price small { font-size: .875rem; color: var(--ink-2); font-weight: 600; }
+  .plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .9375rem; color: var(--ink-2); }
+  .plan li { display: flex; gap: 8px; }
+  .plan li svg { flex: none; width: 18px; height: 18px; color: var(--brand); margin-top: 5px; }
+  .plan .btn { margin-top: auto; align-self: flex-start; }
+
+  /* ── FAQ ── */
+  .faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+  .faq details { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 0 20px; }
+  .faq summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 24px minmax(0, 1fr) 20px; gap: 10px; align-items: center; font-weight: 700; padding: 18px 0; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .q { color: var(--brand); font-weight: 800; font-family: var(--mono); font-size: 1.125rem; }
+  .faq summary .pm { width: 20px; height: 20px; color: var(--ink-3); transition: transform .2s ease; }
+  .faq details[open] summary .pm { transform: rotate(45deg); }
+  .faq details p { padding: 0 0 20px 34px; color: var(--ink-2); font-size: .9375rem; }
+
+  /* ── 最後のCTA ── */
+  .final { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-d) 100%); color: #fff; text-align: center; }
+  .final h2 { color: #fff; }
+  .final p { opacity: .92; max-width: 40em; margin: 0 auto; }
+  .final .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 32px; align-items: flex-end; }
+  .final .btn-primary { background: #fff; color: var(--brand); box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+  .final .btn-primary:hover { background: var(--accent); color: var(--ink); }
+  .final .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
+  .final .btn-ghost:hover { background: rgba(255,255,255,.12); }
+  .final .meta { font-size: .8125rem; opacity: .8; margin-top: 18px; }
+
+  footer.site { background: #0F1A33; color: #AEB8CC; padding: 40px 0 96px; font-size: .8125rem; }
+  footer.site .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+  footer.site a { color: #fff; text-decoration: none; }
+  footer.site a:hover { text-decoration: underline; }
+
+  /* ── 追従CTA ── */
+  .floating {
+    position: fixed; right: 16px; bottom: 16px; z-index: 60;
+    display: flex; align-items: center; gap: 10px; background: var(--brand); color: #fff; text-decoration: none;
+    border-radius: 999px; padding: 8px 18px 8px 8px; box-shadow: 0 10px 24px rgba(23, 42, 90, .3);
+    font-weight: 800; font-size: .875rem; line-height: 1.3; transition: transform .15s ease, background .15s ease;
+  }
+  .floating:hover { transform: translateY(-2px); background: var(--brand-d); }
+  .floating .ic { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; }
+  .floating .ic svg { width: 18px; height: 18px; }
+  .floating small { display: block; font-size: .6875rem; font-weight: 600; opacity: .85; }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { transition-duration: 1ms !important; }
+  }
+
+  /* ── リマインド人追加分 ── */
+  .v-form { width: 56%; }
+  @media (max-width: 559px) { .v-form { width: auto; } }
+  .mn { color: var(--brand); font-weight: 700; }
+  .mk { border-radius: 6px; padding: 0 5px; font-weight: 700; }
+  .m-b { background: var(--brand-l); color: var(--brand); } .m-o { background: var(--wip-l); color: var(--wip); } .m-g { background: var(--ok-l); color: var(--ok); } .m-r { background: #FFF1F1; color: #D14343; }
+  .mflow { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: stretch; margin: 0 auto 56px; max-width: 1000px; }
+  .mflow .fc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-s); padding: 20px 18px; font-size: .875rem; line-height: 1.75; }
+  .mflow .cap { display: inline-block; font-size: .75rem; font-weight: 800; color: #fff; background: var(--brand); border-radius: 999px; padding: 2px 12px; margin-bottom: 12px; }
+  .mflow .arr { display: grid; place-items: center; color: var(--brand); }
+  .mflow .arr svg { width: 26px; height: 26px; }
+  .mflow .ex { display: grid; gap: 8px; }
+  .mflow .ex div { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); }
+  .mflow .ex span:first-child { font-size: .75rem; color: var(--ink-3); }
+  .mflow .tcard { margin-top: 10px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .mflow .tcard .mt { font-size: .75rem; color: var(--ink-3); }
+  .chip { display: inline-block; font-size: .6875rem; font-weight: 700; border-radius: 999px; padding: 2px 10px; margin: 6px 6px 0 0; border: 1px solid var(--line); background: #fff; }
+  .chip.p { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .alt { text-align: center; color: var(--ink-2); font-size: .875rem; margin: -32px 0 48px; }
+  @media (max-width: 799px) { .mflow { grid-template-columns: 1fr; } .mflow .arr { height: 36px; transform: rotate(90deg); } .alt { margin-top: -24px; } }
+  /* ── インド風テーマ（2026-10-09） ── */
+  :root {
+    --brand: #3b3f9e; --brand-d: #2a2d78; --brand-l: #ecebfb; --brand-ll: #fff7e8;
+    --accent: #f7b733; --saffron: #f29f05; --magenta: #c2185b; --peacock: #0f7c80;
+    --line: #ead9b8; --bg: #fffaf0; --bg-2: #fbf3e4;
+    --deco: "Kaisei Decol", "Hiragino Mincho ProN", serif;
+  }
+  body { background-color: var(--bg);
+    background-image: radial-gradient(circle at 1px 1px, rgba(194,24,91,.08) 1.2px, transparent 1.6px); background-size: 22px 22px; }
+  .hero h1, h2 { font-family: var(--deco); font-weight: 700; }
+  .eyebrow { color: var(--magenta); }
+  .btn-primary { background: var(--saffron); color: var(--ink); box-shadow: 0 4px 0 #b57400; }
+  .btn-primary:hover { background: var(--accent); }
+  .site-header { background: var(--brand); border-bottom: 0; }
+  .site-header .logo, .site-header .nav a { color: #fff; }
+  .site-header .nav a:hover { color: var(--accent); }
+  .site-header .logo small { color: #c9c8f0; }
+  img.logo-mark { border-radius: 50%; border: 2px solid var(--accent); }
+  .site-header .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
+  .site-header .btn-ghost:hover { background: rgba(255,255,255,.12); }
+  /* マリーゴールドの飾り紐（トーラン） */
+  .site-header::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 40px; pointer-events: none;
+    background:
+      radial-gradient(circle at 50% 10px, var(--saffron) 0 6px, transparent 6.5px),
+      radial-gradient(circle at 50% 23px, var(--accent) 0 5px, transparent 5.5px),
+      radial-gradient(circle at 50% 34px, var(--saffron) 0 4px, transparent 4.5px),
+      radial-gradient(ellipse 26px 10px at 50% 0, var(--peacock) 0 70%, transparent 72%);
+    background-size: 40px 40px; background-repeat: repeat-x; filter: drop-shadow(0 2px 1px rgba(0,0,0,.12)); }
+  .hero { background: radial-gradient(900px 480px at 85% 0%, #ffe6b0 0%, transparent 62%), linear-gradient(180deg, #fff3dc 0%, var(--bg) 100%); padding-top: 72px; }
+  .hl { background: linear-gradient(transparent 62%, rgba(247,183,51,.6) 62%); }
+  .tag b { background: var(--magenta); }
+  /* ムガルのアーチ窓にキャラ（スマホ幅で隠れていた端末画面の位置に置く） */
+  .arch { position: absolute; right: 0; top: -14px; width: 44%; max-width: 230px; }
+  .arch .frame { position: relative; aspect-ratio: 5 / 6; overflow: hidden;
+    border-radius: 50% 50% 12px 12px / 34% 34% 12px 12px;
+    background: radial-gradient(circle at 50% 30%, #fff6dd 0, #ffe1a3 45%, var(--accent) 100%);
+    border: 5px solid var(--peacock); box-shadow: 0 0 0 5px #fff, 0 0 0 8px var(--magenta), var(--shadow); }
+  .arch .frame::before { content: ""; position: absolute; inset: 0; opacity: .35;
+    background: repeating-conic-gradient(from 0deg at 50% 38%, rgba(194,24,91,.25) 0 6deg, transparent 6deg 15deg); }
+  .arch .frame img { position: absolute; left: 50%; bottom: 0; width: 88%; transform: translateX(-50%); }
+  .arch .say { position: absolute; left: -46%; top: 6%; background: #fff; border: 2px solid var(--ink); border-radius: 14px;
+    padding: 6px 12px; font-weight: 800; font-size: .75rem; line-height: 1.5; white-space: nowrap; box-shadow: 3px 3px 0 var(--ink); }
+  .arch .say::after { content: ""; position: absolute; right: -10px; top: 14px; border: 8px solid transparent; border-left-color: var(--ink); border-right: 0; }
+  @media (max-width: 559px) {
+    .arch { position: relative; top: 0; width: 62%; max-width: 220px; justify-self: end; order: -1; margin-right: 8px; }
+    .arch .say { left: auto; right: 92%; }
+  }
+  /* カードの上端に波形の縁飾り */
+  .pain, .feature, .reason, .step, .plan, .flow li, .hub-legend div { position: relative; background: #fffdf8; }
+  .pain::before, .feature::before, .reason::before, .step::before, .plan::before {
+    content: ""; position: absolute; left: 14px; right: 14px; top: -1px; height: 8px;
+    background: radial-gradient(circle at 8px 0, var(--c, var(--saffron)) 0 6px, transparent 6.5px) 0 0 / 16px 8px repeat-x; }
+  .pain { --c: var(--magenta); }
+  .feature { --c: var(--peacock); }
+  .feature .ic, .ind .ic { background: #fff1d6; color: var(--magenta); }
+  .reason .no { color: #f6dfb0; }
+  .stats-grid { border: 1.5px solid var(--line); }
+  .b-visual { background: radial-gradient(circle at 50% 20%, #fff6dd, #ffe1a3); }
+  /* 最後のCTA */
+  .final { background: radial-gradient(circle at 50% 130%, var(--magenta), transparent 62%), var(--brand); position: relative; overflow: hidden; }
+  .final::before { content: ""; position: absolute; inset: 0; opacity: .14; pointer-events: none;
+    background: repeating-conic-gradient(from 0deg at 50% 50%, #fff 0 4deg, transparent 4deg 12deg); }
+  .final .container { position: relative; }
+  .final-chara { width: 120px; margin: 0 auto 8px; filter: drop-shadow(0 6px 8px rgba(0,0,0,.25)); }
+  .final .btn-primary { background: var(--saffron); color: var(--ink); }
+  .floating { background: var(--brand); }
+  footer.site { background: #1f1b3a; }
+  /* 催促のシーン */
+  .rtl { display: grid; gap: 22px; grid-template-columns: repeat(4, minmax(0, 1fr)); position: relative; }
+  .rtl::before { content: ""; position: absolute; left: 6%; right: 6%; top: 17px; height: 6px;
+    background: radial-gradient(circle, var(--saffron) 0 3px, transparent 3.5px) 0 0 / 14px 6px repeat-x; }
+  .rs { position: relative; display: flex; flex-direction: column; gap: 10px; }
+  .rs .when { align-self: center; position: relative; background: var(--brand); color: #fff; font-weight: 800; font-size: .8125rem;
+    border-radius: 999px; padding: 6px 16px; box-shadow: 0 0 0 4px var(--bg); white-space: nowrap; }
+  .rs.late .when { background: var(--magenta); }
+  .rs.hold .when { background: var(--peacock); }
+  .rs .where { text-align: center; font-size: .75rem; font-weight: 700; color: var(--ink-3); }
+  .rs .card { padding: 14px 14px 16px; font-size: .8125rem; line-height: 1.7; flex: 1; }
+  .rs .who-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-weight: 800; font-size: .8125rem; }
+  .rs .who-row img { width: 28px; height: 28px; border-radius: 7px; background: #dde1f4; }
+  .rs .who-row time { font-weight: 500; color: var(--ink-3); font-size: .6875rem; }
+  .rs .m { color: var(--brand); font-weight: 700; }
+  .rs .line { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); font-size: .75rem; }
+  .rs .line b { display: block; }
+  .rs .line .d { color: var(--brand); font-weight: 700; }
+  .rs.late .line .d { color: var(--magenta); }
+  .rs .chips { margin-top: 2px; }
+  .rs .cap { font-size: .8125rem; color: var(--ink-2); text-align: center; line-height: 1.6; }
+  .rtl-note { text-align: center; color: var(--ink-2); font-size: .875rem; margin-top: 28px; }
+  @media (max-width: 959px) { .rtl { grid-template-columns: repeat(2, minmax(0, 1fr)); } .rtl::before { display: none; } }
+  @media (max-width: 559px) { .rtl { grid-template-columns: 1fr; } }
+  /* 画面例を SCREEN と同じ Slack 風カードに */
+  .b-visual .thread { width: 100%; max-width: 440px; text-align: left; }
+  .dm-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: 8px; padding: 8px 10px;
+    border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); font-size: .8125rem; line-height: 1.5; }
+  .dm-row b { display: block; }
+  .dm-row .d { font-style: normal; font-size: .75rem; font-weight: 700; color: var(--brand); }
+  .dm-row.late .d { color: var(--magenta); }
+  .dm-row.done { opacity: .6; } .dm-row.done b { text-decoration: line-through; }
+  .dm-row .chip { margin: 0; flex: none; }
+  .pg { margin-top: 10px; font-size: .6875rem; font-weight: 800; color: var(--ink-3); letter-spacing: .06em; }
+  .mflow .fc-s { padding: 0; background: transparent; border: 0; box-shadow: none; display: flex; flex-direction: column; }
+  .mflow .fc-s::before { display: none; }
+  .mflow .fc-s .cap { align-self: flex-start; }
+  .mflow .fc-s .thread { flex: 1; }
+  .mflow .fc-s .tm { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 12px 14px; font-size: .8125rem; }
+  .mflow .fc-s .av { width: 30px; height: 30px; }
+  .mflow .fc-s .ex div { background: #fff; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7.5 12.3l3 3 6-6.3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1"/></g></symbol>
+    <symbol id="i-thread" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><path d="M7 10v8h12M7 14h12"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 004 0"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 14.5l2 2 4-4"/></g></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.5v.01"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 010 12h-3"/></g></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13l2.5-8h12l2.5 8v6h-17z"/><path d="M3.5 13h5l1.5 2.5h4L15.5 13h5"/></g></symbol>
+    <symbol id="i-user-q" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5"/><path d="M17 6.5a2.3 2.3 0 114 1.5c-.8.6-1.5 1-1.5 2M19.5 13v.01"/></g></symbol>
+    <symbol id="i-unlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4"/><path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4"/><path d="M4 4l16 16"/></g></symbol>
+    <symbol id="i-yen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8M12 12v8M8 13h8M8 16.5h8"/></g></symbol>
+    <symbol id="i-school" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v5c1.5 1.6 3.4 2.5 5.5 2.5s4-.9 5.5-2.5v-5" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-gym" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></g></symbol>
+    <symbol id="i-salon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/><path d="M8.5 16L18 4M15.5 16L6 4"/></g></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5M10 20v-5h4v5"/></g></symbol>
+    <symbol id="i-seminar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="11" rx="1.5"/><path d="M8 20l4-5 4 5"/></g></symbol>
+    <symbol id="i-badge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><circle cx="12" cy="10" r="2.8"/><path d="M7.5 17c.8-2 2.4-3 4.5-3s3.7 1 4.5 3"/></g></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 8.5V13l3 2M5 4L3 6M19 4l2 2"/></g></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/></g></symbol>
+    <symbol id="i-term" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7 10l3 2.5L7 15M12.5 15H17"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-team" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5M16 14.7c2.4.1 4.3 1.6 5 5.3"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="#top" aria-label="リマインド人 ページの先頭へ">
+      <img class="logo-mark" src="remind-jin.png" alt="" aria-hidden="true">
+      <span>リマインド人<small>Slack タスクリマインド</small></span>
+    </a>
+    <nav class="nav" aria-label="ページ内">
+      <a href="#how">しくみ</a><a href="#features">機能</a><a href="#benefits">できること</a><a href="#price">料金</a><a href="#faq">よくある質問</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-ghost" href="#demo">画面を見る</a>
+      <a class="btn btn-primary" href="mailto:hunterpresident@gmail.com?subject=%E3%83%AA%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%81%8F%E3%82%93%E3%81%AE%E5%B0%8E%E5%85%A5%E7%9B%B8%E8%AB%87">お問い合わせ</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="container">
+      <div>
+        <span class="tag"><b>NEW</b>メンション1つで、依頼がタスクになる</span>
+        <h1><span class="nw">「あとでやります」を、</span><br><span class="hl"><span class="blue">「やりました」</span>まで</span><br>見届ける。</h1>
+        <p class="lead">Slackで受けた依頼を、<b>メンション1つでタスクに</b>。AIがタスク名と期限を読み取り、<b>平日のDM</b>と<b>期限切れのスレッド催促</b>で、完了に向けて声をかけ続けます。いつものSlackのまま使えて、新しいツールを覚える必要はありません。</p>
+        <div class="hero-cta">
+          <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
+            <a class="btn btn-primary btn-lg" href="mailto:hunterpresident@gmail.com?subject=%E3%83%AA%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%81%8F%E3%82%93%E3%81%AE%E5%B0%8E%E5%85%A5%E7%9B%B8%E8%AB%87"><svg aria-hidden="true"><use href="#i-mail"/></svg>導入を相談する</a></span>
+          <span class="btn-wrap"><span class="bubble">1分でわかる</span>
+            <a class="btn btn-ghost btn-lg" href="#how">しくみを見る<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+        </div>
+        <ul class="hero-points">
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>@メンションでタスク化</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>期限の前後に自動リマインド</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>ボタン1つで完了</li>
+        </ul>
+      </div>
+
+      <div class="visual" role="img" aria-label="画面イメージ。Slackで「見積書を金曜18時までに」とメンションすると、スレッドにタスクが作られる様子と、キャラクターのリマインド人。">
+        <div class="card v-form">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="label"># 案件相談 ／ 田中</div>
+          <div style="font-size:.8125rem;line-height:1.65;margin-top:4px">見積書、<b>金曜の18時</b>までに<span class="mn">@佐藤</span>さんお願いします！<br><span class="mn">@Remind-Jin</span></div>
+        </div>
+        <div class="arch"><div class="frame"><img src="remind-jin-full.png" alt="リマインド人のキャラクター。ターバンに時計をつけ、人差し指を立てている"></div><div class="say">ナマステ🙏<br>期限まで、私がお供します</div></div>
+        <div class="float-badge">期限の前後に<br>自動リマインド</div>
+        <div class="card v-thread">
+          <div class="t-head"># 案件相談 ／ スレッド</div>
+          <div class="t-row"><img class="t-av" src="remind-jin.png" alt=""><span><span class="m">@田中</span> 🙏 ナマステ、田中ジー！タスクにしておきました</span></div>
+          <div class="t-row"><img class="t-av" src="remind-jin.png" alt=""><span><span class="code">見積書を提出する</span> 担当 佐藤 ／ 金曜 18:00</span></div>
+        </div>
+        <p class="img-note">※画面はイメージです</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="k">つくる</div><div class="v">メンション<small>1つ</small></div><div class="k">絵文字・ショートカットでも</div></div>
+        <div class="stat"><div class="k">読み取る</div><div class="v">AI</div><div class="k">タスク名と期限をAIが整理</div></div>
+        <div class="stat"><div class="k">知らせる</div><div class="v">平日<small>2回</small></div><div class="k">平日 9:00・16:00 にDMでまとめ通知</div></div>
+        <div class="stat"><div class="k">追いかける</div><div class="v">最大5<small>回</small></div><div class="k">期限切れは催促し、そのあと自動で保留</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec-bg after-stats">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PROBLEM</span>
+        <h2>Slackで頼んだ仕事、<br>その先でこぼれていませんか？</h2>
+      </div>
+      <div class="pains">
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-inbox"/></svg></span><p>依頼がスレッドの下に流れて、見落とされる</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>誰が・いつまでに担当するのかが、文章のどこかにしかない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>別のタスク管理ツールへの転記が面倒で、続かない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-bell"/></svg></span><p>期限が近いことに、前日や当日に気づく</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>催促すると角が立つので、つい様子見してしまう</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>頼んだ側も忘れて、終わったのか分からないまま放置される</p></div>
+      </div>
+      <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
+      <p class="answer reveal">依頼を<span class="hl">その場でタスクにして</span>、<br>期限の前後はアプリが声をかけます。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">CONCEPT</span>
+        <h2>頼む・知らせる・見返す、<br>すべていつものSlackで</h2>
+        <p>新しいツールを覚える必要はありません。頼む人も、頼まれる人も、普段のSlackのまま。</p>
+      </div>
+      <div class="hub reveal">
+        <svg viewBox="0 0 860 370" role="img" aria-label="中央のタスクから、Slackのスレッド、DMのまとめ通知、タスクポータルの3つに矢印が伸びる図">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2453C7"/></marker></defs>
+          <g stroke="#2453C7" stroke-width="2.5" stroke-dasharray="6 6" fill="none" marker-end="url(#ah)">
+            <path d="M345 165 L228 118"/><path d="M515 165 L632 118"/><path d="M430 274 L430 288"/>
+          </g>
+          <circle cx="430" cy="180" r="92" fill="#EAF0FF"/><circle cx="430" cy="180" r="70" fill="#2453C7"/>
+          <text x="430" y="172" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Hiragino Sans, Yu Gothic, sans-serif">タスク</text>
+          <text x="430" y="198" text-anchor="middle" fill="#FFD43B" font-size="14" font-weight="800" font-family="Hiragino Sans, Yu Gothic, sans-serif">担当・期限つき</text>
+          <g font-family="Hiragino Sans, Yu Gothic, sans-serif">
+            <rect x="20" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
+            <text x="120" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">Slackのスレッド</text>
+            <text x="120" y="120" text-anchor="middle" font-size="13" fill="#4B5563">メンションで依頼・催促</text>
+            <rect x="640" y="50" width="200" height="100" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
+            <text x="740" y="92" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">DMのまとめ通知</text>
+            <text x="740" y="120" text-anchor="middle" font-size="13" fill="#4B5563">平日 9:00・16:00</text>
+            <rect x="330" y="292" width="200" height="72" rx="16" fill="#fff" stroke="#E3E8F0" stroke-width="1.5"/>
+            <text x="430" y="324" text-anchor="middle" font-size="19" font-weight="800" fill="#17202E">タスクポータル</text>
+            <text x="430" y="348" text-anchor="middle" font-size="13" fill="#4B5563">一覧・振り返りを確認</text>
+          </g>
+        </svg>
+        <div class="hub-legend">
+          <div class="reveal"><b>Slackのスレッド</b><p>頼まれた場所でそのままタスクに。期限切れの催促も、元のスレッドに届きます。</p></div>
+          <div class="reveal"><b>DMのまとめ通知</b><p>期限が前日・当日・超過のタスクを、担当者へ平日にまとめてお知らせします。</p></div>
+          <div class="reveal"><b>タスクポータル</b><p>「タスク一覧」と「振り返り」をブラウザで。Slackでログインできます。</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="benefits">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHAT YOU CAN DO</span>
+        <h2>依頼の「その場」から<br><span class="hl">完了の「その先」まで</span></h2>
+        <p>タスクにして、知らせて、見返す。依頼が流れていかないための流れを、ひと通り用意しています。</p>
+      </div>
+
+      <ol class="journey reveal" aria-label="タスクの流れ">
+        <li class="on"><span class="j-dot">依頼</span><span class="j-t">メンションで<br>タスク化</span></li>
+        <li><span class="j-dot">前日</span><span class="j-t">DMで<br>まとめ通知</span></li>
+        <li class="on"><span class="j-dot">当日</span><span class="j-t">ボタンで<br>完了</span></li>
+        <li><span class="j-dot">超過</span><span class="j-t">スレッドで<br>催促</span></li>
+        <li class="on"><span class="j-dot">振り返り</span><span class="j-t">週次の<br>集計を確認</span></li>
+      </ol>
+
+      <div class="benefit reveal">
+        <div class="b-text">
+          <span class="b-no">01</span><span class="b-when">頼んだ瞬間に</span>
+          <h3>メンションするだけで、<br>タスクが出来上がる</h3>
+          <p>頼まれたメッセージに <span class="code">@Remind-Jin</span>（リマインド人）とつけるだけ。AIがタスク名と「金曜18時」のような期限を読み取り、担当・依頼者とあわせてスレッドに返信します。担当は、本文で最初にメンションされた人から決まります。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>メンション・絵文字リアクション・ショートカットの3つの入口</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>担当は本文で最初にメンションされた人。いなければスレッドの流れから決まる</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>日付だけで時刻がなければ18:00になる（期限が書かれていなければ空のまま）</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i># 案件相談 ／ スレッド</div><div class="tm parent"><span class="av hum">田</span><div><div class="name">田中<time>10:02</time></div><div class="body">見積書、金曜の18時までに <span class="m">@佐藤</span> さんお願いします！ <span class="m">@Remind-Jin</span></div></div></div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>10:02</time></div><div class="body"><span class="m">@田中</span> 🙏 ナマステ、田中ジー！ご依頼、たしかに承りました<div class="q">見積書を提出する ／ 担当 佐藤 ／ 期限 金曜 18:00</div><span class="chip p">完了</span><span class="chip">期限変更</span><span class="chip">担当変更</span></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="benefit rev reveal">
+        <div class="b-text">
+          <span class="b-no">02</span><span class="b-when">期限の前後に</span>
+          <h3>平日のDMと、スレッドの催促で<br>見落とさせない</h3>
+          <p>平日の朝9時と夕方16時に、期限が前日・当日・超過のタスクをDMでまとめてお知らせ。期限を過ぎたタスクは、翌営業日から元のスレッドで担当者に声をかけます。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>期限の変更や完了は、通知のボタンからそのまま</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>超過したタスクは最大5回催促し、そのあと自動で「保留」</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>土日・祝日は催促を止めて、休み明けから再開</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i>リマインド人 ／ ダイレクトメッセージ</div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>平日 9:00</time></div><div class="body">☀️ スプラバート（おはようございます）、佐藤ジー！本日のタスクです<div class="dm-row"><span><b>見積書を提出する</b><em class="d">本日 18:00</em></span><span class="chip p">完了</span></div><div class="dm-row late"><span><b>請求書の確認</b><em class="d">1日超過</em></span><span class="chip p">完了</span></div><div class="dm-row"><span><b>会議室の予約</b><em class="d">明日 12:00</em></span><span class="chip p">完了</span></div></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="benefit reveal">
+        <div class="b-text">
+          <span class="b-no">03</span><span class="b-when">あとから</span>
+          <h3>一覧と週次の振り返りで、<br>チームの動きが見える</h3>
+          <p>ブラウザのポータルで、タスク一覧と完了・期限の変更ができます。週次の振り返りも見られます。Notionのデータベースと同期したり、Claude Codeから自分のタスクを操作したりもできます。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>自分が関わるタスクと、参加しているチャンネルのタスクだけが見える</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Notionと同期できる（利用時に接続設定が必要）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Claude Codeからタスクの確認・追加・完了ができる</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i>タスクポータル（ブラウザ）</div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">佐藤さんのタスク<time>今週の完了 5件</time></div><div class="body"><div class="pg">期限が近い</div><div class="dm-row"><span><b>見積書を提出する</b><em class="d">本日 18:00</em></span><span class="chip">期限変更</span></div><div class="pg">進行中</div><div class="dm-row"><span><b>請求書の確認</b><em class="d">担当 佐藤</em></span><span class="chip p">完了</span></div><div class="pg">完了</div><div class="dm-row done"><span><b>会議室の予約</b><em class="d">完了済み</em></span></div></div></div></div></div>
+        </div>
+      </div>
+      <p class="demo-note" style="text-align:center">※画面はイメージです。通知の時刻や休日などは、導入先に合わせて設定します。</p>
+    </div>
+  </section>
+
+  <section id="how" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">HOW IT WORKS</span>
+        <h2>頼む人がすることは、<br>メンションをつけるだけ</h2>
+      </div>
+
+      <div class="mflow reveal">
+        <div class="fc fc-s"><span class="cap">① いつものSlackで頼む</span><div class="card thread"><div class="thread-top"><i></i># 案件相談</div><div class="tm parent"><span class="av hum">田</span><div><div class="name">田中<time>10:02</time></div><div class="body">見積書、<span class="mk m-o">金曜の18時</span>までに<span class="mk m-g">@佐藤</span>さんお願いします！<br><span class="mk m-b">@Remind-Jin</span></div></div></div></div></div>
+        <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="fc fc-s"><span class="cap">② 内容を整理する</span><div class="card thread"><div class="thread-top"><i></i># 案件相談 ／ スレッド</div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>10:02</time></div><div class="body">🙏 ご依頼を読み取りました<div class="ex"><div><span>タスク名</span><b class="mk m-b">見積書を提出する</b></div><div><span>担当</span><b class="mk m-g">佐藤</b></div><div><span>期限</span><b class="mk m-o">金曜 18:00</b></div><div><span>依頼</span><b class="mk m-r">田中</b></div></div></div></div></div></div></div>
+        <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="fc fc-s"><span class="cap">③ タスクの出来上がり</span><div class="card thread"><div class="thread-top"><i></i># 案件相談 ／ スレッド</div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>10:02</time></div><div class="body"><span class="m">@田中</span> 🙏 ナマステ、田中ジー！タスクにしておきました。期限が近づいたら、DMと元スレッドでお知らせします<div class="tcard"><b>見積書を提出する</b><div class="mt">佐藤 ／ 金曜 18:00</div><span class="chip p">完了</span><span class="chip">期限変更</span><span class="chip">担当変更</span></div></div></div></div></div></div>
+      </div>
+      <p class="alt">絵文字リアクションや、メッセージのショートカット「タスクにする」でも作れます。</p>
+
+      <div class="steps">
+        <div class="step reveal"><div class="num">STEP 01</div><h3>メンションで頼む</h3><p>頼まれたメッセージに @Remind-Jin とつけます。絵文字・ショートカットでも可。</p><span class="who cus">依頼者</span></div>
+        <div class="step reveal"><div class="num">STEP 02</div><h3>AIが内容を整理</h3><p>AIがタスク名と期限を読み取り、担当・依頼者とあわせてスレッドに確認を返します。</p><span class="who auto">自動</span></div>
+        <div class="step reveal"><div class="num">STEP 03</div><h3>平日はDMで知らせる</h3><p>平日9:00・16:00に、期限が近いタスクと超過したタスクをまとめて送ります。</p><span class="who auto">自動</span></div>
+        <div class="step reveal"><div class="num">STEP 04</div><h3>ボタンで完了</h3><p>通知の「完了」ボタンを押すだけ。期限や担当の変更も同じ画面から。</p><span class="who staff">担当者</span></div>
+        <div class="step reveal"><div class="num">STEP 05</div><h3>超過は催促のち保留</h3><p>期限切れは翌営業日から最大5回スレッドで声をかけ、そのあと自動で「保留」にします。</p><span class="who auto">自動</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="container demo">
+      <div class="reveal">
+        <span class="eyebrow">SCREEN</span>
+        <h2>1件の依頼の経過が、<br>ひとつのスレッドで追える</h2>
+        <p style="color:var(--ink-2)">依頼・タスク化・催促・完了の記録は、すべて元のスレッドに残ります。誰が・いつ・何をしたかが時系列で分かるので、「あれどうなった？」の聞き直しを減らせます。</p>
+        <ul class="checks">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>タスクにしたこと・催促・完了が、元のスレッドに残る</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>依頼者にも完了が届くので、確認の連絡がいらない</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>期限・担当の変更は、ボタンからすぐ直せる</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <div class="card thread" role="img" aria-label="依頼スレッドの見本。依頼のあと、タスク化の返信、期限切れの催促、完了の通知が続く。">
+          <div class="thread-top"><i></i># 案件相談 ／ スレッド（見本）</div>
+          <div class="tm parent"><span class="av hum">田</span><div><div class="name">田中<time>10:02</time></div><div class="body">見積書、金曜の18時までに <span class="m">@佐藤</span> さんお願いします！ <span class="m">@Remind-Jin</span></div></div></div>
+          <div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>10:02</time></div><div class="body"><span class="m">@田中</span> 🙏 ナマステ、田中ジー！ご依頼、たしかに承りました。タスクにしておきますね<div class="q">見積書を提出する ／ 担当 佐藤 ／ 期限 金曜 18:00</div></div></div></div>
+          <div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>月 10:00</time></div><div class="body"><span class="m">@佐藤</span> ⏰ ナマステ、佐藤ジー。こちら、期限を過ぎております（1/5回目）。お手すきの際にご対応をお願いいたします🙏</div></div></div>
+          <div class="tm"><span class="av hum">佐</span><div><div class="name">佐藤<time>月 10:12</time></div><div class="body">「完了」ボタンを押しました</div></div></div>
+          <div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>月 10:12</time></div><div class="body"><span class="m">@田中</span> ✅ ダンニャワード（ありがとうございます）！田中ジー、完了のお知らせです: 見積書を提出する</div></div></div>
+        </div>
+        <p class="demo-note">表示内容は説明用の見本です。お名前・文言は導入先に合わせて設定します。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="remind" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">REMIND</span>
+        <h2>催促は、こんなふうに届きます</h2>
+        <p style="color:var(--ink-2)">期限の前日から、リマインド人が丁寧にお声がけします。言いにくい催促も、角を立てずにアプリが代わりに。</p>
+      </div>
+      <div class="rtl reveal">
+        <div class="rs">
+          <span class="when">前日 16:00</span><span class="where">担当者へのDM</span>
+          <div class="card"><div class="who-row"><img src="remind-jin.png" alt="">リマインド人<time>木 16:00</time></div>
+            🙏 ナマステ、佐藤ジー。明日が期限のタスクが1件ございます。
+            <div class="line"><b>見積書を提出する</b><span class="d">明日 18:00</span></div>
+            <div class="chips"><span class="chip p">完了</span><span class="chip">期限変更</span></div></div>
+          <p class="cap">期限の前の日に、まとめてお知らせ</p>
+        </div>
+        <div class="rs">
+          <span class="when">当日 9:00</span><span class="where">担当者へのDM</span>
+          <div class="card"><div class="who-row"><img src="remind-jin.png" alt="">リマインド人<time>金 9:00</time></div>
+            ☀️ スプラバート（おはようございます）、佐藤ジー！本日18時が期限です。チャイでも一杯いかがですか。
+            <div class="line"><b>見積書を提出する</b><span class="d">本日 18:00</span></div>
+            <div class="chips"><span class="chip p">完了</span><span class="chip">期限変更</span></div></div>
+          <p class="cap">当日の朝にも、もう一度</p>
+        </div>
+        <div class="rs late">
+          <span class="when">過ぎたら 翌営業日 10:00</span><span class="where">元のスレッド</span>
+          <div class="card"><div class="who-row"><img src="remind-jin.png" alt="">リマインド人<time>月 10:00</time></div>
+            ⏰ <span class="m">@佐藤</span> ナマステ、佐藤ジー。こちら、期限を過ぎております（1/5回目）。お手すきの際にご対応をお願いいたします🙏
+            <div class="line"><b>見積書を提出する</b><span class="d">金曜 18:00 → 1日超過</span></div>
+            <div class="chips"><span class="chip p">完了</span><span class="chip">期限変更</span></div></div>
+          <p class="cap">依頼者も見ているスレッドで、営業日ごとに</p>
+        </div>
+        <div class="rs hold">
+          <span class="when">5回お声がけしたら</span><span class="where">元のスレッド</span>
+          <div class="card"><div class="who-row"><img src="remind-jin.png" alt="">リマインド人<time>金 10:00</time></div>
+            🪷 佐藤ジー、5回お声がけいたしましたので、いったん「保留」にいたしました。期限を変えていただければ、またお知らせいたします。
+            <div class="line"><b>見積書を提出する</b><span class="d">保留中</span></div></div>
+          <p class="cap">追いかけすぎず、自動で保留へ</p>
+        </div>
+      </div>
+      <p class="rtl-note">土日・祝日はスレッドでの催促をお休みして、休み明けから再開します。表示内容は説明用の見本です。</p>
+    </div>
+  </section>
+
+  <section id="features" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">FEATURES</span>
+        <h2>現場が増やす作業を、できるだけ減らす</h2>
+      </div>
+      <div class="features">
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>3つの入口からタスク化</h3><p>メンション、絵文字リアクション、メッセージのショートカット。使いやすい方法でタスクにできます。同じメッセージから2回作ることはありません。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div><h3>日本の休日に対応</h3><p>土日・祝日は催促を止めて、休み明けから再開します。期限の読み取りも「明日まで」「金曜18時」などの日本語の言い回しが前提です。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-eye"/></svg></div><h3>見える範囲はSlackに合わせる</h3><p>自分が関わるタスクと、参加しているチャンネルのタスクが見えます。変えられるのは依頼者・担当・管理者だけです。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-db"/></svg></div><h3>Notionと同期</h3><p>タスクの状態と期限を、Notionのデータベースと双方向で同期できます。利用にはNotionの接続設定が必要です。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>Claude Codeから操作</h3><p>MCPに対応。手元のClaude Codeから、自分のタスクの確認・追加・完了ができます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></div><h3>週次の振り返り</h3><p>今週の作成数・完了数を集計して、チームの動きを数字で振り返れます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">USE CASES</span>
+        <h2>Slackで「依頼」が飛び交う<br>チームに</h2>
+      </div>
+      <div class="inds">
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-team"/></svg></div>制作・編集<br>チーム</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div>営業・<br>カスタマーサポート</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-gym"/></svg></div>店舗・施設の<br>運営チーム</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-badge"/></svg></div>士業・<br>コンサルの事務所</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-seminar"/></svg></div>採用・総務・<br>バックオフィス</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-house"/></svg></div>少人数の<br>プロジェクトチーム</div>
+      </div>
+      <p class="ind-note">社内の連絡にSlackをお使いであることを想定しています。それ以外の場合もご相談ください。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHY US</span>
+        <h2>自社の運用で動かしながら、<br>導入先の環境でテストしてお届けします</h2>
+      </div>
+      <div class="reasons">
+        <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3>作り手が、自社で使っている</h3><p>タスク化や一覧のポータルなどの基本機能は、自社のSlackで運用を始めています。使いながら直しているので、現場の困りごとに即した作りです。</p></div>
+        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>本番前に、実際のSlackでテスト</h3><p>導入時はテスト用のチャンネルで、タスク化・通知・催促・完了までを実際に通し、結果を記録してお渡しします。Notion連携など、使う機能も事前に確認します。</p></div>
+        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3>自分たちで直せるようにもなれる</h3><p>仕組みを入れるだけでなく、社内で同じものを作れるようになる <a href="../">Claude Code 導入研修</a> もご用意しています。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">FLOW</span>
+        <h2>導入の流れ</h2>
+        <p>テスト用のチャンネルで試してから、本番に切り替えます。</p>
+      </div>
+      <div class="flow">
+        <ol>
+          <li class="reveal"><span class="n">01</span><div><h3>今の依頼の流れを伺う</h3><p>どんな依頼がSlackで飛び交い、どこでこぼれているか。対象のチャンネルや、通知の時刻・休日などを決めます。</p></div></li>
+          <li class="reveal"><span class="n">02</span><div><h3>Slackアプリの準備</h3><p>貴社のSlackで使えるよう、アプリの用意とインストールを行います。インストールの承認は貴社の管理者にお願いします（進め方はヒアリングで決めます）。</p></div></li>
+          <li class="reveal"><span class="n">03</span><div><h3>設定と結線</h3><p>通知の時刻・休日などを設定し、必要に応じてNotion連携などをつなぎます。</p></div></li>
+          <li class="reveal"><span class="n">04</span><div><h3>テストチャンネルで確認</h3><p>実際のSlackで、タスク化・DM通知・催促・完了を通し、結果を記録します。</p></div></li>
+          <li class="reveal"><span class="n">05</span><div><h3>本番への切り替え</h3><p>対象のチャンネルにアプリを招待して運用を開始します。使い方の簡単な案内もお付けします。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PRICE</span>
+        <h2>料金</h2>
+        <p>導入費・運用費は、チームの規模と使う機能を伺ってからお見積もりします。</p>
+      </div>
+      <div class="plans">
+        <div class="plan main reveal">
+          <span class="pl">導入費</span>
+          <div class="price">お見積もり<small>（ヒアリング後）</small></div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>今の依頼の流れのヒアリングと設計</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>貴社Slackへのアプリ追加と設定（通知時刻・休日・催促のルール）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>テストチャンネルでの動作確認と記録</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>必要に応じたNotion連携の設定</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>使い方の案内</li>
+          </ul>
+          <a class="btn btn-primary" href="mailto:hunterpresident@gmail.com?subject=%E3%83%AA%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%81%8F%E3%82%93%E3%81%AE%E5%B0%8E%E5%85%A5%E7%9B%B8%E8%AB%87">見積もりを依頼する</a>
+        </div>
+        <div class="plan reveal">
+          <span class="pl">運用費</span>
+          <div class="price">お見積もり<small>（利用規模に応じて）</small></div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Slack：お使いのプランで動くかを導入前に確認します</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>AIの利用料：タスク化にAIを使うため、利用量に応じた費用がかかります</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Notion連携を使う場合は、Notion側のご契約が必要です</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導入後の保守・更新対応の範囲は、お見積もりの際にご説明します</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>よくある質問</h2>
+      </div>
+      <div class="faq">
+        <details><summary><span class="q">Q</span>Slackのどの機能が必要ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>アプリを追加できるSlackワークスペースが必要です。お使いのプランで動くかは、導入前に確認します。</p></details>
+        <details><summary><span class="q">Q</span>タスクの内容や担当を間違えたらどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>タスク化の返信に「期限変更」「担当変更」のボタンがあり、その場で直せます。作成後も、確認メッセージのボタンからいつでも直せます。</p></details>
+        <details><summary><span class="q">Q</span>他のメンバーのタスクが見えてしまいませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>見える範囲は、自分が関わるタスクと、参加しているチャンネルのタスクです。プライベートチャンネルやDMのタスクは、参加者だけが見えます。</p></details>
+        <details><summary><span class="q">Q</span>催促が多すぎて嫌がられませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>期限切れの催促は、翌営業日から最大5回までで、そのあとは自動で「保留」になります。通知の時刻や休日は、チームに合わせて設定できます。</p></details>
+        <details><summary><span class="q">Q</span>個人情報や社内のやりとりの扱いが心配です。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>タスクにしたメッセージの内容は、タスクの管理のためにデータベースに保存します。また、タスク名や期限の読み取りのため、メッセージの本文を外部のAIサービス（Claude）に送ります。保存先・保存範囲の詳細は、導入前にご説明します。</p></details>
+        <details><summary><span class="q">Q</span>いまのタスク管理ツールから乗り換えられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>今お使いの運用を伺ったうえで、移行の進め方をご提案します。Notionをお使いなら、同期して併用することもできます。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="container">
+      <img class="final-chara" src="remind-jin-full.png" alt="">
+      <h2>Slackで頼んだ仕事が、<br>流れていく悩みを聞かせてください</h2>
+      <p>「うちのSlackでも使えるのか」という段階のご相談で構いません。仕組みを入れる方が早いのか、研修で自社で作れるようになる方が合っているのかも含めてお答えします。</p>
+      <div class="row">
+        <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
+          <a class="btn btn-primary btn-lg" href="mailto:hunterpresident@gmail.com?subject=%E3%83%AA%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%81%8F%E3%82%93%E3%81%AE%E5%B0%8E%E5%85%A5%E7%9B%B8%E8%AB%87"><svg aria-hidden="true"><use href="#i-mail"/></svg>導入を相談する</a></span>
+        <a class="btn btn-ghost btn-lg" href="../">Claude Code 導入研修を見る</a>
+      </div>
+      <p class="meta">担当：杉田 光 ／ hunterpresident@gmail.com ／ 通常2営業日以内にご返信します</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="container">
+    <span>リマインド人（Slack タスクリマインド）<br>Slack は Slack Technologies, LLC、Notion、Claude Code は各社の商標または登録商標です。本ページは各社と提携・承認の関係にありません。画面・氏名はイメージで、実在の人物・組織とは関係ありません。</span>
+    <span><a href="../">Claude Code 導入研修</a>　／　杉田 光</span>
+  </div>
+</footer>
+
+<a class="floating" href="mailto:hunterpresident@gmail.com?subject=%E3%83%AA%E3%83%9E%E3%82%A4%E3%83%B3%E3%83%89%E3%81%8F%E3%82%93%E3%81%AE%E5%B0%8E%E5%85%A5%E7%9B%B8%E8%AB%87" aria-label="無料で導入を相談する（メール）">
+  <span class="ic" aria-hidden="true"><svg><use href="#i-chat"/></svg></span>
+  <span><small>ご相談は無料</small>導入を相談する</span>
+</a>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+</body>
+</html>

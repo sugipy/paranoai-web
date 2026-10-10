@@ -13,3 +13,9 @@ https://parano-ai.com/ の公開ファイル（GitHub Pages）。ParanoAI 導入
 - **積み上げマス**のデータ = `python3 tools/gen_activity.py`（~/Desktop 直下リポジトリのこの100日のコミット数。日付と件数だけ）。更新したら commit。
 - **公開**: main に push → GitHub Actions（`.github/workflows/deploy.yml`）がビルドして Pages へ。手元確認は `npm run build && npx astro preview`。
 - **戻し方**: `gh api -X PUT repos/sugipy/paranoai-web/pages -f build_type=legacy -f source[branch]=main -f source[path]=/` ＋ 4842c4b の状態に revert。
+
+## Slackアプリ「世界の同僚」（2026-10-10〜）
+
+- 一覧 `src/pages/doryo/index.astro` → /doryo/ 。各LPは `public/doryo/<slug>/`（remind＝リマインド人／kintai＝勤タイ人／nippo＝ニッポー人・未作成）。
+- 旧URLは転送のみ: `public/kintaijin/`、ai-training-lp の `slack-remind/`。
+- シリーズの正本表は `~/Desktop/Claude/03_projects/世界の同僚/README.md`。
