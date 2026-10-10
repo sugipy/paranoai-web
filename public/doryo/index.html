@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>世界のAI同僚｜ParanoAI の Slackアプリ</title>
+<meta name="description" content="世界のAI同僚は、Slackの中で働くAIの同僚のシリーズです。依頼を完了まで見届けるリマインド人、Slackで打刻できる勤怠ツールの勤タイ人、Slackの中で日報を書いて返せるようにするニッポー人（準備中）。">
+<meta property="og:title" content="世界のAI同僚｜ParanoAI の Slackアプリ">
+<meta property="og:description" content="リマインド人・勤タイ人・ニッポー人。Slackの中で働く、AIの同僚。">
+<meta property="og:url" content="https://parano-ai.com/doryo/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://parano-ai.com/doryo/">
+<link rel="icon" href="remind/remind-jin.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #2A1A12; --ink-2: #57463B; --ink-3: #6B5A50;
+    --bg: #FFFAF0; --bg-2: #FBF3E4; --card: #FFFDF8; --line: #EADCC4;
+    --deco: "Kaisei Decol", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
+    /* インド（リマインド人） */
+    --in: #3B3F9E; --in-d: #2A2D78; --saffron: #F29F05; --marigold: #F7B733; --magenta: #C2185B; --peacock: #0F7C80;
+    /* タイ（勤タイ人） */
+    --th: #8A2432; --th-d: #5A1520; --gold: #C9A227; --gold-d: #7A5E0A;
+    --th-grad: linear-gradient(135deg, #8E6309 0%, #9A3A2A 45%, #8A2432 70%, #5A1520 100%);
+    /* 日本（ニッポー人） */
+    --jp: #1E3A6B; --jp-d: #142849; --shu: #C8372D;
+    --radius: 18px;
+    --shadow: 0 10px 30px rgba(90, 40, 20, .10);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; font-family: var(--font); color: var(--ink); line-height: 1.8; background-color: var(--bg);
+    background-image: radial-gradient(circle at 1px 1px, rgba(138, 36, 50, .07) 1.2px, transparent 1.6px); background-size: 22px 22px; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+  /* ヘッダーと万国の飾り旗 */
+  .site-header { position: sticky; top: 0; z-index: 10; background: rgba(255, 250, 240, .95); backdrop-filter: blur(6px); }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+  .logo { font-family: var(--deco); font-weight: 700; font-size: 1.125rem; text-decoration: none; letter-spacing: .02em; }
+  .nav { display: flex; gap: 20px; font-size: .875rem; font-weight: 700; }
+  .nav a { text-decoration: none; color: var(--ink-2); }
+  .nav a:hover { color: var(--th); }
+  .bunting { height: 18px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='18'%3E%3Cpath d='M0 1.5Q36 5 72 1.5' fill='none' stroke='%237A5E0A' stroke-width='1'/%3E%3Cpath d='M2 2L22 2L12 16Z' fill='%23F29F05'/%3E%3Cpath d='M26 3L46 3L36 17Z' fill='%238A2432'/%3E%3Cpath d='M50 2L70 2L60 16Z' fill='%231E3A6B'/%3E%3Ccircle cx='12' cy='6' r='1.6' fill='%23FFFAF0'/%3E%3Ccircle cx='36' cy='7' r='1.6' fill='%23C9A227'/%3E%3Ccircle cx='60' cy='6' r='1.6' fill='%23C8372D'/%3E%3C/svg%3E") repeat-x top / 72px 18px;
+    position: absolute; left: 0; right: 0; top: 100%; pointer-events: none; filter: drop-shadow(0 2px 1px rgba(0,0,0,.08)); }
+
+  /* ヒーロー */
+  .hero { padding: 64px 0 40px; text-align: center;
+    background: radial-gradient(700px 360px at 15% 0%, rgba(242, 159, 5, .16), transparent 60%),
+                radial-gradient(700px 360px at 85% 0%, rgba(201, 162, 39, .18), transparent 60%),
+                radial-gradient(700px 360px at 50% 100%, rgba(30, 58, 107, .08), transparent 60%); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: .8125rem; font-weight: 800; letter-spacing: .12em; color: var(--gold-d); }
+  .eyebrow::before, .eyebrow::after { content: ""; width: 26px; height: 2px; background: linear-gradient(90deg, var(--saffron), var(--th), var(--jp)); }
+  h1 { font-family: var(--deco); font-weight: 700; font-size: clamp(2.25rem, 7vw, 4rem); line-height: 1.3; margin: 12px 0 0; letter-spacing: .04em; }
+  h1 .ai { display: inline-block; color: #fff; background: var(--th-grad); border-radius: 12px; padding: 0 .22em; margin: 0 .08em; font-size: .82em; transform: translateY(-.06em); }
+  .lead { max-width: 640px; margin: 18px auto 0; color: var(--ink-2); font-size: 1rem; }
+  .lead b { color: var(--ink); background: linear-gradient(transparent 64%, rgba(247, 183, 51, .5) 64%); }
+
+  /* 3人の額縁 */
+  .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 760px; margin: 48px auto 0; align-items: end; }
+  .who { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .say { position: relative; background: #fff; border: 2px solid var(--c); border-radius: 14px; padding: 4px 12px; font-weight: 800; font-size: .8125rem; white-space: nowrap; box-shadow: 3px 3px 0 var(--c); }
+  .say::after { content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); border: 8px solid transparent; border-top-color: var(--c); border-bottom: 0; }
+  .who .nm { font-family: var(--deco); font-weight: 700; font-size: 1.125rem; line-height: 1.3; }
+  .who .nm small { display: block; font-family: var(--font); font-size: .6875rem; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; }
+  .win { width: 100%; max-width: 200px; aspect-ratio: 5 / 6; position: relative; }
+
+  /* インド: ムガルの丸アーチ */
+  .w-in { --c: var(--in); }
+  .w-in .win { border-radius: 50% 50% 12px 12px / 34% 34% 12px 12px; overflow: hidden;
+    background: radial-gradient(circle at 50% 30%, #FFF6DD 0, #FFE1A3 45%, var(--marigold) 100%);
+    border: 5px solid var(--peacock); box-shadow: 0 0 0 5px #fff, 0 0 0 8px var(--magenta), var(--shadow); }
+  .w-in .win::before { content: ""; position: absolute; inset: 0; opacity: .35;
+    background: repeating-conic-gradient(from 0deg at 50% 38%, rgba(194, 24, 91, .25) 0 6deg, transparent 6deg 15deg); }
+  .w-in .win img { position: absolute; left: 50%; bottom: 0; width: 88%; height: auto; transform: translateX(-50%); }
+
+  /* タイ: 尖頭アーチ（寺院の窓） */
+  .w-th { --c: var(--gold); }
+  .pointed { -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 124' preserveAspectRatio='none'%3E%3Cpath d='M0 124V58C0 34 18 22 34 15C42 11 47 6 50 0C53 6 58 11 66 15C82 22 100 34 100 58V124Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 124' preserveAspectRatio='none'%3E%3Cpath d='M0 124V58C0 34 18 22 34 15C42 11 47 6 50 0C53 6 58 11 66 15C82 22 100 34 100 58V124Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat; }
+  .w-th .win { aspect-ratio: 100 / 124; filter: drop-shadow(0 10px 18px rgba(90, 21, 32, .22)); }
+  .w-th .win > .pointed { height: 100%; padding: 6px; background: linear-gradient(160deg, #F2D27A, #C9A227 45%, #9C7A12); }
+  .w-th .win > .pointed > .pointed { height: 100%; padding: 3px; background: #fff; }
+  .w-th .win > .pointed > .pointed > .pointed { height: 100%; }
+  .w-th .win img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+
+  /* 日本: 丸窓（円窓）と青海波 */
+  .w-jp { --c: var(--jp); }
+  .w-jp .win { aspect-ratio: 1 / 1; margin-bottom: calc(100% / 5 * 0); border-radius: 50%; overflow: hidden;
+    border: 6px solid var(--jp); box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--shu), var(--shadow);
+    background-color: #F6F1E6;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='%23F6F1E6' stroke='%231E3A6B' stroke-opacity='.28' stroke-width='1.2'%3E%3Cg id='w'%3E%3Ccircle cx='20' cy='0' r='19'/%3E%3Ccircle cx='20' cy='0' r='14'/%3E%3Ccircle cx='20' cy='0' r='9'/%3E%3Ccircle cx='20' cy='0' r='4'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='0' cy='10' r='19'/%3E%3Ccircle cx='0' cy='10' r='14'/%3E%3Ccircle cx='0' cy='10' r='9'/%3E%3Ccircle cx='0' cy='10' r='4'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='40' cy='10' r='19'/%3E%3Ccircle cx='40' cy='10' r='14'/%3E%3Ccircle cx='40' cy='10' r='9'/%3E%3Ccircle cx='40' cy='10' r='4'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='20' cy='20' r='19'/%3E%3Ccircle cx='20' cy='20' r='14'/%3E%3Ccircle cx='20' cy='20' r='9'/%3E%3Ccircle cx='20' cy='20' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 40px 20px; display: grid; place-items: center; }
+  .w-jp .win .soon { display: flex; flex-direction: column; align-items: center; gap: 6px; background: rgba(255, 253, 248, .92); border-radius: 50%; width: 62%; aspect-ratio: 1 / 1; justify-content: center; box-shadow: 0 0 0 2px rgba(30, 58, 107, .15); }
+  .w-jp .win .soon svg { width: 42%; height: auto; }
+  .w-jp .win .soon b { font-size: .75rem; color: var(--jp); letter-spacing: .12em; }
+
+  @media (max-width: 599px) {
+    .trio { gap: 12px; }
+    .say { font-size: .625rem; padding: 3px 8px; box-shadow: 2px 2px 0 var(--c); white-space: normal; text-align: center; line-height: 1.4; }
+    .who .nm { font-size: .9375rem; }
+    .w-in .win { border-width: 3px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--magenta), var(--shadow); }
+    .w-jp .win { border-width: 4px; box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--shu), var(--shadow); }
+  }
+
+  /* 同僚のカード */
+  section { padding: 56px 0; }
+  h2 { font-family: var(--deco); font-weight: 700; font-size: clamp(1.5rem, 4vw, 2rem); text-align: center; margin: 0 0 8px; line-height: 1.4; }
+  .sub { text-align: center; color: var(--ink-2); margin: 0 0 36px; font-size: .9375rem; }
+  .cards { display: grid; gap: 28px; }
+  @media (min-width: 900px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .card { position: relative; background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px 24px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .card::before { content: ""; position: absolute; left: 16px; right: 16px; top: -1px; height: 12px; }
+  .card .flag { align-self: flex-start; font-size: .75rem; font-weight: 800; letter-spacing: .08em; color: #fff; border-radius: 999px; padding: 2px 12px; }
+  .card h3 { font-family: var(--deco); font-weight: 700; font-size: 1.625rem; margin: 0; line-height: 1.4; }
+  .card h3 small { font-family: var(--font); font-size: .75rem; font-weight: 700; color: var(--ink-3); margin-left: 8px; letter-spacing: .04em; }
+  .card p { margin: 0; color: var(--ink-2); font-size: .9375rem; }
+  .card ul { margin: 4px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: .875rem; font-weight: 700; }
+  .card li { position: relative; padding-left: 22px; }
+  .card li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 10px; height: 10px; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 3px var(--c-l); }
+  .card .go { margin-top: auto; padding-top: 12px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; font-weight: 800; font-size: .9375rem; text-decoration: none; border-radius: 999px; padding: .85em 1.4em; transition: transform .15s, filter .15s; }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+  .btn:focus-visible { outline: 3px solid var(--c); outline-offset: 3px; }
+
+  .c-in { --c: var(--magenta); --c-l: #FBE3EC; }
+  .c-in::before { background: radial-gradient(circle at 8px 0, var(--saffron) 0 6px, transparent 6.5px) 0 0 / 16px 8px repeat-x; }
+  .c-in .flag { background: var(--in); }
+  .c-in .btn { background: var(--saffron); color: var(--ink); box-shadow: 0 4px 0 #B57400; }
+
+  .c-th { --c: var(--th); --c-l: #F6E7CC; border-top: 3px solid var(--gold); }
+  .c-th::before { top: -3px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14'%3E%3Cpath d='M0 14 L20 1 L40 14Z' fill='%23C9A227'/%3E%3Cpath d='M9 14 L20 6.5 L31 14Z' fill='%238A2432'/%3E%3Ccircle cx='20' cy='11.5' r='1.5' fill='%23FDF7EE'/%3E%3C/svg%3E") repeat-x center / 28px 10px; transform: translateY(-100%); }
+  .c-th .flag { background: var(--th-grad); }
+  .c-th .btn { background: var(--th-grad); color: #fff; box-shadow: 0 6px 16px rgba(138, 36, 50, .3); }
+
+  .c-jp { --c: var(--shu); --c-l: #F7E1DE; }
+  .c-jp::before { height: 6px; top: 10px; left: 24px; right: 24px; background: repeating-linear-gradient(90deg, var(--jp) 0 18px, transparent 18px 24px); opacity: .5; border-radius: 3px; }
+  .c-jp .flag { background: var(--jp); }
+  .c-jp .btn { background: #fff; color: var(--jp); border: 2px solid var(--jp); }
+
+  .note { text-align: center; color: var(--ink-3); font-size: .8125rem; margin: 28px 0 0; }
+
+  /* 最後のCTA */
+  .final { position: relative; color: #fff; text-align: center; overflow: hidden;
+    background: radial-gradient(circle at 10% 120%, rgba(242, 159, 5, .3), transparent 45%),
+                radial-gradient(circle at 90% 120%, rgba(30, 58, 107, .9), transparent 55%), var(--th-grad); }
+  .final::before { content: ""; position: absolute; inset: 0; opacity: .14; pointer-events: none;
+    background: repeating-conic-gradient(from 0deg at 50% 50%, #fff 0 4deg, transparent 4deg 12deg); }
+  .final .container { position: relative; }
+  .final h2 { color: #fff; }
+  .final p { margin: 0 auto 24px; max-width: 560px; color: #fff; }
+  .final .btn:focus-visible { outline-color: #fff; }
+  .final .btn { width: auto; background: #fff; color: var(--th); box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+  footer { background: #2A1A12; color: #D9BFA4; font-size: .8125rem; }
+  footer .container { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; padding-top: 24px; padding-bottom: 24px; }
+  footer a { color: #F6E7CC; }
+
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } .btn:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/">ParanoAI</a>
+    <nav class="nav" aria-label="サイト内"><a href="/#products">製品</a><a href="/contact/">お問い合わせ</a></nav>
+  </div>
+  <div class="bunting" aria-hidden="true"></div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="container">
+      <span class="eyebrow">Slackアプリのシリーズ</span>
+      <h1>世界の<span class="ai">AI</span>同僚</h1>
+      <p class="lead"><b>Slackの中に、AIの同僚を1人ずつ迎えるシリーズです。</b>新しいIDは増やさず、いつものSlackを入口に、取りこぼしやすい仕事をそれぞれの同僚が引き受けます。</p>
+
+      <div class="trio">
+        <div class="who w-in">
+          <span class="say">ナマステ🙏</span>
+          <div class="win"><img src="remind/remind-jin-full.png" alt="リマインド人のキャラクター。ターバンに時計をつけ、人差し指を立てている" width="616" height="720"></div>
+          <span class="nm">リマインド人<small>依頼とタスク</small></span>
+        </div>
+        <div class="who w-th">
+          <span class="say">サワディーカー🙏</span>
+          <div class="win"><div class="pointed"><div class="pointed"><div class="pointed"><img src="kintai/kintaijin.jpg" alt="勤タイ人のキャラクター。タイの伝統衣装を着た女性が、タイムカードを持って手を合わせている" width="640" height="640"></div></div></div></div>
+          <span class="nm">勤タイ人<small>勤怠と会議室</small></span>
+        </div>
+        <div class="who w-jp">
+          <span class="say">お疲れさまです</span>
+          <div class="win" role="img" aria-label="ニッポー人は準備中です">
+            <div class="soon">
+              <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="6" width="28" height="36" rx="3" fill="#fff" stroke="#1E3A6B" stroke-width="2.5"/><path d="M16 15h16M16 22h16M16 29h10" stroke="#1E3A6B" stroke-width="2.5" stroke-linecap="round"/><circle cx="33" cy="35" r="6" fill="#C8372D"/><path d="M30.5 35l2 2 3.5-4" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <b>準備中</b>
+            </div>
+          </div>
+          <span class="nm">ニッポー人<small>日報</small></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="list-h">
+    <div class="container">
+      <h2 id="list-h">同僚の紹介</h2>
+      <p class="sub">リマインド人と勤タイ人は、1人から迎えられます。ニッポー人は準備中です。<br>名前は、受け持つ仕事にちなんだ言葉遊びです。</p>
+      <div class="cards">
+
+        <article class="card c-in">
+          <span class="flag">依頼とタスク</span>
+          <h3>リマインド人</h3>
+          <p>Slackで受けた依頼を、メンション1つでタスクに。AIがタスク名と期限を読み取り、期限の前後に声をかけて、「あとでやります」を「やりました」まで見届けます。いつものSlackのまま使えます。</p>
+          <ul>
+            <li>頼む人がすることは、メンションをつけるだけ</li>
+            <li>1件の依頼の経過が、ひとつのスレッドで追える</li>
+          </ul>
+          <div class="go"><a class="btn" href="/doryo/remind/">リマインド人を見る</a></div>
+        </article>
+
+        <article class="card c-th">
+          <span class="flag">勤怠と会議室</span>
+          <h3>勤タイ人</h3>
+          <p>打刻は、Slackの勤怠チャンネルに「出勤」と書くだけ。退勤を押し忘れていれば声をかけ、在席一覧・会議室予約・来客登録まで1つの画面にまとめます。記録は貴社のGoogleスプレッドシートに残ります。</p>
+          <ul>
+            <li>新しいIDは不要。Slackでログインするだけ</li>
+            <li>人数ごとの利用料がかからない</li>
+          </ul>
+          <div class="go"><a class="btn" href="/doryo/kintai/">勤タイ人を見る</a></div>
+        </article>
+
+        <article class="card c-jp">
+          <span class="flag">日報｜準備中</span>
+          <h3>ニッポー人</h3>
+          <p>日報を、Slackの中で書いて・読んで・返せるようにする同僚を準備しています。勤タイ人で退勤を打つと、その場でDMが届いて日報が始まる形を予定しています。</p>
+          <ul>
+            <li>未完了の申し送りを、翌日に繰り越して知らせる（予定）</li>
+            <li>出し忘れた日報は、翌朝に1回だけそっと知らせる（予定）</li>
+          </ul>
+          <div class="go"><a class="btn" href="/contact/">先に相談する</a></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final-h">
+    <div class="container">
+      <h2 id="final-h">どの同僚から迎えるか、ご相談ください</h2>
+      <p>困っている業務を1つ伺えれば、どの同僚が向いているかを含めてお答えします。</p>
+      <a class="btn" href="/contact/">お問い合わせフォームへ</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <span>ParanoAI</span>
+    <span>杉田 光</span>
+    <a href="mailto:contact@parano-ai.com">contact@parano-ai.com</a>
+  </div>
+</footer>
+
+</body>
+</html>
