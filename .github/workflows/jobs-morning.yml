@@ -1,0 +1,25 @@
+# app.parano-ai.com（paranoai-jobs）の毎朝の点検を呼ぶ。
+# Cloudflare 無料プランの cron 上限（アカウントで5本）の代わり。
+# 期限切れの自動検収・自動承認と、対応が要るものの Discord 通知を行う。
+# 合言葉はリポジトリの Secrets「JOBS_CRON_TOKEN」（Worker 側の CRON_TOKEN と同じ値）。
+name: jobs-morning
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 毎朝 9:00 JST（GitHub の混雑で数十分遅れることがある）
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  morning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 毎朝の点検を呼ぶ
+        env:
+          TOKEN: ${{ secrets.JOBS_CRON_TOKEN }}
+        run: |
+          code=$(curl -sS -o body.json -w '%{http_code}' -X POST -H "Authorization: Bearer $TOKEN" https://app.parano-ai.com/cron)
+          cat body.json; echo
+          test "$code" = "200"
