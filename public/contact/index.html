@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>お問い合わせ｜ParanoAI</title>
-<meta name="description" content="ParanoAI（AI導入研修・AI HP制作・LINEお問い合わせツール・リマインド人）へのご相談・お問い合わせはこちらから。">
+<meta name="description" content="ParanoAI（AI導入研修・AI HP制作・LINEお問い合わせツール・リマインド人・勤タイ人）へのご相談・お問い合わせはこちらから。">
 <meta property="og:title" content="お問い合わせ｜ParanoAI">
 <meta property="og:url" content="https://parano-ai.com/contact/">
 <meta property="og:type" content="website">
@@ -109,6 +109,7 @@
           <option value="AI HP制作">AI HP制作</option>
           <option value="LINEお問い合わせツール">LINEお問い合わせツール</option>
           <option value="リマインド人">リマインド人</option>
+          <option value="勤タイ人">勤タイ人</option>
         </select>
       </div>
       <div class="field">
@@ -159,7 +160,7 @@
 <script>
 (() => {
   const ENDPOINT = "https://api.parano-ai.com/contact";
-  const TOPIC_BY_KEY = { training: "AI導入研修", hp: "AI HP制作", line: "LINEお問い合わせツール", remind: "リマインド人" };
+  const TOPIC_BY_KEY = { training: "AI導入研修", hp: "AI HP制作", line: "LINEお問い合わせツール", remind: "リマインド人", kintai: "勤タイ人" };
   const opened = Date.now();
   const form = document.getElementById("contact-form");
   const status = document.getElementById("status");
