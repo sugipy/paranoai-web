@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>資料請求・お見積もり・お問い合わせ｜世界のAI同僚</title>
-<meta name="description" content="世界のAI同僚（リマインド人・勤タイ人・ニッポー人）の資料請求、お見積もりのご依頼、お問い合わせはこちらのフォームから。">
+<meta name="description" content="世界のAI同僚（リマインド人・勤タイ人・ツナガーナ人・ニッポー人）の資料請求、お見積もりのご依頼、お問い合わせはこちらのフォームから。">
 <meta name="color-scheme" content="light">
 <meta property="og:title" content="資料請求・お見積もり・お問い合わせ｜世界のAI同僚">
 <meta property="og:url" content="https://parano-ai.com/doryo/contact/">
@@ -195,6 +195,7 @@
     <nav class="nav" aria-label="サイト内">
       <a class="hide-s" href="/doryo/remind/">リマインド人</a>
       <a class="hide-s" href="/doryo/kintai/">勤タイ人</a>
+      <a class="hide-s" href="/doryo/tsunagana/">ツナガーナ人</a>
       <a href="/doryo/">一覧へ</a>
     </nav>
   </div>
@@ -259,6 +260,7 @@
         <div class="crew">
           <a href="/doryo/remind/"><img src="../remind/remind-jin.png" alt=""><span><b>リマインド人</b><small>頼まれごとを、完了まで見届ける</small></span></a>
           <a href="/doryo/kintai/"><img src="../kintai/icon.png" alt=""><span><b>勤タイ人</b><small>Slackで勤怠・会議室予約</small></span></a>
+          <a href="/doryo/tsunagana/"><img src="../tsunagana/icon.png" alt=""><span><b>ツナガーナ人</b><small>HPの申込をLINEとSlackでつなぐ</small></span></a>
           <div><span class="ph" aria-hidden="true">準備中</span><span><b>ニッポー人<span class="chip wip">準備中</span></b><small>退勤の打刻から、日報を書く</small></span></div>
         </div>
         <p style="height:12px;margin:0"></p>
@@ -275,6 +277,7 @@
           <div class="picks">
             <div class="pick"><input type="checkbox" name="products" id="p-remind" value="リマインド人"><label for="p-remind"><img src="../remind/remind-jin.png" alt=""><span>リマインド人<small>依頼の見届け</small></span></label></div>
             <div class="pick"><input type="checkbox" name="products" id="p-kintai" value="勤タイ人"><label for="p-kintai"><img src="../kintai/icon.png" alt=""><span>勤タイ人<small>勤怠・会議室</small></span></label></div>
+            <div class="pick"><input type="checkbox" name="products" id="p-tsunagana" value="ツナガーナ人"><label for="p-tsunagana"><img src="../tsunagana/icon.png" alt=""><span>ツナガーナ人<small>申込・LINE連携</small></span></label></div>
             <div class="pick" data-only="contact"><input type="checkbox" name="products" id="p-nippo" value="ニッポー人"><label for="p-nippo"><span class="ph" aria-hidden="true">準備中</span><span>ニッポー人<small>日報（準備中）</small></span></label></div>
             <div class="pick"><input type="checkbox" name="products" id="p-undecided" value="まだ決めていない"><label for="p-undecided"><span>まだ決めていない</span></label></div>
           </div>
@@ -391,7 +394,7 @@
       msgLabel: "お問い合わせ内容", msgReq: true, msgPh: "例）うちのSlackでもリマインド人を使えるか知りたい。",
       doneTitle: "お問い合わせを受け付けました", doneText: "内容を確認のうえ、通常2営業日以内にご入力のメールアドレスへ返信します。" },
   };
-  const PRODUCT_BY_KEY = { remind: "p-remind", kintai: "p-kintai", nippo: "p-nippo" };
+  const PRODUCT_BY_KEY = { remind: "p-remind", kintai: "p-kintai", tsunagana: "p-tsunagana", nippo: "p-nippo" };
   const $ = (id) => document.getElementById(id);
   const form = $("form");
   let kind = "document";
@@ -474,7 +477,7 @@
     else und.checked = false;
   });
 
-  // 各LPのボタンから ?type=document|quote|contact&product=remind|kintai|nippo で来る
+  // 各LPのボタンから ?type=document|quote|contact&product=remind|kintai|tsunagana|nippo で来る
   const q = new URLSearchParams(location.search);
   setKind(q.get("type") || "document");
   const pid = PRODUCT_BY_KEY[q.get("product")];

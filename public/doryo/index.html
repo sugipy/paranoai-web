@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>世界のAI同僚｜ParanoAI の Slackアプリ</title>
-<meta name="description" content="世界のAI同僚は、Slackの中で働くAIの同僚のシリーズです。依頼を完了まで見届けるリマインド人、Slackで打刻できる勤怠ツールの勤タイ人、Slackの中で日報を書いて返せるようにするニッポー人（準備中）。">
+<meta name="description" content="世界のAI同僚は、Slackの中で働くAIの同僚のシリーズです。依頼を完了まで見届けるリマインド人、Slackで打刻できる勤怠ツールの勤タイ人、HPの申込をLINEとSlackでつなぐツナガーナ人、Slackの中で日報を書いて返せるようにするニッポー人（準備中）。">
 <meta property="og:title" content="世界のAI同僚｜ParanoAI の Slackアプリ">
-<meta property="og:description" content="リマインド人・勤タイ人・ニッポー人。Slackの中で働く、AIの同僚。">
+<meta property="og:description" content="リマインド人・勤タイ人・ツナガーナ人・ニッポー人。Slackの中で働く、AIの同僚。">
 <meta property="og:url" content="https://parano-ai.com/doryo/">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://parano-ai.com/doryo/">
@@ -27,6 +27,9 @@
     --th-grad: linear-gradient(135deg, #8E6309 0%, #9A3A2A 45%, #8A2432 70%, #5A1520 100%);
     /* 日本（ニッポー人） */
     --jp: #1E3A6B; --jp-d: #142849; --shu: #C8372D;
+    /* ガーナ（ツナガーナ人） */
+    --gh: #006B3F; --gh-d: #004A2B; --gh-red: #CE1126; --gh-gold: #FCD116;
+    --kente: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='20'%3E%3Crect width='64' height='20' fill='%23FCD116'/%3E%3Crect width='18' height='20' fill='%23CE1126'/%3E%3Crect x='24' width='18' height='20' fill='%23006B3F'/%3E%3Crect x='48' width='10' height='20' fill='%231E1610'/%3E%3Cpath d='M0 10L9 4l9 6-9 6z' fill='%23FCD116'/%3E%3Cpath d='M24 10l9-6 9 6-9 6z' fill='%23FCD116'/%3E%3Cpath d='M48 4h10l-5 6 5 6H48l5-6z' fill='%23FCD116'/%3E%3C/svg%3E");
     --radius: 18px;
     --shadow: 0 10px 30px rgba(90, 40, 20, .10);
   }
@@ -62,13 +65,20 @@
   .lead b { color: var(--ink); background: linear-gradient(transparent 64%, rgba(247, 183, 51, .5) 64%); }
 
   /* 3人の額縁 */
-  .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; max-width: 760px; margin: 48px auto 0; align-items: end; }
+  .trio { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; max-width: 420px; margin: 48px auto 0; align-items: end; }
+  @media (min-width: 760px) { .trio { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; max-width: 940px; } }
   .who { display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .say { position: relative; background: #fff; border: 2px solid var(--c); border-radius: 14px; padding: 4px 12px; font-weight: 800; font-size: .8125rem; white-space: nowrap; box-shadow: 3px 3px 0 var(--c); }
   .say::after { content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); border: 8px solid transparent; border-top-color: var(--c); border-bottom: 0; }
   .who .nm { font-family: var(--deco); font-weight: 700; font-size: 1.125rem; line-height: 1.3; }
   .who .nm small { display: block; font-family: var(--font); font-size: .6875rem; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; }
   .win { width: 100%; max-width: 200px; aspect-ratio: 5 / 6; position: relative; }
+
+  /* ガーナ: ケンテ織りの縁取り */
+  .w-gh { --c: var(--gh); }
+  .w-gh .win { aspect-ratio: 1 / 1; padding: 8px; border-radius: 26px; background: var(--kente) repeat / 48px 15px; border: 3px solid var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+  .w-gh .win .inner { width: 100%; height: 100%; border-radius: 17px; overflow: hidden; border: 2px solid var(--ink); background: #FFF8E6; }
+  .w-gh .win img { width: 100%; height: 100%; object-fit: cover; }
 
   /* インド: ムガルの丸アーチ */
   .w-in { --c: var(--in); }
@@ -113,7 +123,8 @@
   h2 { font-family: var(--deco); font-weight: 700; font-size: clamp(1.5rem, 4vw, 2rem); text-align: center; margin: 0 0 8px; line-height: 1.4; }
   .sub { text-align: center; color: var(--ink-2); margin: 0 0 36px; font-size: .9375rem; }
   .cards { display: grid; gap: 28px; }
-  @media (min-width: 900px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 760px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .cards { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   .card { position: relative; background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px 24px 24px; display: flex; flex-direction: column; gap: 12px; }
   .card::before { content: ""; position: absolute; left: 16px; right: 16px; top: -1px; height: 12px; }
   .card .flag { align-self: flex-start; font-size: .75rem; font-weight: 800; letter-spacing: .08em; color: #fff; border-radius: 999px; padding: 2px 12px; }
@@ -137,6 +148,11 @@
   .c-th::before { top: -3px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14'%3E%3Cpath d='M0 14 L20 1 L40 14Z' fill='%23C9A227'/%3E%3Cpath d='M9 14 L20 6.5 L31 14Z' fill='%238A2432'/%3E%3Ccircle cx='20' cy='11.5' r='1.5' fill='%23FDF7EE'/%3E%3C/svg%3E") repeat-x center / 28px 10px; transform: translateY(-100%); }
   .c-th .flag { background: var(--th-grad); }
   .c-th .btn { background: var(--th-grad); color: #fff; box-shadow: 0 6px 16px rgba(138, 36, 50, .3); }
+
+  .c-gh { --c: var(--gh); --c-l: #DDF0E5; border-top: 3px solid var(--ink); }
+  .c-gh::before { top: -3px; left: 0; right: 0; height: 12px; background: var(--kente) repeat-x left top / 48px 15px; border-radius: 16px 16px 0 0; }
+  .c-gh .flag { background: var(--gh); margin-top: 6px; }
+  .c-gh .btn { background: var(--gh-red); color: #fff; box-shadow: 0 4px 0 #7A0A16; }
 
   .c-jp { --c: var(--shu); --c-l: #F7E1DE; }
   .c-jp::before { height: 6px; top: 10px; left: 24px; right: 24px; background: repeating-linear-gradient(90deg, var(--jp) 0 18px, transparent 18px 24px); opacity: .5; border-radius: 3px; }
@@ -192,6 +208,11 @@
           <div class="win"><div class="pointed"><div class="pointed"><div class="pointed"><img src="kintai/kintaijin.jpg" alt="勤タイ人のキャラクター。タイの伝統衣装を着た女性が、タイムカードを持って手を合わせている" width="640" height="640"></div></div></div></div>
           <span class="nm">勤タイ人<small>勤怠と会議室</small></span>
         </div>
+        <div class="who w-gh">
+          <span class="say">アクワーバ！</span>
+          <div class="win"><div class="inner"><img src="tsunagana/tsunagana-jin.jpg" alt="ツナガーナ人のキャラクター。ケンテ織りの布をまとったガーナの女性が、ふきだしが糸でつながったスマートフォンを持ち、手を振っている" width="720" height="720"></div></div>
+          <span class="nm">ツナガーナ人<small>申込とLINE</small></span>
+        </div>
         <div class="who w-jp">
           <span class="say">お疲れさまです</span>
           <div class="win" role="img" aria-label="ニッポー人は準備中です">
@@ -209,7 +230,7 @@
   <section aria-labelledby="list-h">
     <div class="container">
       <h2 id="list-h">同僚の紹介</h2>
-      <p class="sub">リマインド人と勤タイ人は、1人から迎えられます。ニッポー人は準備中です。<br>名前は、受け持つ仕事にちなんだ言葉遊びです。</p>
+      <p class="sub">リマインド人・勤タイ人・ツナガーナ人は、1人から迎えられます。ニッポー人は準備中です。<br>名前は、受け持つ仕事にちなんだ言葉遊びです。</p>
       <div class="cards">
 
         <article class="card c-in">
@@ -232,6 +253,17 @@
             <li>人数ごとの利用料がかからない</li>
           </ul>
           <div class="go"><a class="btn" href="/doryo/kintai/">勤タイ人を見る</a></div>
+        </article>
+
+        <article class="card c-gh">
+          <span class="flag">申込とLINE</span>
+          <h3>ツナガーナ人</h3>
+          <p>ホームページの申込を受付番号で公式LINEにつなぎ、担当者のやりとりはSlackの1スレッドに集約。前日のリマインドや参加後のアンケート、その後のお知らせまで、LINEで自然に届けられるようになります。</p>
+          <ul>
+            <li>お客様がすることは、受付番号をLINEで送るだけ</li>
+            <li>「確定 10/14 10:00」と書けば前日に自動リマインド</li>
+          </ul>
+          <div class="go"><a class="btn" href="/doryo/tsunagana/">ツナガーナ人を見る</a></div>
         </article>
 
         <article class="card c-jp">

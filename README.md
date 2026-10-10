@@ -16,6 +16,6 @@ https://parano-ai.com/ の公開ファイル（GitHub Pages）。ParanoAI 導入
 
 ## Slackアプリ「世界のAI同僚」（2026-10-10〜）
 
-- 一覧 `public/doryo/index.html` → /doryo/ （インド・タイのLPと同じ装飾の素のHTML）。各LPは `public/doryo/<slug>/`（remind＝リマインド人／kintai＝勤タイ人／nippo＝ニッポー人・未作成）。
-- 旧URLは転送のみ: `public/kintaijin/`、ai-training-lp の `slack-remind/`。
+- 一覧 `public/doryo/index.html` → /doryo/ （インド・タイのLPと同じ装飾の素のHTML）。各LPは `public/doryo/<slug>/`（remind＝リマインド人／kintai＝勤タイ人／tsunagana＝ツナガーナ人／nippo＝ニッポー人・未作成）。
+- 旧URLは転送のみ: `public/kintaijin/`、`public/line-flow/`（→ /doryo/tsunagana/）、ai-training-lp の `slack-remind/`。
 - シリーズの正本表は `~/Desktop/Claude/03_projects/世界の同僚/README.md`。
