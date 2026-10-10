@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ニッポー人｜日報を、Slackの中で書いて・読んで・返す（開発中）</title>
+<meta name="description" content="ニッポー人は、日報をSlackの中で書いて・読んで・返せるようにする同僚です。勤タイ人で退勤を打つとDMが届き、日報が始まります。現在開発中で、ステップスポーツで試験する予定です。">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="ニッポー人｜日報を、Slackの中で書いて・読んで・返す">
+<meta property="og:description" content="退勤を打つと、日報のDMが届く。Slackだけで書いて、読んで、返せる。（開発中）">
+<meta property="og:url" content="https://parano-ai.com/doryo/nippo/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://parano-ai.com/doryo/nippo/">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --jp: #1E3A6B; --jp-d: #142849; --jp-l: #E6ECF7; --shu: #C8372D; --shu-l: #F7E1DE;
+    --ink: #2A1A12; --ink-2: #57463B; --ink-3: #6B5A50;
+    --bg: #FFFAF0; --bg-2: #FBF3E4; --card: #FFFDF8; --line: #EADCC4;
+    --ok: #2E7D5B; --ok-l: #E1F1E8; --wip: #9A5B00; --wip-l: #FFF3DD;
+    --deco: "Kaisei Decol", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
+    --radius: 18px; --shadow: 0 10px 30px rgba(90, 40, 20, .10);
+    --seigaiha: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20'%3E%3Cg fill='%23F6F1E6' stroke='%231E3A6B' stroke-opacity='.28' stroke-width='1.2'%3E%3Ccircle cx='20' cy='0' r='19'/%3E%3Ccircle cx='20' cy='0' r='14'/%3E%3Ccircle cx='20' cy='0' r='9'/%3E%3Ccircle cx='20' cy='0' r='4'/%3E%3Ccircle cx='0' cy='10' r='19'/%3E%3Ccircle cx='0' cy='10' r='14'/%3E%3Ccircle cx='0' cy='10' r='9'/%3E%3Ccircle cx='0' cy='10' r='4'/%3E%3Ccircle cx='40' cy='10' r='19'/%3E%3Ccircle cx='40' cy='10' r='14'/%3E%3Ccircle cx='40' cy='10' r='9'/%3E%3Ccircle cx='40' cy='10' r='4'/%3E%3Ccircle cx='20' cy='20' r='19'/%3E%3Ccircle cx='20' cy='20' r='14'/%3E%3Ccircle cx='20' cy='20' r='9'/%3E%3Ccircle cx='20' cy='20' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 76px; }
+  body { margin: 0; font-family: var(--font); color: var(--ink); line-height: 1.85; background-color: var(--bg);
+    background-image: radial-gradient(circle at 1px 1px, rgba(200, 55, 45, .07) 1.2px, transparent 1.6px); background-size: 22px 22px; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--deco); font-weight: 700; margin: 0; line-height: 1.4; letter-spacing: .03em; }
+  p { margin: 0; } ul { margin: 0; padding: 0; list-style: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+  :focus-visible { outline: 3px solid var(--shu); outline-offset: 3px; }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--jp); color: #fff; padding: 8px 14px; z-index: 50; }
+  .skip:focus { left: 8px; top: 8px; }
+
+  .site-header { position: sticky; top: 0; z-index: 20; background: rgba(255, 250, 240, .95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+  .site-header .container { display: flex; align-items: center; gap: 16px; height: 62px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--deco); font-weight: 700; font-size: 1.125rem; }
+  .logo img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid var(--jp); }
+  .logo small { font-family: var(--font); font-weight: 700; font-size: .6875rem; color: var(--ink-3); margin-left: 4px; }
+  .head-cta { margin-left: auto; display: flex; gap: 8px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: .9375rem; text-decoration: none; border-radius: 999px; padding: .7em 1.5em; line-height: 1.3; border: 2px solid var(--jp); transition: transform .12s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--jp); color: #fff; }
+  .btn-ghost { background: #fff; color: var(--jp); }
+  .head-cta .btn { padding: .45em 1.1em; font-size: .8125rem; }
+  .head-cta .btn-ghost { display: none; }
+  @media (min-width: 640px) { .head-cta .btn-ghost { display: inline-flex; } }
+
+  .hero { padding: 48px 0 64px; background: radial-gradient(640px 360px at 90% 0%, rgba(30, 58, 107, .10), transparent 65%), radial-gradient(520px 320px at 0% 100%, rgba(200, 55, 45, .08), transparent 65%); }
+  .hero .container { display: grid; gap: 40px; }
+  @media (min-width: 960px) { .hero { padding: 72px 0 88px; } .hero .container { grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; gap: 56px; } }
+  .badge { display: inline-flex; gap: 8px; align-items: center; background: var(--wip-l); color: var(--wip); border-radius: 999px; font-size: .8125rem; font-weight: 800; padding: 3px 14px; }
+  .hero h1 { margin-top: 16px; font-size: clamp(1.75rem, 5.6vw, 2.75rem); line-height: 1.4; }
+  .hero h1 .shu { color: var(--shu); white-space: nowrap; }
+  .lead { margin-top: 20px; max-width: 34em; color: var(--ink-2); }
+  .lead b { color: var(--ink); background: linear-gradient(transparent 64%, var(--shu-l) 64%); }
+  .cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+  .note { margin-top: 14px; font-size: .8125rem; color: var(--ink-3); max-width: 40em; }
+
+  .visual { display: grid; gap: 18px; justify-items: center; }
+  .win { width: min(100%, 260px); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 6px solid var(--jp); box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--shu), var(--shadow); background-color: #F6F1E6; background-image: var(--seigaiha); background-size: 40px 20px; }
+  .win img { width: 100%; height: 100%; object-fit: cover; }
+  .mock { width: 100%; max-width: 420px; background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; font-size: .8125rem; line-height: 1.6; }
+  .mock .hd { background: var(--jp); color: #fff; font-weight: 700; padding: 7px 14px; font-size: .75rem; }
+  .mock .bd { padding: 14px; display: grid; gap: 10px; }
+  .msg { display: flex; gap: 10px; }
+  .av { flex: none; width: 34px; height: 34px; border-radius: 6px; overflow: hidden; background: var(--jp); }
+  .av img { width: 100%; height: 100%; object-fit: cover; }
+  .who { font-weight: 800; } .who small { font-weight: 400; color: var(--ink-3); margin-left: 6px; }
+  .app { font-size: .625rem; background: var(--bg-2); border-radius: 3px; padding: 0 5px; margin-left: 4px; font-weight: 700; color: var(--ink-3); }
+  .bq { border-left: 4px solid var(--line); padding-left: 10px; margin-top: 4px; display: grid; gap: 4px; }
+  .btns { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .b { border: 1px solid #cdbf9f; border-radius: 6px; padding: 2px 12px; font-weight: 700; font-size: .75rem; background: #fff; }
+  .b.p { background: var(--jp); color: #fff; border-color: var(--jp); }
+  .meta { font-size: .6875rem; color: var(--ink-3); }
+
+  section { padding: 64px 0; }
+  .alt { background: var(--bg-2); }
+  .sec-head { text-align: center; margin-bottom: 36px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: .75rem; font-weight: 800; letter-spacing: .18em; color: var(--shu); }
+  .eyebrow::before, .eyebrow::after { content: ""; width: 22px; height: 2px; background: var(--shu); opacity: .6; }
+  .sec-head h2 { margin-top: 6px; font-size: clamp(1.5rem, 4vw, 2.125rem); }
+  .sec-head p { margin: 12px auto 0; max-width: 640px; color: var(--ink-2); }
+  .grid { display: grid; gap: 20px; }
+  @media (min-width: 760px) { .grid.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); position: relative; }
+  .card::before { content: ""; position: absolute; left: 22px; right: 22px; top: 9px; height: 5px; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--jp) 0 16px, transparent 16px 22px); opacity: .4; }
+  .card h3 { margin: 10px 0 8px; font-size: 1.1875rem; }
+  .card p { color: var(--ink-2); font-size: .9375rem; }
+  .soon { display: inline-block; margin-top: 10px; font-size: .75rem; font-weight: 800; background: var(--wip-l); color: var(--wip); border-radius: 999px; padding: 0 10px; }
+  .steps { display: grid; gap: 14px; counter-reset: s; }
+  @media (min-width: 860px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; position: relative; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: -14px; left: 18px; width: 30px; height: 30px; border-radius: 50%; background: var(--shu); color: #fff; font-family: var(--deco); display: grid; place-items: center; font-size: .9375rem; }
+  .step b { display: block; font-family: var(--deco); font-size: 1.0625rem; margin: 6px 0 4px; }
+  .step p { font-size: .875rem; color: var(--ink-2); }
+  .rules li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; font-size: .9375rem; color: var(--ink-2); }
+  .rules li b { color: var(--ink); }
+  .rules { display: grid; gap: 12px; }
+  @media (min-width: 760px) { .rules { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .final { text-align: center; background: var(--jp); color: #fff; }
+  .final h2 { font-size: clamp(1.5rem, 4vw, 2.125rem); }
+  .final p { margin: 12px auto 24px; max-width: 560px; opacity: .9; }
+  .final .btn-primary { background: #fff; color: var(--jp); border-color: #fff; }
+  .final .btn-ghost { background: transparent; color: #fff; border-color: #fff; }
+  footer { padding: 28px 0; font-size: .8125rem; color: var(--ink-3); }
+  footer .container { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">本文へ</a>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/doryo/"><img src="icon.png" alt="" width="38" height="38"><span>ニッポー人<small>世界のAI同僚</small></span></a>
+    <div class="head-cta">
+      <a class="btn btn-ghost" href="/doryo/">同僚の一覧</a>
+      <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=nippo">先に相談する</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="container">
+      <div>
+        <span class="badge">開発中｜ステップスポーツで試験する予定</span>
+        <h1>日報を、Slackの中で<br><span class="shu">書いて・読んで・返す</span></h1>
+        <p class="lead"><b>退勤を打つと、日報のDMが届きます。</b>書いた日報はチャンネルに載り、上長は「見ました」とひと言返すだけ。日報のためにほかのツールを開く必要がありません。</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=nippo">先に相談する</a>
+          <a class="btn btn-ghost" href="#flow">流れを見る</a>
+        </div>
+        <p class="note">いま開発している同僚です。下の内容は予定で、変わることがあります。勤タイ人と組み合わせると、退勤の打刻から日報が始まります。</p>
+      </div>
+      <div class="visual">
+        <div class="win"><img src="nippo-jin.jpg" alt="ニッポー人のキャラクター。紺の羽織を着た男性が、筆と日報のノートを持っている" width="720" height="720"></div>
+        <div class="mock" role="img" aria-label="退勤後にニッポー人から届く日報のDMの例">
+          <div class="hd">ニッポー人（DM）</div>
+          <div class="bd">
+            <div class="msg"><div class="av"><img src="icon.png" alt="" width="34" height="34"></div>
+              <div><div class="who">ニッポー人<span class="app">APP</span><small>17:31</small></div>
+                <div>田中さん、おつかれさまでした。今日の日報を書きましょう。</div>
+                <div class="bq"><b>10/10（土）の実働</b><span>7時間45分（9:02〜17:31）</span></div>
+                <div class="btns"><span class="b p">書く</span><span class="b">特記事項なし</span></div>
+                <div class="meta">例の画面です。人名・時間は例です。</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="alt" id="flow" aria-labelledby="flow-h">
+    <div class="container">
+      <div class="sec-head"><span class="eyebrow">日報の流れ</span><h2 id="flow-h">退勤から、返事まで、Slackだけ</h2><p>書く人も、読む人も、Slackのままです。（予定）</p></div>
+      <div class="steps">
+        <div class="step"><b>退勤を打つ</b><p>勤タイ人で退勤を打つと、その場で日報のDMが届きます。打刻がない日は送りません。</p></div>
+        <div class="step"><b>3問だけ書く</b><p>やったこと、気づき・困りごと、明日やること。必須は1問だけ。「特記事項なし」はワンタップです。</p></div>
+        <div class="step"><b>チャンネルに載る</b><p>日報は決めたチャンネルに投稿され、実働は自動で添えられます。時間は書かなくて済みます。</p></div>
+        <div class="step"><b>「見ました」で返す</b><p>上長は［見ました］を押すか、スレッドでひと言返します。書いた人に通常の通知が届きます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="feat-h">
+    <div class="container">
+      <div class="sec-head"><span class="eyebrow">できること</span><h2 id="feat-h">個人の日報と、全員の申し送りを1つで</h2></div>
+      <div class="grid c3">
+        <div class="card"><h3>退勤の打刻から始まる</h3><p>勤タイ人とつなぐと、退勤を打った瞬間にDMが届きます。つながなくても、決めた時刻（既定17:00）に届きます。</p><span class="soon">開発中</span></div>
+        <div class="card"><h3>共有日報（申し送り）</h3><p>毎朝、今日のスレッドを立て、返信するだけで1日分が1か所に集まります。前日の未完了の申し送りも一覧で知らせます。</p><span class="soon">開発中</span></div>
+        <div class="card"><h3>保存先を選べる</h3><p>日報はGoogleスプレッドシート、またはCosenseに残せます。保存しない選び方もできます。</p><span class="soon">開発中</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt" aria-labelledby="rule-h">
+    <div class="container">
+      <div class="sec-head"><span class="eyebrow">うるさくしない</span><h2 id="rule-h">急かさない、責めない、勝手に始めない</h2></div>
+      <ul class="rules">
+        <li><b>セットアップした人にだけ動きます。</b>入れただけで全員にDMが飛ぶことはありません。やめるのもいつでもできます。</li>
+        <li><b>催促は未提出の本人にだけ、翌朝に1回。</b>それ以上は送りません。ルールはホームタブに文章で見せます。</li>
+        <li><b>休みの日は送りません。</b>出勤の打刻がない日は、日報を求めません。</li>
+        <li><b>管理もSlackの中で。</b>提出率や既読率、要対応の項目は、ホームタブで確認できます。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="final" aria-labelledby="final-h">
+    <div class="container">
+      <h2 id="final-h">日報で困っていることを、先にお聞かせください</h2>
+      <p>開発中のため、まだお申し込みはできません。困っている業務を1つ伺えれば、いまの案で合うかをお答えします。</p>
+      <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=nippo">先に相談する</a> <a class="btn btn-ghost" href="/doryo/">ほかの同僚を見る</a>
+    </div>
+  </section>
+</main>
+<footer><div class="container"><span>ParanoAI</span><span>杉田 光</span><a href="mailto:contact@parano-ai.com">contact@parano-ai.com</a></div></footer>
+</body>
+</html>
