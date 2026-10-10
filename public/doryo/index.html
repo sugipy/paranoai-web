@@ -156,6 +156,7 @@
   .final p { margin: 0 auto 24px; max-width: 560px; color: #fff; }
   .final .btn:focus-visible { outline-color: #fff; }
   .final .btn { width: auto; background: #fff; color: var(--th); box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+  .final .btn-sub { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,.8); box-shadow: none; margin: 8px 0 0 8px; }
   footer { background: #2A1A12; color: #D9BFA4; font-size: .8125rem; }
   footer .container { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; padding-top: 24px; padding-bottom: 24px; }
   footer a { color: #F6E7CC; }
@@ -168,7 +169,7 @@
 <header class="site-header">
   <div class="container">
     <a class="logo" href="/">ParanoAI</a>
-    <nav class="nav" aria-label="サイト内"><a href="/#products">製品</a><a href="/contact/">お問い合わせ</a></nav>
+    <nav class="nav" aria-label="サイト内"><a href="/#products">製品</a><a href="/doryo/contact/?type=document">資料請求</a><a href="/doryo/contact/?type=contact">お問い合わせ</a></nav>
   </div>
   <div class="bunting" aria-hidden="true"></div>
 </header>
@@ -241,7 +242,7 @@
             <li>未完了の申し送りを、翌日に繰り越して知らせる（予定）</li>
             <li>出し忘れた日報は、翌朝に1回だけそっと知らせる（予定）</li>
           </ul>
-          <div class="go"><a class="btn" href="/contact/">先に相談する</a></div>
+          <div class="go"><a class="btn" href="/doryo/contact/?type=contact&amp;product=nippo">先に相談する</a></div>
         </article>
 
       </div>
@@ -252,7 +253,7 @@
     <div class="container">
       <h2 id="final-h">どの同僚から迎えるか、ご相談ください</h2>
       <p>困っている業務を1つ伺えれば、どの同僚が向いているかを含めてお答えします。</p>
-      <a class="btn" href="/contact/">お問い合わせフォームへ</a>
+      <a class="btn" href="/doryo/contact/?type=document">資料をもらう</a> <a class="btn btn-sub" href="/doryo/contact/?type=contact">お問い合わせ</a>
     </div>
   </section>
 </main>

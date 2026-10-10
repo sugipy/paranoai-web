@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>資料請求・お見積もり・お問い合わせ｜世界のAI同僚</title>
+<meta name="description" content="世界のAI同僚（リマインド人・勤タイ人・ニッポー人）の資料請求、お見積もりのご依頼、お問い合わせはこちらのフォームから。">
+<meta name="color-scheme" content="light">
+<meta property="og:title" content="資料請求・お見積もり・お問い合わせ｜世界のAI同僚">
+<meta property="og:url" content="https://parano-ai.com/doryo/contact/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://parano-ai.com/doryo/contact/">
+<link rel="icon" href="../kintai/icon.png">
+<style>
+  /* 世界のAI同僚の各LP（/doryo/remind/・/doryo/kintai/）と同じ色・書体。
+     送信先: https://api.parano-ai.com/contact（Cloudflare Worker paranoai-contact → Discord #claude-重要連絡） */
+  :root {
+    --brand: #1F5A45; --brand-mid: #2F7A5C; --brand-d: #123A2C;
+    --grad-brand: linear-gradient(135deg, #2F7A5C 0%, #1F5A45 55%, #123A2C 100%);
+    --grad-brand-hover: linear-gradient(135deg, #276B50 0%, #183F31 60%, #0E2E23 100%);
+    --brand-l: #E4F0E9; --brand-ll: #F3F8F5; --accent: #FFD43B;
+    --ink: #16211B; --ink-2: #4A5550; --ink-3: #67716B;
+    --line: #E1E8E3; --line-2: #C9D4CD; --bg: #FFFFFF; --bg-2: #F4F7F5;
+    --danger: #B3261E; --danger-l: #FDECEA; --wip: #9A5B00; --wip-l: #FFF3DD;
+    --radius: 16px; --radius-s: 10px;
+    --shadow: 0 10px 30px rgba(18, 58, 44, .10); --shadow-s: 0 4px 14px rgba(18, 58, 44, .08);
+    --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg-2); color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.8; -webkit-font-smoothing: antialiased; font-feature-settings: "palt" 1; }
+  img, svg { display: block; }
+  a { color: var(--brand); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* ── ヘッダー ── */
+  .site-header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.94); backdrop-filter: saturate(1.4) blur(8px); border-bottom: 1px solid var(--line); }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); font-weight: 800; font-size: 1.0625rem; letter-spacing: .02em; }
+  .logo small { display: block; font-size: .625rem; font-weight: 500; color: var(--ink-3); letter-spacing: .04em; line-height: 1.2; }
+  .logo-mark { display: flex; }
+  .logo-mark img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; object-fit: cover; object-position: 50% 15%; background: var(--brand-l); }
+  .logo-mark img + img { margin-left: -10px; }
+  .nav { display: flex; gap: 20px; font-size: .875rem; font-weight: 600; }
+  .nav a { text-decoration: none; color: var(--ink-2); white-space: nowrap; }
+  .nav a:hover { color: var(--brand); }
+  .nav .hide-s { display: none; }
+  @media (min-width: 720px) { .nav .hide-s { display: inline; } }
+  @media (max-width: 400px) { .logo small { display: none; } .nav { gap: 14px; } }
+
+  /* ── ページの頭 ── */
+  .page-head { background: radial-gradient(900px 360px at 90% -20%, #D6EADF 0%, transparent 60%), linear-gradient(180deg, var(--brand-ll) 0%, var(--bg-2) 100%); padding: 40px 0 28px; }
+  .crumb { font-size: .8125rem; color: var(--ink-3); margin: 0 0 10px; }
+  .crumb a { color: var(--ink-3); }
+  h1 { font-size: clamp(1.5rem, 4vw, 2.125rem); line-height: 1.45; margin: 0 0 10px; letter-spacing: .02em; text-wrap: balance; }
+  .lead { margin: 0; color: var(--ink-2); max-width: 44rem; }
+
+  /* ── 用件の切り替え（3枚のカード） ── */
+  .kinds { border: 0; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .kinds legend { font-weight: 700; font-size: .9375rem; margin-bottom: 10px; padding: 0; }
+  .kind { position: relative; }
+  .kind input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .kind label { display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; text-align: center; background: #fff; border: 2px solid var(--line); border-radius: var(--radius); padding: 14px 8px 12px; cursor: pointer; transition: border-color .15s, box-shadow .15s, background .15s; }
+  .kind label svg { width: 26px; height: 26px; color: var(--brand); }
+  .kind .k-name { font-weight: 800; font-size: 1rem; line-height: 1.4; }
+  .kind .k-sub { font-size: .75rem; color: var(--ink-3); line-height: 1.5; }
+  .kind input:hover + label { border-color: var(--line-2); }
+  .kind input:checked + label { border-color: var(--brand); background: var(--brand-ll); box-shadow: 0 0 0 3px rgba(31,90,69,.12); }
+  .kind input:checked + label .k-name { color: var(--brand); }
+  .kind input:focus-visible + label { outline: 3px solid var(--brand); outline-offset: 3px; }
+  @media (max-width: 520px) { .kind .k-sub { display: none; } .kind label { padding: 12px 4px 10px; } .kind .k-name { font-size: .875rem; } }
+
+  /* ── 本体: 左に説明、右にフォーム ── */
+  .main { display: grid; gap: 24px; padding-top: 28px; padding-bottom: 64px; }
+  .nw { display: inline-block; }
+  /* スマホではフォームを先に、説明を後に */
+  @media (max-width: 959px) { .card { order: -1; } }
+  @media (min-width: 960px) { .main { grid-template-columns: 1fr 1.35fr; gap: 40px; align-items: start; } .aside { position: sticky; top: 88px; } }
+
+  .aside .panel { display: none; }
+  .aside .panel.on { display: block; }
+  .aside h2 { font-size: 1.25rem; line-height: 1.5; margin: 0 0 12px; }
+  .aside p { margin: 0 0 14px; color: var(--ink-2); font-size: .9375rem; }
+  .ticks { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 10px; }
+  .ticks li { display: flex; gap: 10px; align-items: flex-start; font-size: .9375rem; }
+  .ticks li svg { flex: none; width: 22px; height: 22px; color: #fff; background: var(--brand); border-radius: 50%; padding: 4px; margin-top: 2px; }
+  .steps { list-style: none; margin: 0 0 20px; padding: 0; counter-reset: s; display: grid; gap: 0; }
+  .steps li { counter-increment: s; position: relative; padding: 0 0 16px 46px; font-size: .9375rem; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 2px solid var(--brand); color: var(--brand); font-weight: 800; display: grid; place-items: center; font-size: .875rem; line-height: 1; }
+  .steps li:not(:last-child)::after { content: ""; position: absolute; left: 14px; top: 32px; bottom: 2px; width: 2px; background: var(--line-2); }
+  .steps b { display: block; }
+  .steps span { color: var(--ink-3); font-size: .8125rem; }
+  .box { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 18px 6px; box-shadow: var(--shadow-s); }
+  .box h3 { font-size: .875rem; margin: 0 0 10px; color: var(--ink-3); letter-spacing: .04em; }
+
+  .crew { display: grid; gap: 10px; margin-top: 18px; }
+  .crew a, .crew div { display: flex; gap: 12px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-s); padding: 10px 12px; text-decoration: none; color: var(--ink); }
+  .crew a:hover { border-color: var(--brand); }
+  .crew img, .crew .ph { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: var(--brand-l); flex: none; }
+  .crew .ph { display: grid; place-items: center; color: var(--ink-3); font-size: .6875rem; font-weight: 700; }
+  .crew b { display: block; font-size: .9375rem; line-height: 1.4; }
+  .crew small { color: var(--ink-3); font-size: .75rem; line-height: 1.4; display: block; }
+  .chip { display: inline-block; font-size: .6875rem; font-weight: 700; border-radius: 999px; padding: .05em .7em; margin-left: .4em; vertical-align: .1em; }
+  .chip.wip { background: var(--wip-l); color: var(--wip); }
+
+  /* ── フォーム ── */
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: clamp(20px, 4vw, 36px); }
+  .card-title { font-size: 1.125rem; margin: 0 0 4px; }
+  .card-note { margin: 0 0 22px; font-size: .8125rem; color: var(--ink-3); }
+  form { display: grid; gap: 20px; }
+  .row2 { display: grid; gap: 20px; }
+  @media (min-width: 600px) { .row2 { grid-template-columns: 1fr 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .field > label, .group > legend { font-weight: 700; font-size: .9375rem; line-height: 1.5; padding: 0; }
+  .req, .opt { font-size: .6875rem; font-weight: 700; margin-left: .5rem; padding: .1rem .5rem; border-radius: 4px; vertical-align: .1em; }
+  .req { background: var(--danger); color: #fff; }
+  .opt { background: var(--bg-2); color: var(--ink-3); border: 1px solid var(--line); }
+  input[type=text], input[type=email], input[type=tel], select, textarea {
+    font: inherit; font-size: 1rem; color: var(--ink); background: #fff; width: 100%;
+    border: 1px solid var(--line-2); border-radius: var(--radius-s); padding: .7rem .9rem;
+  }
+  select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--ink-3) 50%), linear-gradient(135deg, var(--ink-3) 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 2.4rem; }
+  textarea { min-height: 9rem; resize: vertical; line-height: 1.7; }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--brand); outline-offset: 1px; border-color: var(--brand); }
+  ::placeholder { color: #9AA39E; }
+  .hint { font-size: .8125rem; color: var(--ink-3); margin: 0; }
+  .err { font-size: .8125rem; color: var(--danger); margin: 0; display: none; font-weight: 600; }
+  .invalid input, .invalid select, .invalid textarea { border-color: var(--danger); background: var(--danger-l); }
+  .invalid .err { display: block; }
+
+  .group { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .group > legend { margin-bottom: 8px; }
+  .picks { display: grid; gap: 8px; grid-template-columns: 1fr 1fr; }
+  .picks.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 480px) { .picks, .picks.three { grid-template-columns: 1fr; } }
+  .pick { position: relative; }
+  .pick input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .pick label { display: flex; align-items: center; gap: 10px; height: 100%; background: #fff; border: 1.5px solid var(--line-2); border-radius: var(--radius-s); padding: 10px 12px; cursor: pointer; font-size: .9375rem; font-weight: 600; line-height: 1.4; transition: border-color .15s, background .15s; }
+  .pick label img, .pick label .ph { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: 50% 15%; background: var(--brand-l); flex: none; }
+  .pick label .ph { display: grid; place-items: center; font-size: .625rem; color: var(--ink-3); }
+  .pick label small { display: block; font-size: .6875rem; color: var(--ink-3); font-weight: 500; }
+  .pick label::after { content: ""; margin-left: auto; flex: none; width: 18px; height: 18px; border-radius: 5px; border: 1.5px solid var(--line-2); background: #fff; }
+  .pick.radio label::after { border-radius: 50%; }
+  .pick input:checked + label { border-color: var(--brand); background: var(--brand-ll); }
+  .pick input:checked + label::after { border-color: var(--brand); background: var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23fff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round' d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat; }
+  .pick input:focus-visible + label { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+  [hidden] { display: none !important; }
+
+  .privacy { background: var(--bg-2); border-radius: var(--radius-s); padding: 12px 14px; font-size: .8125rem; color: var(--ink-2); margin: 0; }
+  .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  .submit-row { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .5em; border: 0; border-radius: 999px; font: inherit; font-weight: 800; letter-spacing: .04em; cursor: pointer; text-decoration: none; padding: 1.05em 2.4em; font-size: 1.0625rem; line-height: 1.2; width: 100%; max-width: 380px; background: var(--grad-brand); color: #fff; box-shadow: 0 6px 16px rgba(31, 90, 69, .3); transition: transform .15s ease, background .15s ease; }
+  .btn:hover { transform: translateY(-1px); background: var(--grad-brand-hover); }
+  .btn svg { width: 1.1em; height: 1.1em; }
+  .btn[disabled] { opacity: .65; cursor: progress; transform: none; }
+  .status { margin: 0; font-size: .9375rem; text-align: center; }
+  .status.ng { color: var(--danger); font-weight: 600; }
+
+  .done { display: none; text-align: center; padding: 24px 0 8px; }
+  .done:focus { outline: none; }
+  .done .ok { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%; background: var(--brand-l); color: var(--brand); display: grid; place-items: center; }
+  .done .ok svg { width: 32px; height: 32px; }
+  .done h2 { font-size: 1.375rem; margin: 0 0 10px; color: var(--brand); }
+  .done p { margin: 0 auto 10px; color: var(--ink-2); max-width: 30rem; font-size: .9375rem; }
+  .done .back { display: inline-flex; margin-top: 10px; font-weight: 700; }
+  .card.sent form, .card.sent .card-title, .card.sent .card-note { display: none; }
+  .card.sent .done { display: block; }
+
+  footer { border-top: 1px solid var(--line); background: #fff; padding: 24px 0 40px; font-size: .8125rem; color: var(--ink-3); }
+  footer .container { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  footer a { color: var(--ink-3); }
+</style>
+</head>
+<body data-kind="document">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></g></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/></g></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/doryo/">
+      <span class="logo-mark" aria-hidden="true"><img src="../remind/remind-jin.png" alt=""><img src="../kintai/icon.png" alt=""></span>
+      <span>世界のAI同僚<small>Slackの中で働く、AIの同僚</small></span>
+    </a>
+    <nav class="nav" aria-label="サイト内">
+      <a class="hide-s" href="/doryo/remind/">リマインド人</a>
+      <a class="hide-s" href="/doryo/kintai/">勤タイ人</a>
+      <a href="/doryo/">一覧へ</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="page-head">
+    <div class="container">
+      <p class="crumb"><a href="/">ParanoAI</a> ／ <a href="/doryo/">世界のAI同僚</a> ／ フォーム</p>
+      <h1><span class="nw">資料請求・</span><span class="nw">お見積もり・</span><span class="nw">お問い合わせ</span></h1>
+      <p class="lead">ご用件を選んで、必要なところだけご入力ください。通常2営業日以内に、ご入力のメールアドレスへご連絡します。</p>
+
+      <fieldset class="kinds" id="kinds">
+        <legend>ご用件</legend>
+        <div class="kind">
+          <input type="radio" name="kind_ui" id="k-document" value="document" checked>
+          <label for="k-document"><svg aria-hidden="true"><use href="#i-doc"/></svg><span class="k-name">資料請求</span><span class="k-sub">まずは機能と流れを知りたい</span></label>
+        </div>
+        <div class="kind">
+          <input type="radio" name="kind_ui" id="k-quote" value="quote">
+          <label for="k-quote"><svg aria-hidden="true"><use href="#i-calc"/></svg><span class="k-name">お見積もり</span><span class="k-sub">うちの規模でいくらか知りたい</span></label>
+        </div>
+        <div class="kind">
+          <input type="radio" name="kind_ui" id="k-contact" value="contact">
+          <label for="k-contact"><svg aria-hidden="true"><use href="#i-mail"/></svg><span class="k-name">お問い合わせ</span><span class="k-sub">質問・相談をしたい</span></label>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="container main">
+    <aside class="aside" aria-label="ご用件の説明">
+      <section class="panel" data-panel="document">
+        <h2>資料でわかること</h2>
+        <p>次のことをまとめた資料を、担当者からメールでお送りします。</p>
+        <ul class="ticks">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>それぞれの同僚がSlackの中でしてくれること</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>お申し込みから使い始めるまでの流れ</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>料金の決まり方（規模と使う機能で決まります）</li>
+        </ul>
+      </section>
+      <section class="panel" data-panel="quote">
+        <h2>お見積もりまでの流れ</h2>
+        <p>料金は、チームの人数と使う機能で決まります。今の運用を伺ってから金額をお出しします。</p>
+        <ol class="steps">
+          <li><b>このフォームを送る</b><span>人数や今の運用は、分かる範囲で構いません</span></li>
+          <li><b>オンラインで状況を伺う</b><span>日程はメールでご相談します</span></li>
+          <li><b>お見積もりをお送りする</b><span>はじめにかかる費用と、毎月かかる費用を分けてお出しします</span></li>
+        </ol>
+      </section>
+      <section class="panel" data-panel="contact">
+        <h2>こんなご相談も受けています</h2>
+        <ul class="ticks">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>うちのSlackでも使えるか知りたい</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>どの同僚から迎えるのがよいか分からない</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>ツールを入れるか、研修で自社で作れるようになるか迷っている</li>
+        </ul>
+      </section>
+
+      <div class="box">
+        <h3>世界のAI同僚</h3>
+        <div class="crew">
+          <a href="/doryo/remind/"><img src="../remind/remind-jin.png" alt=""><span><b>リマインド人</b><small>頼まれごとを、完了まで見届ける</small></span></a>
+          <a href="/doryo/kintai/"><img src="../kintai/icon.png" alt=""><span><b>勤タイ人</b><small>Slackで勤怠・会議室予約</small></span></a>
+          <div><span class="ph" aria-hidden="true">準備中</span><span><b>ニッポー人<span class="chip wip">準備中</span></b><small>退勤の打刻から、日報を書く</small></span></div>
+        </div>
+        <p style="height:12px;margin:0"></p>
+      </div>
+    </aside>
+
+    <div class="card" id="card">
+      <h2 class="card-title" id="card-title">資料請求フォーム</h2>
+      <p class="card-note"><span class="req" style="margin:0 .3rem 0 0">必須</span>の項目だけで送れます。</p>
+
+      <form id="form" novalidate>
+        <fieldset class="group" id="products-field">
+          <legend>気になる同僚<span class="opt">任意・複数可</span></legend>
+          <div class="picks">
+            <div class="pick"><input type="checkbox" name="products" id="p-remind" value="リマインド人"><label for="p-remind"><img src="../remind/remind-jin.png" alt=""><span>リマインド人<small>依頼の見届け</small></span></label></div>
+            <div class="pick"><input type="checkbox" name="products" id="p-kintai" value="勤タイ人"><label for="p-kintai"><img src="../kintai/icon.png" alt=""><span>勤タイ人<small>勤怠・会議室</small></span></label></div>
+            <div class="pick" data-only="contact"><input type="checkbox" name="products" id="p-nippo" value="ニッポー人"><label for="p-nippo"><span class="ph" aria-hidden="true">準備中</span><span>ニッポー人<small>日報（準備中）</small></span></label></div>
+            <div class="pick"><input type="checkbox" name="products" id="p-undecided" value="まだ決めていない"><label for="p-undecided"><span>まだ決めていない</span></label></div>
+          </div>
+        </fieldset>
+
+        <div class="row2">
+          <div class="field" data-check="company">
+            <label for="company">会社・団体名<span class="req" id="company-badge">必須</span></label>
+            <input id="company" name="company" type="text" autocomplete="organization" maxlength="100" placeholder="例）株式会社パラノ">
+            <p class="err" id="company-err">会社・団体名を入力してください。</p>
+          </div>
+          <div class="field">
+            <label for="department">部署・役職<span class="opt">任意</span></label>
+            <input id="department" name="department" type="text" autocomplete="organization-title" maxlength="100" placeholder="例）総務部 部長">
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field" data-check="name">
+            <label for="name">お名前<span class="req">必須</span></label>
+            <input id="name" name="name" type="text" autocomplete="name" maxlength="100" placeholder="例）山田 太郎">
+            <p class="err" id="name-err">お名前を入力してください。</p>
+          </div>
+          <div class="field">
+            <label for="phone">電話番号<span class="opt">任意</span></label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" placeholder="例）03-1234-5678">
+          </div>
+        </div>
+
+        <div class="field" data-check="email">
+          <label for="email">メールアドレス<span class="req">必須</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="200" placeholder="例）yamada@example.co.jp" aria-describedby="email-hint">
+          <p class="hint" id="email-hint">資料・お見積もり・ご返信は、このアドレスへお送りします。</p>
+          <p class="err" id="email-err">メールアドレスを正しく入力してください。</p>
+        </div>
+
+        <div class="row2" data-only="document quote">
+          <div class="field" data-check="employees">
+            <label for="employees">従業員数<span class="req" data-only="quote">必須</span><span class="opt" data-only="document">任意</span></label>
+            <select id="employees" name="employees">
+              <option value="">選んでください</option>
+              <option>1〜9名</option><option>10〜29名</option><option>30〜99名</option><option>100〜299名</option><option>300名以上</option>
+            </select>
+            <p class="err" id="employees-err">従業員数を選んでください。</p>
+          </div>
+          <div class="field">
+            <label for="timeline">導入の時期<span class="opt">任意</span></label>
+            <select id="timeline" name="timeline">
+              <option value="">選んでください</option>
+              <option>すぐにでも</option><option>1〜3か月以内</option><option>半年以内</option><option>未定・情報収集中</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="group" data-only="quote">
+          <legend>Slackのご利用<span class="opt">任意</span></legend>
+          <div class="picks three">
+            <div class="pick radio"><input type="radio" name="slack" id="s-yes" value="使っている"><label for="s-yes">使っている</label></div>
+            <div class="pick radio"><input type="radio" name="slack" id="s-soon" value="これから入れる"><label for="s-soon">これから入れる</label></div>
+            <div class="pick radio"><input type="radio" name="slack" id="s-no" value="使っていない"><label for="s-no">使っていない</label></div>
+          </div>
+        </fieldset>
+
+        <div class="field" data-check="message">
+          <label for="message"><span id="message-label">ご質問・ご要望</span><span class="opt" id="message-opt">任意</span><span class="req" id="message-req" hidden>必須</span></label>
+          <textarea id="message" name="message" maxlength="3000" placeholder="例）社内で比較検討する予定です。"></textarea>
+          <p class="hint" id="message-hint">箇条書きや短い文で構いません。</p>
+          <p class="err" id="message-err">お問い合わせ内容を入力してください。</p>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="website">ウェブサイト（入力しないでください）</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <p class="privacy">ご入力いただいた内容は、ご返信と資料・お見積もりのご送付のためだけに使います。運営: ParanoAI（杉田 光）</p>
+
+        <div class="submit-row">
+          <button class="btn" type="submit" id="submit"><span id="submit-label">資料を請求する</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="done" id="done" tabindex="-1">
+        <div class="ok" aria-hidden="true"><svg><use href="#i-check"/></svg></div>
+        <h2 id="done-title">受け付けました</h2>
+        <p id="done-text"></p>
+        <p>数日たってもメールが届かない場合は、お手数ですが <a href="mailto:contact@parano-ai.com">contact@parano-ai.com</a> へご連絡ください。</p>
+        <a class="back" href="/doryo/">世界のAI同僚の一覧へ戻る</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <span>世界のAI同僚 ／ ParanoAI</span>
+    <a href="mailto:contact@parano-ai.com">contact@parano-ai.com</a>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const ENDPOINT = "https://api.parano-ai.com/contact";
+  const opened = Date.now();
+  const KINDS = {
+    document: { name: "資料請求", title: "資料請求フォーム", submit: "資料を請求する",
+      msgLabel: "ご質問・ご要望", msgReq: false, msgPh: "例）社内で比較検討する予定です。勤タイ人の料金の考え方を詳しく知りたい。",
+      doneTitle: "資料請求を受け付けました", doneText: "通常2営業日以内に、担当者からご入力のメールアドレスへ資料をお送りします。" },
+    quote: { name: "お見積もり", title: "お見積もり依頼フォーム", submit: "見積もりを依頼する",
+      msgLabel: "今の運用・ご要望", msgReq: false, msgPh: "例）勤怠は今は紙のタイムカード。打刻と月末の集計をSlackでできるようにしたい。",
+      doneTitle: "お見積もりのご依頼を受け付けました", doneText: "通常2営業日以内に、状況を伺う日程のご相談をメールでお送りします。" },
+    contact: { name: "お問い合わせ", title: "お問い合わせフォーム", submit: "送信する",
+      msgLabel: "お問い合わせ内容", msgReq: true, msgPh: "例）うちのSlackでもリマインド人を使えるか知りたい。",
+      doneTitle: "お問い合わせを受け付けました", doneText: "内容を確認のうえ、通常2営業日以内にご入力のメールアドレスへ返信します。" },
+  };
+  const PRODUCT_BY_KEY = { remind: "p-remind", kintai: "p-kintai", nippo: "p-nippo" };
+  const $ = (id) => document.getElementById(id);
+  const form = $("form");
+  let kind = "document";
+
+  function setKind(k) {
+    if (!KINDS[k]) k = "document";
+    kind = k;
+    const K = KINDS[k];
+    document.body.dataset.kind = k;
+    document.querySelectorAll("[data-only]").forEach((el) => { el.hidden = !el.dataset.only.split(" ").includes(k); });
+    if (k !== "contact") $("p-nippo").checked = false;
+    $("k-" + k).checked = true;
+    $("card-title").textContent = K.title;
+    $("submit-label").textContent = K.submit;
+    $("message-label").textContent = K.msgLabel;
+    $("message-opt").hidden = K.msgReq; $("message-req").hidden = !K.msgReq;
+    $("message").placeholder = K.msgPh;
+    const companyReq = k !== "contact";
+    $("company-badge").textContent = companyReq ? "必須" : "任意";
+    $("company-badge").className = companyReq ? "req" : "opt";
+    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("on", p.dataset.panel === k));
+    // 切り替えで必須でなくなった欄の赤表示は消す
+    document.querySelectorAll(".field.invalid").forEach((f) => { if (!isRequired(f.dataset.check)) clearBad(f); });
+  }
+
+  function isRequired(name) {
+    if (name === "name" || name === "email") return true;
+    if (name === "company") return kind !== "contact";
+    if (name === "employees") return kind === "quote";
+    if (name === "message") return kind === "contact";
+    return false;
+  }
+  const valid = {
+    name: (v) => v.trim() !== "",
+    email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+    company: (v) => v.trim() !== "",
+    employees: (v) => v !== "",
+    message: (v) => v.trim() !== "",
+  };
+  function clearBad(f) {
+    f.classList.remove("invalid");
+    const el = f.querySelector("input,select,textarea");
+    el.removeAttribute("aria-invalid");
+    el.setAttribute("aria-describedby", el.id === "email" ? "email-hint" : "");
+  }
+  function validate() {
+    let first = null;
+    for (const name of Object.keys(valid)) {
+      const el = form.elements[name];
+      const f = el.closest(".field");
+      const bad = isRequired(name) && !valid[name](el.value);
+      if (bad) {
+        f.classList.add("invalid");
+        el.setAttribute("aria-invalid", "true");
+        el.setAttribute("aria-describedby", (name === "email" ? "email-hint " : "") + name + "-err");
+        if (!first) first = el;
+      } else clearBad(f);
+    }
+    if (first) first.focus();
+    return !first;
+  }
+  for (const name of Object.keys(valid)) {
+    const el = form.elements[name];
+    el.addEventListener(el.tagName === "SELECT" ? "change" : "input", () => {
+      const f = el.closest(".field");
+      if (f.classList.contains("invalid") && valid[name](el.value)) clearBad(f);
+    });
+  }
+
+  document.querySelectorAll('input[name="kind_ui"]').forEach((r) => r.addEventListener("change", () => {
+    setKind(r.value);
+    const u = new URL(location.href); u.searchParams.set("type", r.value); history.replaceState(null, "", u);
+  }));
+
+  // 「まだ決めていない」と製品は同時に選ばない
+  form.addEventListener("change", (e) => {
+    if (e.target.name !== "products" || !e.target.checked) return;
+    const und = $("p-undecided");
+    if (e.target === und) form.querySelectorAll('input[name="products"]').forEach((c) => { if (c !== und) c.checked = false; });
+    else und.checked = false;
+  });
+
+  // 各LPのボタンから ?type=document|quote|contact&product=remind|kintai|nippo で来る
+  const q = new URLSearchParams(location.search);
+  setKind(q.get("type") || "document");
+  const pid = PRODUCT_BY_KEY[q.get("product")];
+  if (pid && !$(pid).closest(".pick").hidden) $(pid).checked = true;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const status = $("status"), btn = $("submit");
+    status.textContent = ""; status.className = "status";
+    if (!validate()) return;
+    btn.disabled = true; $("submit-label").textContent = "送信しています…";
+    const fd = new FormData(form);
+    const data = {
+      kind: KINDS[kind].name, topic: "世界のAI同僚",
+      products: fd.getAll("products"),
+      name: fd.get("name"), company: fd.get("company"), department: fd.get("department"),
+      email: fd.get("email"), phone: fd.get("phone"),
+      employees: kind === "contact" ? "" : fd.get("employees"),
+      timeline: kind === "contact" ? "" : fd.get("timeline"),
+      slack: kind === "quote" ? (fd.get("slack") || "") : "",
+      message: fd.get("message"), website: fd.get("website"),
+      elapsed_ms: Date.now() - opened,
+    };
+    try {
+      const res = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error(String(res.status));
+      $("done-title").textContent = KINDS[kind].doneTitle;
+      $("done-text").textContent = KINDS[kind].doneText;
+      $("card").classList.add("sent");
+      $("kinds").disabled = true;
+      $("done").focus();
+    } catch (err) {
+      status.className = "status ng";
+      status.textContent = "送信できませんでした。時間をおいてもう一度お試しいただくか、contact@parano-ai.com へメールでお送りください。";
+      btn.disabled = false; $("submit-label").textContent = KINDS[kind].submit;
+    }
+  });
+})();
+</script>
+</body>
+</html>
