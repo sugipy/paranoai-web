@@ -4,7 +4,7 @@ import { InViewTitle } from "@/components/arc/in-view-title/in-view-title";
 ---
 <Base
   title="世界の同僚｜ParanoAI の Slackアプリ"
-  description="世界の同僚は、Slackの中で働くAIの同僚のシリーズです。依頼を完了まで見届けるリマインド人、Slackで打刻できる勤怠ツールの勤タイ人、Slackだけで日報を書いて返せるニッポー人（準備中）。"
+  description="世界の同僚は、Slackの中で働くAIの同僚のシリーズです。依頼を完了まで見届けるリマインド人、Slackで打刻できる勤怠ツールの勤タイ人、Slackの中で日報を書いて返せるようにするニッポー人（準備中）。"
   ogDescription="リマインド人・勤タイ人・ニッポー人。Slackの中で働く、AIの同僚。"
   path="/doryo/"
 >
@@ -20,7 +20,7 @@ import { InViewTitle } from "@/components/arc/in-view-title/in-view-title";
     <p class="sec-label">Slackアプリのシリーズ</p>
     <InViewTitle client:load as="h1" id="doryo-h" text="世界の同僚" />
     <div class="about">
-      <p><strong>Slackの中に、AIの同僚を1人ずつ迎えるシリーズです。</strong>新しい画面やIDは増やさず、いつものSlackのまま、取りこぼしやすい仕事をそれぞれの同僚が引き受けます。1人から入れて、あとから増やせます。</p>
+      <p><strong>Slackの中に、AIの同僚を1人ずつ迎えるシリーズです。</strong>新しいIDは増やさず、いつものSlackを入口に、取りこぼしやすい仕事をそれぞれの同僚が引き受けます。名前は、受け持つ仕事にちなんだ言葉遊びです。</p>
     </div>
   </section>
 
@@ -32,7 +32,7 @@ import { InViewTitle } from "@/components/arc/in-view-title/in-view-title";
         <div class="body">
           <span class="for">依頼とタスク</span>
           <h3>リマインド人</h3>
-          <p>Slackで受けた依頼を、メンション1つでタスクに。AIがタスク名と期限を読み取り、期限の前後に声をかけて、「あとでやります」を「やりました」まで見届けます。</p>
+          <p>Slackで受けた依頼を、メンション1つでタスクに。AIがタスク名と期限を読み取り、期限の前後に声をかけて、「あとでやります」を「やりました」まで見届けます。いつものSlackのまま使えます。</p>
           <ul>
             <li>頼む人がすることは、メンションをつけるだけ</li>
             <li>1件の依頼の経過が、ひとつのスレッドで追える</li>
@@ -46,7 +46,7 @@ import { InViewTitle } from "@/components/arc/in-view-title/in-view-title";
         <div class="body">
           <span class="for">勤怠と会議室</span>
           <h3>勤タイ人</h3>
-          <p>打刻は、Slackの勤怠チャンネルに「出勤」と書くだけ。退勤を押し忘れていれば声をかけ、在席一覧・会議室予約・来客登録まで1つの画面にまとめます。</p>
+          <p>打刻は、Slackの勤怠チャンネルに「出勤」と書くだけ。退勤を押し忘れていれば声をかけ、在席一覧・会議室予約・来客登録まで1つの画面にまとめます。記録は貴社のGoogleスプレッドシートに残ります。</p>
           <ul>
             <li>新しいIDは不要。Slackでログインするだけ</li>
             <li>人数ごとの利用料がかからない</li>
@@ -60,10 +60,10 @@ import { InViewTitle } from "@/components/arc/in-view-title/in-view-title";
         <div class="body">
           <span class="for">日報｜準備中</span>
           <h3>ニッポー人</h3>
-          <p>日報を、Slackだけで書いて・読んで・返せるように。決まった時刻にDMで短い質問が届き、答えるとチャンネルに日報として並びます。受付の申し送りのような、全員で書く日報にも対応する予定です。</p>
+          <p>日報を、Slackの中で書いて・読んで・返せるようにする同僚を準備しています。決まった時刻にDMで短い質問を届け、答えるとチャンネルに日報として並べる形を予定しています。</p>
           <ul>
-            <li>未完了の申し送りを、翌日に繰り越して知らせる</li>
-            <li>返信していない日報を、翌朝そっと知らせる</li>
+            <li>未完了の申し送りを、翌日に繰り越して知らせる（予定）</li>
+            <li>返信していない日報を、翌朝そっと知らせる（予定）</li>
           </ul>
         </div>
         <a class="btn ghost" href="/contact/">先に相談する</a>
