@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ParanoAI 導入支援｜LINE公式アカウント運用コンサル</title>
+<meta name="description" content="本体の利用料が0円の L Harness とAIで、LINE公式アカウントを申込につながる導線に。設計・構築・毎月の運用まで。ParanoAI 導入支援のLINE運用コンサル。">
+<meta property="og:title" content="ParanoAI 導入支援｜LINE公式アカウント運用コンサル">
+<meta property="og:description" content="L Harness とAIで、LINE公式アカウントを「一斉に送るだけ」から「申込につながる導線」へ。">
+<meta property="og:url" content="https://parano-ai.com/line/">
+<link rel="canonical" href="https://parano-ai.com/line/">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  /* ParanoAI スタイルガイド準拠: https://claude.ai/artifact/RybqLTfsoDZ2QeSwMLuFuw
+     地 paper ／ 深緑 green（Cosense sugipy のヘッダー色）／ 文字 ink。リンクは青、節目の印は金。 */
+  :root {
+    --paper: #ffffff; --paper-raised: #ffffff; --paper-sunken: #eef2f7;
+    --ink: #2a3350; --ink-2: #4b5572; --ink-3: #6b7590;
+    --rule: #d3dae4; --rule-2: #e4e9f0;
+    --green: #1f5a45; --green-strong: #163f31; --green-ink: #1f5a45; --green-tint: #e4e9f0; --on-green: #ffffff;
+    --gold: #f28a3c; --link: #2457b0; --focus: #2457b0;
+    --radius-sm: 4px; --radius-md: 10px; --radius-lg: 20px; --radius-pill: 999px;
+    --shadow-raise: 0 1px 2px rgba(42,51,80,.06), 0 8px 24px -12px rgba(42,51,80,.18);
+
+    --font-display: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --measure: 34rem;
+    --page: 68rem;
+    color-scheme: light;
+  }
+  html, body { margin: 0; background: var(--paper); }
+
+  /* ── 深緑のヘッダー帯（スタイルガイド Header） ── */
+  .pa-header { background: var(--green); color: var(--on-green); padding: 0.85rem 1.5rem; }
+  .pa-header .inner { max-width: var(--page); margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .pa-brand { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; color: var(--on-green); text-decoration: none; letter-spacing: .01em; }
+  .pa-brand small { font-family: var(--font-body); font-weight: 500; font-size: .875rem; margin-left: .5rem; opacity: .9; }
+  .pa-header nav { display: flex; gap: 1.25rem; font-size: .875rem; }
+  .pa-header nav a { color: var(--on-green); text-decoration: none; opacity: .88; }
+  .pa-header nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+  .pa-header a:focus-visible { outline: 2px solid var(--on-green); outline-offset: 3px; }
+
+  .page {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.85;
+    font-feature-settings: "palt" 1;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 1.5rem 5rem;
+  }
+  .page * { box-sizing: border-box; }
+
+  .wrap {
+    max-width: var(--page);
+    margin: 0 auto;
+  }
+
+  /* ── 帯：台帳の行のように、ラベルと本文を左右に分ける ── */
+  .band {
+    display: grid;
+    grid-template-columns: 9rem minmax(0, 1fr);
+    gap: 1.25rem 3.5rem;
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--rule);
+    align-items: start;
+  }
+  .band > .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.7rem;
+    line-height: 1.6;
+  }
+  .band > .body { min-width: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+
+  h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  p { margin: 0; max-width: var(--measure); color: var(--ink-2); }
+  p.lead { color: var(--ink); font-size: 1.0625rem; }
+  a { color: var(--link); }
+  .sites a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* ── ヒーロー ── */
+  .hero { padding: clamp(4rem, 12vh, 7.5rem) 0 3.5rem; }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--green-ink);
+    margin: 0 0 1.75rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.6vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.34;
+    letter-spacing: 0.005em;
+    margin: 0 0 1.75rem;
+    max-width: 22em;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    box-shadow: inset 0 -0.42em 0 var(--green-tint);
+  }
+  .hero p { font-size: 1.0625rem; max-width: 36rem; }
+
+  /* ── 数字の帯 ── */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: 0;
+    margin-top: 3.5rem;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .facts div {
+    padding: 1.25rem 1.5rem 1.25rem 0;
+    border-right: 1px solid var(--rule-2);
+  }
+  .facts div:last-child { border-right: 0; }
+  .facts dt {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-3);
+    margin: 0 0 0.35rem;
+  }
+  .facts dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .facts dd small {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin-left: 0.3em;
+  }
+
+  /* ── CTA ── */
+  .cta-row { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; margin-top: 2.5rem; }
+  .btn {
+    display: inline-block;
+    background: var(--green);
+    color: var(--on-green);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.95rem 2rem;
+    border: 1px solid var(--green);
+    transition: background 140ms ease, color 140ms ease;
+  }
+  .btn:hover { background: var(--green-strong); border-color: var(--green-strong); }
+  .note { font-size: 0.8125rem; color: var(--ink-3); margin: 0; }
+
+  /* ── 課題リスト ── */
+  .problems { display: flex; flex-direction: column; gap: 0; margin: 0; padding: 0; list-style: none; }
+  .problems li {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.1rem 0;
+    border-bottom: 1px dashed var(--rule);
+    max-width: 40rem;
+    color: var(--ink-2);
+  }
+  .problems li::before {
+    content: "×";
+    font-family: var(--font-mono);
+    color: var(--green-ink);
+    line-height: 1.85;
+  }
+
+  /* ── 成果カード ── */
+  .outcomes { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2.25rem 2.5rem; }
+  .outcomes > div { display: flex; flex-direction: column; gap: 0.6rem; padding-top: 1rem; border-top: 2px solid var(--green); }
+  .outcomes p { font-size: 0.9375rem; }
+
+  /* ── カリキュラム（本当に順序があるので番号を振る） ── */
+  .days { display: flex; flex-direction: column; gap: 0; }
+  .day {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .day:first-child { border-top: 1px solid var(--rule-2); }
+  .day .no {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--green-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .day .no span { display: block; font-family: var(--font-mono); font-size: 0.625rem; letter-spacing: 0.14em; color: var(--ink-3); margin-top: 0.5rem; }
+  .day .detail { display: flex; flex-direction: column; gap: 0.5rem; }
+  .day ul { margin: 0.25rem 0 0; padding-left: 1.1rem; color: var(--ink-2); font-size: 0.9375rem; }
+  .day li { margin-bottom: 0.15rem; }
+
+  /* ── 実績台帳 ── */
+  .ledger-scroll { overflow-x: auto; border-top: 2px solid var(--green); }
+  table { border-collapse: collapse; width: 100%; min-width: 46rem; font-size: 0.875rem; }
+  thead th {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 400;
+    text-align: left;
+    padding: 0.85rem 1rem 0.85rem 0;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td { padding: 0.95rem 1rem 0.95rem 0; border-bottom: 1px solid var(--rule-2); vertical-align: top; color: var(--ink-2); }
+  tbody td:first-child { color: var(--ink); font-weight: 700; white-space: nowrap; }
+  tbody tr:hover td { background: var(--paper-sunken); }
+  .chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.65rem;
+    border-radius: var(--radius-pill);
+    background: var(--paper-sunken);
+    white-space: nowrap;
+    color: var(--ink-2);
+  }
+  .chip.is-live { background: var(--green-tint); color: var(--green-ink); }
+  td .url { font-family: var(--font-mono); font-size: 0.75rem; color: var(--link); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  td .url:hover { border-bottom-color: var(--link); }
+
+  /* ── 制作サイト ── */
+  .sites { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem 2.5rem; }
+  .sites a {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    text-decoration: none;
+    padding: 1.25rem 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .sites a:hover strong { color: var(--link); }
+  .sites strong { font-size: 1rem; transition: color 140ms ease; }
+  .sites span { font-size: 0.875rem; color: var(--ink-2); }
+  .sites code { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-3); }
+
+  /* ── 費用 ── */
+  .price {
+    display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap;
+    font-family: var(--font-display);
+  }
+  .price .amount { font-size: clamp(2.75rem, 7vw, 4rem); font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .price .unit { font-family: var(--font-body); font-size: 1rem; color: var(--ink-2); }
+  .price-notes { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9375rem; color: var(--ink-2); max-width: 34rem; }
+  .price-notes b { color: var(--ink); }
+
+  /* ── 講師 ── */
+  .profile { display: flex; flex-direction: column; gap: 1.25rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack span {
+    font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.06em;
+    padding: 0.2rem 0.7rem; border-radius: var(--radius-pill); background: var(--paper-sunken); color: var(--ink-2);
+  }
+
+  /* ── 問い合わせ ── */
+  .contact { padding-bottom: 0; }
+  .contact-card { display: flex; flex-direction: column; gap: 1.25rem; }
+  .mail {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 3.4vw, 1.5rem);
+    color: var(--link);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.4rem;
+    align-self: flex-start;
+    word-break: break-all;
+  }
+  .mail:hover { border-bottom-color: var(--link); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 4rem;
+    padding-top: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    display: flex; flex-wrap: wrap; gap: 0.75rem 2rem;
+  }
+
+  /* ── 導入時のわずかな立ち上がり ── */
+  .rise { opacity: 0; transform: translateY(0.6rem); animation: rise 620ms cubic-bezier(.2,.7,.3,1) forwards; }
+  .rise:nth-child(2) { animation-delay: 70ms; }
+  .rise:nth-child(3) { animation-delay: 140ms; }
+  .rise:nth-child(4) { animation-delay: 210ms; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .rise { animation: none; opacity: 1; transform: none; }
+    * { transition-duration: 1ms !important; }
+  }
+
+  @media (max-width: 720px) {
+    .band { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; padding: 3.25rem 0; }
+    .band > .label { padding-top: 0; }
+    .facts div { border-right: 0; border-bottom: 1px solid var(--rule-2); padding-right: 0; }
+    .facts div:last-child { border-bottom: 0; }
+    .day { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+    .day .no { display: flex; align-items: baseline; gap: 0.75rem; font-size: 1.5rem; }
+    .day .no span { margin-top: 0; }
+  }
+  .problems.checks li::before { content: "✓"; }
+</style>
+
+</head>
+<body>
+<header class="pa-header">
+  <div class="inner">
+    <a class="pa-brand" href="/">ParanoAI<small>導入支援</small></a>
+    <nav aria-label="ページ内"><a href="/">ホーム</a><a href="#price">費用</a><a href="#works">実績</a><a href="#contact">お問い合わせ</a></nav>
+  </div>
+</header>
+<div class="page">
+  <div class="wrap">
+    <header class="hero">
+      <p class="eyebrow rise">ParanoAI 導入支援 ／ LINE公式アカウント運用コンサル</p>
+      <h1 class="rise">LINE公式アカウントを、<br><em>申込につながる導線</em>に。</h1>
+      <p class="lead rise">本体の利用料が0円の <b>L Harness</b> で、「一斉に送るだけ」の配信を、相手に合わせて届く仕組みに組み替えます。ステップ配信・タグ分け・リッチメニュー・フォームを組み立て、配信文づくりや数字の読み取りはAIに任せます。設計から構築、毎月の運用まで、まとめてお引き受けします。</p>
+      <div class="cta-row rise">
+        <a class="btn" href="/contact/?topic=line-ops">LINE運用について相談する</a>
+        <p class="note">いまのアカウントの状況を伺うところから。お見積もりまでのご相談は無料です。</p>
+      </div>
+
+      <dl class="facts rise">
+        <div><dt>ツールの利用料</dt><dd>0<small>円／月（L Harness 本体のみ。LINE・Cloudflare等は別）</small></dd></div>
+        <div><dt>範囲</dt><dd><span style="font-size:1.75rem">設計〜運用</span><small>まとめて</small></dd></div>
+        <div><dt>AIの担当</dt><dd><span style="font-size:1.75rem">文面・分析</span><small>送る前に人が確認</small></dd></div>
+        <div><dt>形式</dt><dd><span style="font-size:1.75rem">月次伴走</span><small>オンライン</small></dd></div>
+      </dl>
+    </header>
+
+    <section class="band">
+      <p class="label">課題</p>
+      <div class="body">
+        <h2>友だちは増えたのに、LINEから申込が増えない。</h2>
+        <ul class="problems">
+          <li>配信は月に数回の一斉送信だけ。誰に何を送るかを分けられていない</li>
+          <li>ステップ配信の月額ツールを検討したが、毎月の費用と設定の手間で止まっている</li>
+          <li>配信文を書く人がいない。書いても、反応があったのかを誰も見ていない</li>
+          <li>申込・問い合わせが、ホームページ・LINE・電話・メールにばらばらに届く</li>
+          <li>「来店前日のリマインド」「来たあとのお礼とフォロー」を毎回手で送っている</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">進め方</p>
+      <div class="body">
+        <h2>設計して、組み立てて、毎月まわします。</h2>
+        <div class="days">
+          <div class="day">
+            <div class="no">01<span>設計</span></div>
+            <div class="detail">
+              <h3>友だちの「入口から申込まで」を1枚に描く</h3>
+              <p>どこから友だちになり、何を受け取って、どこで申込むのか。導線・タグの付け方・配信の順番を、貴社の業務に合わせて決めます。</p>
+            </div>
+          </div>
+          <div class="day">
+            <div class="no">02<span>構築</span></div>
+            <div class="detail">
+              <h3>L Harness を貴社のアカウントに立ち上げる</h3>
+              <ul>
+                <li>ステップ配信・セグメント配信・自動応答</li>
+                <li>リッチメニュー（画像の制作を含む）とタグによる出し分け</li>
+                <li>フォーム、ホームページの申込や社内のSlackとの連携</li>
+              </ul>
+            </div>
+          </div>
+          <div class="day">
+            <div class="no">03<span>運用</span></div>
+            <div class="detail">
+              <h3>AIで下書きし、人が確かめて、毎月よくする</h3>
+              <ul>
+                <li>配信文・ステップの文面をAIが下書きし、貴社の確認を経て配信</li>
+                <li>友だちの増減・反応・申込を月に1回まとめてご報告</li>
+                <li>数字を見て、次の月に直す配信と導線を1つずつ決める</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">AIの使いどころ</p>
+      <div class="body">
+        <h2>手間のかかる所はAIに。決める所は人に。</h2>
+        <div class="outcomes">
+          <div><h3>配信文の下書き</h3><p>季節の案内、キャンペーン、ステップ配信の各通。貴社の言葉づかいに合わせて、AIが何案か書き分けます。</p></div>
+          <div><h3>反応の読み取り</h3><p>どの配信で申込やブロックが動いたかをAIが集計し、次に試すことを添えて毎月のレポートにします。</p></div>
+          <div><h3>分け方の提案</h3><p>申込の有無・興味のある内容・来店の状況から、送り分けるべき友だちのまとまりを提案します。</p></div>
+          <div><h3>返信の下書き</h3><p>よくある問い合わせへの返信を、AIが下書きして担当者に渡します。送る判断は担当者がします。</p></div>
+        </div>
+        <p class="note">AIが書いた文面は、配信の前に必ず貴社か担当者が目を通します。確認を済ませたステップ配信やリマインドは、その後は自動で送られます。</p>
+      </div>
+    </section>
+
+    <section class="band">
+      <p class="label">L Harness</p>
+      <div class="body">
+        <h2>ツール本体の月額をかけずに、ステップ配信を。</h2>
+        <p>L Harness は、LINE公式アカウントのステップ配信・タグ・リッチメニューの切り替え・フォームなどを備えた、公開されているソフトウェア（MITライセンス）です。本体の利用料は0円です。貴社名義のCloudflareアカウントの上で動くため、データの持ち主は貴社です。AIから操作するための窓口が用意されているので、配信の準備や集計をAIに任せやすいのも特長です。</p>
+        <div class="price-notes">
+          <p><b>別にかかるもの：</b>LINE公式アカウントの料金プラン（配信の通数による）、Cloudflareの利用料（小さな規模なら無料の範囲で収まることが多いものの、無料枠の上限を超えると配信や記録が止まることがあるため、利用状況はこちらで確認します）、独自ドメインを使う場合のドメイン代、AIサービスの利用料。導入前に、貴社の規模での目安をお出しします。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="works">
+      <p class="label">実績</p>
+      <div class="body">
+        <h2>杉田が取締役を務めるテニススクールで、動かしています。</h2>
+        <p>体験レッスンの申込からフォローまでを L Harness で組み、2026年10月から運用しています。</p>
+        <ul class="problems checks">
+          <li>ホームページの体験申込を、受付番号で公式LINEの友だちにひもづけ</li>
+          <li>申込ごとのやりとりを、社内のSlackの1スレッドに集約</li>
+          <li>担当者が日程を確定すると、体験の前日18時にLINEで自動リマインド</li>
+          <li>体験後の結果（入会・返答待ち・失注・欠席）を記録すると、タグが付いてフォロー配信が自動で始まる</li>
+          <li>新規登録・体験後・欠席の方へのステップ配信、リッチメニュー</li>
+        </ul>
+        <p>このうち申込とLINEとSlackをつなぐ部分は、単体の仕組みとしてもご提供しています。→ <a href="/doryo/tsunagana/">ツナガーナ人</a></p>
+      </div>
+    </section>
+
+    <section class="band" id="price">
+      <p class="label">費用</p>
+      <div class="body">
+        <h2>最初の構築と、毎月の運用。お見積もりでご提示します。</h2>
+        <div class="price-notes">
+          <p><b>最初の構築：</b>導線の設計、L Harness の立ち上げ、リッチメニュー・ステップ配信・フォームの初期設定、必要に応じてホームページやSlackとの連携。</p>
+          <p><b>毎月の運用：</b>配信文の作成（AIの下書き＋確認）、配信の設定、月1回のレポートと打ち合わせ、導線の手直し。</p>
+          <p><b>金額が変わる場合：</b>友だちの数、配信の本数、連携するシステムの数によって変わります。ご相談の内容を伺ったうえでお見積もりします。</p>
+        </div>
+        <div class="cta-row">
+          <a class="btn" href="/contact/?topic=line-ops">見積もりを依頼する</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="band contact" id="contact">
+      <p class="label">お問い合わせ</p>
+      <div class="body">
+        <h2>まずは、いまのLINEの使い方を聞かせてください。</h2>
+        <div class="contact-card">
+          <p>友だちの数や、いま送っている配信、申込までの流れがわかれば十分です。まだLINE公式アカウントを持っていない段階のご相談も承ります。</p>
+          <a class="btn" href="/contact/?topic=line-ops" style="align-self:flex-start">お問い合わせフォームへ</a>
+          <a class="mail" href="mailto:contact@parano-ai.com?subject=LINE%E9%81%8B%E7%94%A8%E3%82%B3%E3%83%B3%E3%82%B5%E3%83%AB%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">contact@parano-ai.com</a>
+          <p class="note">担当：杉田 光 ／ 通常2営業日以内にご返信します。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>ParanoAI 導入支援</span>
+      <span>LINE公式アカウント運用コンサル</span>
+      <span>杉田 光</span>
+      <span>contact@parano-ai.com</span>
+    </footer>
+
+  </div>
+</div>
+</body>
+</html>
