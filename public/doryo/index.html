@@ -72,6 +72,11 @@
   .say::after { content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%); border: 8px solid transparent; border-top-color: var(--c); border-bottom: 0; }
   .who .nm { font-family: var(--deco); font-weight: 700; font-size: 1.125rem; line-height: 1.3; }
   .who .nm small { display: block; font-family: var(--font); font-size: .6875rem; font-weight: 700; color: var(--ink-3); letter-spacing: .06em; }
+  a.who { text-decoration: none; color: inherit; border-radius: 16px; transition: transform .18s ease; }
+  a.who:hover { transform: translateY(-4px); }
+  a.who:hover .nm { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--c); }
+  a.who:focus-visible { outline: 3px solid var(--c); outline-offset: 6px; }
+  @media (prefers-reduced-motion: reduce) { a.who { transition: none; } a.who:hover { transform: none; } }
   .win { width: 100%; max-width: 200px; aspect-ratio: 5 / 6; position: relative; }
 
   /* ガーナ: ケンテ織りの縁取り */
@@ -198,26 +203,26 @@
       <p class="lead"><b>Slackの中に、AIの同僚を1人ずつ迎えるシリーズです。</b>新しいIDは増やさず、いつものSlackを入口に、取りこぼしやすい仕事をそれぞれの同僚が引き受けます。</p>
 
       <div class="trio">
-        <div class="who w-in">
+        <a class="who w-in" href="/doryo/remind/" aria-label="リマインド人のページを見る">
           <span class="say">ナマステ🙏</span>
           <div class="win"><img src="remind/remind-jin-full.png" alt="リマインド人のキャラクター。ターバンに時計をつけ、人差し指を立てている" width="616" height="720"></div>
           <span class="nm">リマインド人<small>依頼とタスク</small></span>
-        </div>
-        <div class="who w-th">
+        </a>
+        <a class="who w-th" href="/doryo/kintai/" aria-label="勤タイ人のページを見る">
           <span class="say">サワディーカー🙏</span>
           <div class="win"><div class="pointed"><div class="pointed"><div class="pointed"><img src="kintai/kintaijin.jpg" alt="勤タイ人のキャラクター。タイの伝統衣装を着た女性が、タイムカードを持って手を合わせている" width="640" height="640"></div></div></div></div>
           <span class="nm">勤タイ人<small>勤怠と会議室</small></span>
-        </div>
-        <div class="who w-gh">
+        </a>
+        <a class="who w-gh" href="/doryo/tsunagana/" aria-label="ツナガーナ人のページを見る">
           <span class="say">アクワーバ！</span>
           <div class="win"><div class="inner"><img src="tsunagana/tsunagana-jin.jpg" alt="ツナガーナ人のキャラクター。ケンテ織りの布をまとったガーナの女性が、ふきだしが糸でつながったスマートフォンを持ち、手を振っている" width="720" height="720"></div></div>
           <span class="nm">ツナガーナ人<small>申込とLINE</small></span>
-        </div>
-        <div class="who w-jp">
+        </a>
+        <a class="who w-jp" href="/doryo/nippo/" aria-label="ニッポー人のページを見る">
           <span class="say">お疲れさまです</span>
           <div class="win"><img src="nippo/nippo-jin.jpg" alt="ニッポー人のキャラクター。紺の羽織を着た男性が、筆と日報のノートを持っている" width="720" height="720" style="width:100%;height:100%;object-fit:cover"></div>
           <span class="nm">ニッポー人<small>日報</small></span>
-        </div>
+        </a>
       </div>
     </div>
   </div>
