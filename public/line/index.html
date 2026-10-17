@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>ParanoAI 導入支援｜LINE公式アカウント運用コンサル</title>
-<meta name="description" content="本体の利用料0円の L Harness で、LINE公式アカウントを申込につながる導線に。ステップ配信・タグ分け・リッチメニューの設計と構築から、AIが下書きして人が確認する毎月の運用まで。">
-<meta property="og:title" content="ParanoAI 導入支援｜LINE公式アカウント運用コンサル">
-<meta property="og:description" content="L Harness とAIで、LINE公式アカウントを「一斉に送るだけ」から「申込につながる導線」へ。">
+<title>ParanoAI 導入支援｜LINE公式アカウント運用代行</title>
+<meta name="description" content="LINE公式アカウントの毎月の配信を、企画・文面づくり・配信の設定・反応の集計までまとめて代行します。土台は本体の利用料0円の L Harness。貴社は、送る前に確認するだけ。">
+<meta property="og:title" content="ParanoAI 導入支援｜LINE公式アカウント運用代行">
+<meta property="og:description" content="LINEの配信を、毎月まるごとお任せに。L Harness とAIで、企画から配信・集計まで代行します。">
 <meta property="og:url" content="https://parano-ai.com/line/">
 <link rel="canonical" href="https://parano-ai.com/line/">
 <meta property="og:type" content="website">
@@ -319,6 +319,18 @@
   .flow p { color: var(--ink-2); font-size: .9375rem; margin-top: 4px; }
 
   /* ── 料金 ── */
+  .roles { display: grid; gap: 20px; max-width: 960px; margin: 0 auto; }
+  @media (min-width: 768px) { .roles { grid-template-columns: 3fr 2fr; } }
+  .role-col { background: #fff; border-radius: 20px; padding: 28px 24px; border: 1px solid var(--line); }
+  .role-col.us { border: 2px solid var(--brand); box-shadow: var(--shadow); }
+  .role-col.you { background: var(--brand-ll); }
+  .role-h { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.125rem; margin-bottom: 14px; }
+  .role-ic { width: 40px; height: 40px; border-radius: 12px; background: var(--brand); color: #fff; display: grid; place-items: center; flex: none; }
+  .role-ic svg { width: 22px; height: 22px; }
+  .role-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .role-col li { display: flex; gap: 8px; align-items: flex-start; line-height: 1.6; }
+  .role-col li svg { width: 18px; height: 18px; color: var(--brand); flex: none; margin-top: 4px; }
+  .role-note { margin: 16px 0 0; font-size: .875rem; color: var(--ink-2); }
   .plans { display: grid; gap: 20px; max-width: 960px; margin: 0 auto; }
   @media (min-width: 768px) { .plans { grid-template-columns: 1fr 1fr; } }
   .plan { background: #fff; border-radius: 20px; padding: 32px 26px; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
@@ -397,7 +409,7 @@
   .alt { text-align: center; color: var(--ink-2); font-size: .875rem; margin: -32px 0 48px; }
   @media (max-width: 799px) { .mflow { grid-template-columns: 1fr; } .mflow .arr { height: 36px; transform: rotate(90deg); } .alt { margin-top: -24px; } }
 
-  /* ── LINE運用コンサル追加分 ── */
+  /* ── LINE運用代行 追加分 ── */
   .v-form { width: 60%; }
   .sc-list { display: grid; gap: 8px; margin-top: 10px; }
   .sc-list div { display: grid; grid-template-columns: 74px 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); font-size: .75rem; line-height: 1.4; }
@@ -465,12 +477,12 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="logo" href="#top" aria-label="LINE運用コンサル ページの先頭へ">
+    <a class="logo" href="#top" aria-label="LINE運用代行 ページの先頭へ">
       <span class="logo-mark" aria-hidden="true"><svg style="color:#fff"><use href="#i-chat"/></svg></span>
-      <span>LINE運用コンサル<small>ParanoAI 導入支援</small></span>
+      <span>LINE運用代行<small>ParanoAI 導入支援</small></span>
     </a>
     <nav class="nav" aria-label="ページ内">
-      <a href="#how">しくみ</a><a href="#benefits">できること</a><a href="#works">実績</a><a href="#price">費用</a><a href="#faq">よくある質問</a>
+      <a href="#how">しくみ</a><a href="#roles">おまかせ範囲</a><a href="#benefits">できること</a><a href="#works">実績</a><a href="#price">費用</a><a href="#faq">よくある質問</a>
     </nav>
     <div class="header-cta">
       <a class="btn btn-ghost" href="/">ParanoAI</a>
@@ -483,30 +495,30 @@
   <div class="hero">
     <div class="container">
       <div>
-        <span class="tag"><b>NEW</b>L Harness × AI で、LINE運用をまるごと</span>
-        <h1><span class="nw">「とりあえず一斉配信」を、</span><br><span class="hl"><span class="blue">申込につながる導線</span>に</span><br>組み替える。</h1>
-        <p class="lead">本体の利用料が<b>0円の L Harness</b> で、ステップ配信・タグ分け・リッチメニュー・フォームを組み立てます。<b>配信文の下書きと数字の読み取りはAI</b>に、<b>送る前の確認は人</b>に。設計から構築、毎月の運用まで、まとめてお引き受けします。</p>
+        <span class="tag"><b>NEW</b>L Harness × AI の LINE運用代行</span>
+        <h1><span class="nw">LINEの配信を、</span><br><span class="hl"><span class="blue">毎月まるごと</span></span><br>お任せに。</h1>
+        <p class="lead">配信の企画、文面づくり、配信の設定、反応の集計とレポートまで、<b>毎月の運用をこちらで回します</b>。土台は本体の利用料が<b>0円の L Harness</b>。文面の下書きと集計にはAIを使い、<b>貴社は送る前に確認するだけ</b>です。</p>
         <div class="hero-cta">
           <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-            <a class="btn btn-primary btn-lg" href="/contact/?topic=line-ops"><svg aria-hidden="true"><use href="#i-mail"/></svg>LINE運用を相談する</a></span>
+            <a class="btn btn-primary btn-lg" href="/contact/?topic=line-ops"><svg aria-hidden="true"><use href="#i-mail"/></svg>運用代行を相談する</a></span>
           <span class="btn-wrap"><span class="bubble">お見積もりまで無料</span>
             <a class="btn btn-ghost btn-lg" href="/contact/?topic=line-ops">見積もりを依頼する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
         </div>
         <ul class="hero-points">
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>ステップ配信・タグ分け</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>配信文はAIが下書き</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>送る前に人が確認</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>企画から配信の設定まで代行</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>毎月のレポートつき</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>送る前に貴社が確認</li>
         </ul>
       </div>
 
-      <div class="visual" role="img" aria-label="画面イメージ。体験申込のステップ配信の設定画面と、前日18時にお客様のLINEへ届くリマインド、AIがまとめた月次レポート。">
+      <div class="visual" role="img" aria-label="画面イメージ。運用担当が用意した今月の配信予定と、前日18時にお客様のLINEへ届くリマインド、運用担当からの月次の報告。">
         <div class="card v-form">
           <div class="bar"><i></i><i></i><i></i></div>
-          <div class="label">ステップ配信 ／ 体験申込のあと</div>
+          <div class="label">今月の配信予定 ／ 運用担当が用意</div>
           <div class="sc-list">
-            <div><span class="sc-t">申込の直後</span><b>受付のお礼と持ち物</b><span class="chip p">配信中</span></div>
-            <div><span class="sc-t">前日 18:00</span><b>明日のご案内</b><span class="chip p">配信中</span></div>
-            <div><span class="sc-t">翌日</span><b>お礼とアンケート</b><span class="chip ai">AI下書き</span></div>
+            <div><span class="sc-t">毎週 火曜</span><b>体験の空き状況</b><span class="chip p">設定済み</span></div>
+            <div><span class="sc-t">15日</span><b>季節のお知らせ</b><span class="chip p">確認済み</span></div>
+            <div><span class="sc-t">25日</span><b>欠席した方への再案内</b><span class="chip ai">確認待ち</span></div>
           </div>
         </div>
         <div class="v-phone">
@@ -517,11 +529,11 @@
             <div class="msg-l">お待ちしています🎾</div>
           </div>
         </div>
-        <div class="float-badge">配信文は<br>AIが下書き</div>
+        <div class="float-badge">配信は<br>まるごと代行</div>
         <div class="card v-thread">
-          <div class="t-head">今月のレポート（AIがまとめ、担当が確認）</div>
-          <div class="t-row"><span class="t-av">AI</span><span>反応がいちばん多かったのは<b>体験後のお礼</b>。アンケートの回答が集まりました</span></div>
-          <div class="t-row"><span class="t-av">AI</span><span>来月は<b>欠席した方への再案内</b>を1通足す案です</span></div>
+          <div class="t-head">運用担当からの報告（今月）</div>
+          <div class="t-row"><span class="t-av">担</span><span>今月の配信は<b>予定どおり5通</b>。反応がいちばん多かったのは体験後のお礼です</span></div>
+          <div class="t-row"><span class="t-av">担</span><span>来月は<b>欠席した方への再案内</b>を1通足す案です。ご確認ください</span></div>
         </div>
         <p class="img-note">※画面はイメージです</p>
       </div>
@@ -531,10 +543,10 @@
   <div class="stats">
     <div class="container">
       <div class="stats-grid reveal">
-        <div class="stat"><div class="k">つかう</div><div class="v">月額<small>0円</small></div><div class="k">L Harness 本体の利用料（LINE等は別）</div></div>
-        <div class="stat"><div class="k">設計する</div><div class="v">導線<small>1枚</small></div><div class="k">友だちの入口から申込までを描く</div></div>
-        <div class="stat"><div class="k">書く</div><div class="v">AI</div><div class="k">配信文と月次レポートを下書き</div></div>
-        <div class="stat"><div class="k">送る</div><div class="v">人<small>が確認</small></div><div class="k">確認を済ませてから配信</div></div>
+        <div class="stat"><div class="k">おまかせ</div><div class="v">毎月<small>の配信</small></div><div class="k">企画・文面・配信の設定まで</div></div>
+        <div class="stat"><div class="k">貴社は</div><div class="v">確認<small>だけ</small></div><div class="k">送る前に目を通して承認</div></div>
+        <div class="stat"><div class="k">届ける</div><div class="v">月1<small>回</small></div><div class="k">レポートと打ち合わせ</div></div>
+        <div class="stat"><div class="k">つかう</div><div class="v">ツール代<small>0円</small></div><div class="k">L Harness 本体の利用料（LINE等は別）</div></div>
       </div>
     </div>
   </div>
@@ -543,18 +555,18 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">PROBLEM</span>
-        <h2>友だちは増えたのに、<br>LINEから申込が増えていませんか？</h2>
+        <h2>LINEの配信、<br>後回しになっていませんか？</h2>
       </div>
       <div class="pains">
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-inbox"/></svg></span><p>配信は月に数回の一斉送信だけ。誰に何を送るかを分けられていない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-inbox"/></svg></span><p>配信を担当する人がいない。本業が忙しく、気づくと1か月なにも送っていない</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-yen"/></svg></span><p>ステップ配信の月額ツールを検討したが、毎月の費用と設定の手間で止まっている</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>配信文を書く人がいない。書いても、反応があったのかを誰も見ていない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>送ってはいるが、反応があったのかを誰も見ていない。次に何を送ればいいか分からない</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>申込・問い合わせが、ホームページ・LINE・電話・メールにばらばらに届く</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-bell"/></svg></span><p>「来店前日のリマインド」「来たあとのお礼」を、毎回手で送っている</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>リッチメニューが作ったときのまま。今の案内と合っていない</p></div>
       </div>
       <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
-      <p class="answer reveal">友だちを<span class="hl">状態ごとに分けて</span>、<br>届く順番を組み立てます。</p>
+      <p class="answer reveal">毎月の配信を、<span class="hl">こちらで回します</span>。<br>貴社は、送る前に確かめるだけ。</p>
     </div>
   </section>
 
@@ -648,7 +660,7 @@
             <div class="ltime">前日 18:00</div>
             <div class="msg-l">【明日のご案内】<br>10:00から体験レッスンです。持ち物：運動靴・飲み物</div>
             <div class="msg-r">ありがとうございます！伺います</div>
-            <div class="msg-l">お待ちしています。当日の変更はこのLINEでどうぞ</div>
+            <div class="msg-l">お待ちしています！</div>
           </div></div>
         </div>
       </div>
@@ -681,24 +693,56 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">HOW IT WORKS</span>
-        <h2>貴社がすることは、<br>AIの下書きを確かめるだけ</h2>
+        <h2>貴社がすることは、<br>届いた配信案を確かめるだけ</h2>
       </div>
 
       <div class="mflow reveal">
-        <div class="fc fc-s"><span class="cap">① AIが下書きする</span><div class="card thread"><div class="thread-top"><i></i>来月の配信の下書き</div><div class="tm"><span class="av bot">AI</span><div><div class="name">下書き<time>2案</time></div><div class="body"><span class="mk m-b">体験後3日目</span>の配信です。<span class="mk m-o">「迷っている理由」</span>に答える形で書きました</div></div></div></div></div>
+        <div class="fc fc-s"><span class="cap">① 運用担当が案を出す</span><div class="card thread"><div class="thread-top"><i></i>来月の配信案</div><div class="tm"><span class="av bot">担</span><div><div class="name">運用担当<time>2案</time></div><div class="body"><span class="mk m-b">体験後3日目</span>の配信です。<span class="mk m-o">「迷っている理由」</span>に答える形で書きました</div></div></div></div></div>
         <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-        <div class="fc fc-s"><span class="cap">② 人が確かめる</span><div class="card thread"><div class="thread-top"><i></i>確認</div><div class="tm"><span class="av hum">佐</span><div><div class="name">貴社の担当者<time>確認</time></div><div class="body"><span class="mk m-b">体験後3日目</span>は案Bで。<span class="mk m-o">料金の一文</span>だけ直してください<div><span class="chip p">承認</span><span class="chip">修正を依頼</span></div></div></div></div></div></div>
+        <div class="fc fc-s"><span class="cap">② 貴社が確かめる</span><div class="card thread"><div class="thread-top"><i></i>確認</div><div class="tm"><span class="av hum">佐</span><div><div class="name">貴社の担当者<time>確認</time></div><div class="body"><span class="mk m-b">体験後3日目</span>は案Bで。<span class="mk m-o">料金の一文</span>だけ直してください<div><span class="chip p">承認</span><span class="chip">修正を依頼</span></div></div></div></div></div></div>
         <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
-        <div class="fc fc-s"><span class="cap">③ 予約して自動で届く</span><div class="card thread"><div class="thread-top"><i></i>ステップ配信</div><div class="tm"><span class="av bot">L</span><div><div class="name">配信の設定<time>完了</time></div><div class="body"><span class="mk m-b">体験後3日目</span>に<span class="mk m-g">返答待ちの方</span>へ自動で配信します<div class="tcard"><b>よくある質問と、体験の感想</b><div class="mt">対象：返答待ち ／ 体験の3日後</div></div></div></div></div></div></div>
+        <div class="fc fc-s"><span class="cap">③ こちらで設定して届ける</span><div class="card thread"><div class="thread-top"><i></i>ステップ配信</div><div class="tm"><span class="av bot">L</span><div><div class="name">配信の設定<time>完了</time></div><div class="body"><span class="mk m-b">体験後3日目</span>に<span class="mk m-g">返答待ちの方</span>へ自動で配信します<div class="tcard"><b>よくある質問と、体験の感想</b><div class="mt">対象：返答待ち ／ 体験の3日後</div></div></div></div></div></div></div>
       </div>
-      <p class="alt">一度確認したステップ配信やリマインドは、その後は自動で送られます。</p>
+      <p class="alt">配信の設定・予約は運用担当が行います。毎月の配信はその都度ご確認いただき、一度ご確認いただいたステップ配信やリマインドは、その後は自動で送られます。</p>
 
       <div class="steps">
         <div class="step reveal"><div class="num">STEP 01</div><h3>導線を設計</h3><p>友だちの入口から申込まで、タグと配信の順番を1枚に描きます。</p><span class="who staff">ParanoAI</span></div>
         <div class="step reveal"><div class="num">STEP 02</div><h3>L Harness を構築</h3><p>貴社名義のアカウントに立ち上げ、配信・メニュー・フォームを設定します。</p><span class="who staff">ParanoAI</span></div>
-        <div class="step reveal"><div class="num">STEP 03</div><h3>AIが下書き</h3><p>配信文・ステップの各通・返信の下書きを、貴社の言葉づかいに合わせて書きます。</p><span class="who auto">AI</span></div>
-        <div class="step reveal"><div class="num">STEP 04</div><h3>確認して配信</h3><p>貴社が目を通して承認したものだけを配信します。</p><span class="who cus">貴社</span></div>
-        <div class="step reveal"><div class="num">STEP 05</div><h3>月1で振り返り</h3><p>AIが集計したレポートをもとに、次の月に直す配信と導線を決めます。</p><span class="who staff">一緒に</span></div>
+        <div class="step reveal"><div class="num">STEP 03</div><h3>毎月の配信案</h3><p>配信の企画と文面を、AIで下書きして運用担当が整えてお届けします。</p><span class="who staff">ParanoAI</span></div>
+        <div class="step reveal"><div class="num">STEP 04</div><h3>確認する</h3><p>貴社が目を通して承認したものだけを配信します。</p><span class="who cus">貴社</span></div>
+        <div class="step reveal"><div class="num">STEP 05</div><h3>配信と月1の報告</h3><p>配信の設定はこちらで。反応を集計したレポートをもとに、次の月に直すことを決めます。</p><span class="who staff">ParanoAI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHO DOES WHAT</span>
+        <h2>運用はこちらで。<br><span class="hl">貴社は確認と判断だけ</span></h2>
+        <p>毎月の手を動かす仕事は、ParanoAI の運用担当が引き受けます。</p>
+      </div>
+      <div class="roles reveal">
+        <div class="role-col us">
+          <div class="role-h"><span class="role-ic"><svg aria-hidden="true"><use href="#i-team"/></svg></span>ParanoAI がすること</div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>毎月の配信の企画（何を・誰に・いつ送るか）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>配信文の作成（AIで下書きし、運用担当が整える）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>配信の設定・予約、ステップ配信の追加</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>反応の集計と、月1回のレポート</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導線・リッチメニュー・タグの手直し</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>お客様への返信の下書き</li>
+          </ul>
+        </div>
+        <div class="role-col you">
+          <div class="role-h"><span class="role-ic"><svg aria-hidden="true"><use href="#i-check-c"/></svg></span>貴社がすること</div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>届いた配信案に目を通して、承認または修正を依頼</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>月1回の打ち合わせで、来月やることを決める</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>キャンペーンや休業など、お知らせしたいことを伝える</li>
+          </ul>
+          <p class="role-note">AIや運用担当が書いた文面を、貴社の確認なしにお客様へ送ることはありません。</p>
+        </div>
       </div>
     </div>
   </section>
@@ -708,10 +752,10 @@
       <div class="reveal">
         <span class="eyebrow">REPORT</span>
         <h2>毎月の数字と次の一手が、<br>1枚のレポートで分かる</h2>
-        <p style="color:var(--ink-2)">どの配信で申込やブロックが動いたかをAIが集計し、次に試すことを添えてお届けします。月に1回の打ち合わせで、来月やることを1つずつ決めます。</p>
+        <p style="color:var(--ink-2)">どの配信で申込やブロックが動いたかを運用担当が集計し（集計にはAIを使います）、次に試すことを添えてお届けします。月に1回の打ち合わせで、来月やることを1つずつ決めます。</p>
         <ul class="checks">
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>友だちの増減・配信ごとの反応・申込を、毎月同じ形で</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>送り分けるべき友だちのまとまりを、AIが提案</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>送り分けるべき友だちのまとまりを、運用担当から提案</li>
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>直すかどうかを決めるのは、貴社と担当者</li>
         </ul>
       </div>
@@ -727,8 +771,8 @@
             </div>
             <div class="rep-k">反応の多かった順（見本）</div>
           </div>
-          <div class="tm"><span class="av bot">AI</span><div><div class="name">気づいたこと</div><div class="body">一斉のお知らせより、体験のあとに届く配信のほうが返信が多く集まっています</div></div></div>
-          <div class="tm"><span class="av bot">AI</span><div><div class="name">来月試すこと（案）</div><div class="body">欠席した方への「日程の取り直し」を1通足す ／ 季節のお知らせを対象ごとに2通に分ける</div></div></div>
+          <div class="tm"><span class="av bot">担</span><div><div class="name">気づいたこと</div><div class="body">一斉のお知らせより、体験のあとに届く配信のほうが返信が多く集まっています</div></div></div>
+          <div class="tm"><span class="av bot">担</span><div><div class="name">来月試すこと（案）</div><div class="body">欠席した方への「日程の取り直し」を1通足す ／ 季節のお知らせを対象ごとに2通に分ける</div></div></div>
           <div class="tm"><span class="av hum">佐</span><div><div class="name">打ち合わせで決定</div><div class="body">欠席の方への1通を、来月から追加する</div></div></div>
         </div>
         <p class="demo-note">表示内容は説明用の見本です。実際の数値ではありません。</p>
@@ -740,8 +784,8 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">FEATURES</span>
-        <h2>月額ツールでやっていたことを、<br>ツール代0円の仕組みで</h2>
-        <p>L Harness は、LINE公式アカウントのための公開されているソフトウェア（MITライセンス）です。</p>
+        <h2>運用の土台は、<br>ツール代0円の L Harness</h2>
+        <p>L Harness は、LINE公式アカウントのための公開されているソフトウェア（MITライセンス）です。月額ツールで行うような配信の仕組みを、これで組み立てて運用します。</p>
       </div>
       <div class="features">
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><h3>ステップ配信</h3><p>友だち追加や申込を起点に、決めた日数・時刻で順番に届けます。</p></div>
@@ -749,7 +793,7 @@
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-eye"/></svg></div><h3>リッチメニューの出し分け</h3><p>画像の制作から。友だちの状態ごとに、違うメニューを見せられます。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div><h3>フォームと自動応答</h3><p>アンケートや申込フォーム、よくある質問への自動の返答。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-link"/></svg></div><h3>ホームページ・Slack連携</h3><p>ホームページの申込をLINEにひもづけ、社内のSlackに申込ごとのスレッドを立てます。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>AIから操作できる窓口</h3><p>AIから操作するための窓口が用意されているので、配信の準備や集計をAIに任せやすい作りです。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>AIから操作できる窓口</h3><p>AIから操作するための窓口が用意されているので、配信の準備や集計にAIを使い、運用の手間を抑えられます。</p></div>
       </div>
     </div>
   </section>
@@ -776,12 +820,12 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">WHY US</span>
-        <h2>自社のスクールで動かしている仕組みを、<br>貴社のアカウントに組み立てます</h2>
+        <h2>自社のスクールで動かしている仕組みで、<br>貴社のLINEを運用します</h2>
       </div>
       <div class="reasons">
         <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3>作り手が、自社で使っている</h3><p>杉田が取締役を務めるテニススクールで、体験レッスンの申込からフォローまでを L Harness で組み、2026年10月から運用しています。申込とLINEとSlackをつなぐ部分は、単体の仕組み <a href="/doryo/tsunagana/">ツナガーナ人</a> としてもご提供しています。</p></div>
         <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>データの持ち主は、貴社</h3><p>LINE公式アカウントも、L Harness を動かす Cloudflare のアカウントも貴社名義。データの持ち主は貴社です。</p></div>
-        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3>社内でAIを使う研修もある</h3><p>運用をお任せいただくだけでなく、社内でAIを使えるようになる <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
+        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3>社内でAIを使う研修もある</h3><p>運用をお任せいただくだけでなく、ゆくゆく社内でAIを使えるようになりたい場合は <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
       </div>
     </div>
   </section>
@@ -799,7 +843,7 @@
           <li class="reveal"><span class="n">02</span><div><h3>導線を設計する</h3><p>入口から申込までの導線・タグの付け方・配信の順番を1枚にまとめ、合意してから作り始めます。</p></div></li>
           <li class="reveal"><span class="n">03</span><div><h3>アカウントの準備</h3><p>LINE公式アカウントと Cloudflare のアカウントは、貴社名義で、貴社の方に作成いただきます。</p></div></li>
           <li class="reveal"><span class="n">04</span><div><h3>構築</h3><p>L Harness を立ち上げ、配信・リッチメニュー・フォーム・連携を設定します。</p></div></li>
-          <li class="reveal"><span class="n">05</span><div><h3>配信開始と、毎月の運用</h3><p>本番の配信を始め、AIの下書き→貴社の確認→配信、月1回のレポートと打ち合わせを続けます。</p></div></li>
+          <li class="reveal"><span class="n">05</span><div><h3>配信開始と、毎月の運用</h3><p>本番の配信を始めます。以降は毎月、運用担当の配信案→貴社の確認→配信の設定、月1回のレポートと打ち合わせを続けます。</p></div></li>
         </ol>
       </div>
     </div>
@@ -814,23 +858,24 @@
       </div>
       <div class="plans">
         <div class="plan main reveal">
-          <span class="pl">最初の構築</span>
+          <span class="pl">毎月の運用代行</span>
+          <div class="price">お見積もり<small>（配信の量に応じて）</small></div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>毎月の配信の企画と、配信文の作成</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>配信の設定・予約（貴社の確認のあと）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>月1回のレポートと打ち合わせ</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導線・メニュー・タグの手直し</li>
+          </ul>
+          <a class="btn btn-primary" href="/contact/?topic=line-ops">見積もりを依頼する</a>
+        </div>
+        <div class="plan reveal">
+          <span class="pl">最初の構築（運用の開始前に）</span>
           <div class="price">お見積もり<small>（ヒアリング後）</small></div>
           <ul>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>友だちの入口から申込までの導線の設計</li>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>L Harness の立ち上げ（貴社名義のアカウント）</li>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>リッチメニュー（画像の制作を含む）・ステップ配信・フォームの初期設定</li>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>必要に応じて、ホームページやSlackとの連携</li>
-          </ul>
-          <a class="btn btn-primary" href="/contact/?topic=line-ops">見積もりを依頼する</a>
-        </div>
-        <div class="plan reveal">
-          <span class="pl">毎月の運用</span>
-          <div class="price">お見積もり<small>（配信の量に応じて）</small></div>
-          <ul>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>配信文の作成（AIの下書き＋確認）と配信の設定</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>月1回のレポートと打ち合わせ</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導線・メニュー・タグの手直し</li>
           </ul>
         </div>
       </div>
@@ -845,8 +890,9 @@
         <h2>よくある質問</h2>
       </div>
       <div class="faq">
+        <details><summary><span class="q">Q</span>こちらで用意するものはありますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>配信案の確認と、月1回の打ち合わせのお時間です。キャンペーンや休業など、お知らせしたいことがあればお伝えください。LINE公式アカウントと Cloudflare のアカウントは、貴社名義で、貴社の方に作成いただきます。</p></details>
         <details><summary><span class="q">Q</span>まだLINE公式アカウントを持っていません。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>まだお持ちでない段階のご相談も承ります。アカウントは貴社名義で、貴社の方に作成いただきます。</p></details>
-        <details><summary><span class="q">Q</span>AIが書いた文面が、そのまま送られることはありますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>ありません。AIが書いた文面は、配信の前に必ず貴社か担当者が目を通します。確認を済ませたステップ配信やリマインドは、その後は自動で送られます。</p></details>
+        <details><summary><span class="q">Q</span>AIが書いた文面が、そのまま送られることはありますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>ありません。AIで下書きした文面は運用担当が整え、配信の前に必ず貴社に確認いただきます。確認を済ませたステップ配信やリマインドは、その後は自動で送られます。</p></details>
         <details><summary><span class="q">Q</span>いま別の配信ツールを使っています。移れますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>いまの配信・タグ・メニューの使い方を伺ったうえで、ご相談させてください。</p></details>
         <details><summary><span class="q">Q</span>友だちの情報や、AIに渡す内容が心配です。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>L Harness は貴社名義の Cloudflare アカウントの上で動くため、データの持ち主は貴社です。配信文の下書きや集計にAIサービスを使う範囲は、導入前にご説明します。</p></details>
         <details><summary><span class="q">Q</span>ツールの月額が0円なのはなぜですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>L Harness は公開されているソフトウェア（MITライセンス）で、本体の利用料がかからないためです。LINE公式アカウントの料金プラン、Cloudflare、ドメイン、AIサービスの利用料は別にかかります。</p></details>
@@ -858,11 +904,11 @@
   <section class="final">
     <div class="container">
       <div class="final-icon" aria-hidden="true"><svg><use href="#i-chat"/></svg></div>
-      <h2>いまのLINEの使い方を、<br>1つ聞かせてください</h2>
+      <h2>毎月のLINEの配信、<br>まずはご相談ください</h2>
       <p>友だちの数や、いま送っている配信、申込までの流れがわかれば十分です。まだLINE公式アカウントを持っていない段階のご相談でも構いません。</p>
       <div class="row">
         <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-          <a class="btn btn-primary btn-lg" href="/contact/?topic=line-ops"><svg aria-hidden="true"><use href="#i-mail"/></svg>LINE運用を相談する</a></span>
+          <a class="btn btn-primary btn-lg" href="/contact/?topic=line-ops"><svg aria-hidden="true"><use href="#i-mail"/></svg>運用代行を相談する</a></span>
         <a class="btn btn-ghost btn-lg" href="/contact/?topic=line-ops">見積もりを依頼する</a>
       </div>
       <p class="meta">担当：杉田 光 ／ contact@parano-ai.com ／ 通常2営業日以内にご返信します</p>
@@ -872,14 +918,14 @@
 
 <footer class="site">
   <div class="container">
-    <span>ParanoAI 導入支援 ／ LINE公式アカウント運用コンサル<br>LINEはLINEヤフー株式会社、Slack は Slack Technologies, LLC、Cloudflare は Cloudflare, Inc. の商標または登録商標です。本ページは各社と提携・承認の関係にありません。L Harness は公開されているソフトウェアで、本ページの運営者は開発元ではありません。画面・氏名はイメージで、実在の人物・組織とは関係ありません。</span>
+    <span>ParanoAI 導入支援 ／ LINE公式アカウント運用代行<br>LINEはLINEヤフー株式会社、Slack は Slack Technologies, LLC、Cloudflare は Cloudflare, Inc. の商標または登録商標です。本ページは各社と提携・承認の関係にありません。L Harness は公開されているソフトウェアで、本ページの運営者は開発元ではありません。画面・氏名はイメージで、実在の人物・組織とは関係ありません。</span>
     <span><a href="/">ParanoAI</a>　／　<a href="/training/">AIエージェント研修</a>　／　杉田 光</span>
   </div>
 </footer>
 
-<a class="floating" href="/contact/?topic=line-ops" aria-label="無料でLINE運用を相談する（お問い合わせフォーム）">
+<a class="floating" href="/contact/?topic=line-ops" aria-label="無料でLINE運用代行を相談する（お問い合わせフォーム）">
   <span class="ic" aria-hidden="true"><svg><use href="#i-chat"/></svg></span>
-  <span><small>ご相談は無料</small>LINE運用を相談する</span>
+  <span><small>ご相談は無料</small>運用代行を相談する</span>
 </a>
 
 <script>
