@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>リマインド人 — Slackの依頼を、完了まで見届ける</title>
-<meta name="description" content="Slackで受けた依頼を、メンション1つでタスクに。期限の前後に自動でリマインドして、完了まで見届けるSlackアプリ「リマインド人」の導入支援。">
+<meta name="description" content="Slackで受けた依頼を、メンション1つでタスクに。期限の前後に自動でリマインドして、完了まで見届けるSlackアプリ「リマインド人」。14日間の無料試用は、いま先行登録（招待制）で受け付けています。続けるなら1人あたり月300円（税抜）。">
 <meta name="color-scheme" content="light">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -503,6 +503,17 @@
   .mflow .fc-s .tm { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 12px 14px; font-size: .8125rem; }
   .mflow .fc-s .av { width: 30px; height: 30px; }
   .mflow .fc-s .ex div { background: #fff; }
+  /* ── SaaS化（2026-10-18） ── */
+  .pre-note { margin-top: 16px; font-size: .8125rem; font-weight: 700; color: var(--ink-2); display: flex; gap: 6px; align-items: flex-start; }
+  .pre-note svg { width: 16px; height: 16px; color: var(--magenta); flex: none; margin-top: 4px; }
+  .plan .price .tax { display: block; font-size: .8125rem; color: var(--ink-2); font-weight: 600; }
+  .flow-note { margin-top: 20px; background: #fffdf8; border: 1px dashed var(--line); border-radius: var(--radius); padding: 18px 20px; font-size: .875rem; color: var(--ink-2); }
+  .flow-note b { color: var(--ink); }
+  .final .pre { font-size: .875rem; margin-top: 14px; }
+  /* 検証中の印（勤タイ人LPの型） */
+  .wip-chip { white-space: nowrap; flex: none; align-self: center; height: auto; display: inline-block; vertical-align: middle; background: var(--wip-l); color: var(--wip); border: 1px solid #F0D9A8; font-size: .6875rem; font-weight: 800; border-radius: 999px; padding: 1px 9px; line-height: 1.6; margin-left: 6px; letter-spacing: .02em; font-family: var(--font); }
+  .wip-box { max-width: 860px; margin: 0 auto 32px; background: var(--wip-l); color: #5E3B00; border-radius: 12px; padding: 14px 18px; font-size: .875rem; line-height: 1.7; }
+  .wip-box b { color: var(--wip); }
 </style>
 </head>
 <body>
@@ -547,11 +558,11 @@
       <span>リマインド人<small>Slack タスクリマインド</small></span>
     </a>
     <nav class="nav" aria-label="ページ内">
-      <a href="#how">しくみ</a><a href="#features">機能</a><a href="#benefits">できること</a><a href="#price">料金</a><a href="#faq">よくある質問</a>
+      <a href="#how">しくみ</a><a href="#features">機能</a><a href="#benefits">できること</a><a href="#flow">始め方</a><a href="#price">料金</a><a href="#faq">よくある質問</a>
     </nav>
     <div class="header-cta">
       <a class="btn btn-ghost" href="/doryo/contact/?type=document&amp;product=remind">資料請求</a>
-      <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=remind">お問い合わせ</a>
+      <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=remind">無料で試す</a>
     </div>
   </div>
 </header>
@@ -562,17 +573,19 @@
       <div>
         <span class="tag"><b>NEW</b>メンション1つで、依頼がタスクになる</span>
         <h1><span class="nw">「あとでやります」を、</span><br><span class="hl"><span class="blue">「やりました」</span>まで</span><br>見届ける。</h1>
-        <p class="lead">Slackで受けた依頼を、<b>メンション1つでタスクに</b>。AIがタスク名と期限を読み取り、<b>平日のDM</b>と<b>期限切れのスレッド催促</b>で、完了に向けて声をかけ続けます。いつものSlackのまま使えて、新しいツールを覚える必要はありません。</p>
+        <p class="lead">Slackで受けた依頼を、<b>メンション1つでタスクに</b>。AIがタスク名と期限を読み取り、<b>平日のDM</b>と<b>期限切れのスレッド催促</b>で、完了に向けて声をかけます。いつものSlackのまま使えて、新しいツールを覚える必要はありません。</p>
         <div class="hero-cta">
+          <span class="btn-wrap"><span class="bubble">カード登録なしで始められます</span>
+            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=remind">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
           <span class="btn-wrap"><span class="bubble">無料・1分で入力</span>
-            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=document&amp;product=remind"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a></span>
-          <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=contact&amp;product=remind">導入を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=remind"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a></span>
         </div>
+        <p class="pre-note"><svg aria-hidden="true"><use href="#i-bell"/></svg><span>いまは先行登録（招待制）で受け付けています。順にご案内します。</span></p>
         <ul class="hero-points">
           <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>@メンションでタスク化</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>期限の前後に自動リマインド</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>期限の前後に自動リマインド<span class="wip-chip">検証中</span></li>
           <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>ボタン1つで完了</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>1人 月300円（税抜）・14日間無料</li>
         </ul>
       </div>
 
@@ -599,8 +612,8 @@
       <div class="stats-grid reveal">
         <div class="stat"><div class="k">つくる</div><div class="v">メンション<small>1つ</small></div><div class="k">絵文字・ショートカットでも</div></div>
         <div class="stat"><div class="k">読み取る</div><div class="v">AI</div><div class="k">タスク名と期限をAIが整理</div></div>
-        <div class="stat"><div class="k">知らせる</div><div class="v">平日<small>2回</small></div><div class="k">平日 9:00・16:00 にDMでまとめ通知</div></div>
-        <div class="stat"><div class="k">追いかける</div><div class="v">最大5<small>回</small></div><div class="k">期限切れは催促し、そのあと自動で保留</div></div>
+        <div class="stat"><div class="k">知らせる</div><div class="v">平日<small>2回</small></div><div class="k">既定は平日 9:00・16:00 にDMでまとめ通知<span class="wip-chip">検証中</span></div></div>
+        <div class="stat"><div class="k">追いかける</div><div class="v">最大5<small>回</small></div><div class="k">期限切れは催促し、そのあと自動で保留<span class="wip-chip">検証中</span></div></div>
       </div>
     </div>
   </div>
@@ -654,7 +667,7 @@
         </svg>
         <div class="hub-legend">
           <div class="reveal"><b>Slackのスレッド</b><p>頼まれた場所でそのままタスクに。期限切れの催促も、元のスレッドに届きます。</p></div>
-          <div class="reveal"><b>DMのまとめ通知</b><p>期限が前日・当日・超過のタスクを、担当者へ平日にまとめてお知らせします。</p></div>
+          <div class="reveal"><b>DMのまとめ通知</b><span class="wip-chip">検証中</span><p>期限が前日・当日・超過のタスクを、担当者へ平日にまとめてお知らせします。</p></div>
           <div class="reveal"><b>タスクポータル</b><p>「タスク一覧」と「振り返り」をブラウザで。Slackでログインできます。</p></div>
         </div>
       </div>
@@ -668,6 +681,8 @@
         <h2>依頼の「その場」から<br><span class="hl">完了の「その先」まで</span></h2>
         <p>タスクにして、知らせて、見返す。依頼が流れていかないための流れを、ひと通り用意しています。</p>
       </div>
+
+      <p class="wip-box reveal">平日のDMのまとめ通知と、期限切れのスレッドでの催促は、作り終えてテストを通した段階です。<span class="wip-chip">検証中</span>の印は、本番での動きの確認がこれからの機能です。</p>
 
       <ol class="journey reveal" aria-label="タスクの流れ">
         <li class="on"><span class="j-dot">依頼</span><span class="j-t">メンションで<br>タスク化</span></li>
@@ -696,7 +711,7 @@
       <div class="benefit rev reveal">
         <div class="b-text">
           <span class="b-no">02</span><span class="b-when">期限の前後に</span>
-          <h3>平日のDMと、スレッドの催促で<br>見落とさせない</h3>
+          <h3>平日のDMと、スレッドの催促で<br>見落とさせない<span class="wip-chip">検証中</span></h3>
           <p>平日の朝9時と夕方16時に、期限が前日・当日・超過のタスクをDMでまとめてお知らせ。期限を過ぎたタスクは、翌営業日から元のスレッドで担当者に声をかけます。</p>
           <ul class="b-list">
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>期限の変更や完了は、通知のボタンからそのまま</li>
@@ -713,10 +728,10 @@
         <div class="b-text">
           <span class="b-no">03</span><span class="b-when">あとから</span>
           <h3>一覧と週次の振り返りで、<br>チームの動きが見える</h3>
-          <p>ブラウザのポータルで、タスク一覧と完了・期限の変更ができます。週次の振り返りも見られます。Notionのデータベースと同期したり、Claude Codeから自分のタスクを操作したりもできます。</p>
+          <p>ブラウザのポータルで、タスク一覧と完了・期限の変更ができます。週次の振り返りも見られ、タスクはCSVで書き出せます<span class="wip-chip">検証中</span>。Claude Codeから自分のタスクを操作することもできます。</p>
           <ul class="b-list">
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>自分が関わるタスクと、参加しているチャンネルのタスクだけが見える</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Notionと同期できる（利用時に接続設定が必要）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>タスクの一覧はCSVで書き出せる<span class="wip-chip">検証中</span></span></li>
             <li><svg aria-hidden="true"><use href="#i-check"/></svg>Claude Codeからタスクの確認・追加・完了ができる</li>
           </ul>
         </div>
@@ -724,7 +739,7 @@
           <div class="card thread"><div class="thread-top"><i></i>タスクポータル（ブラウザ）</div><div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">佐藤さんのタスク<time>今週の完了 5件</time></div><div class="body"><div class="pg">期限が近い</div><div class="dm-row"><span><b>見積書を提出する</b><em class="d">本日 18:00</em></span><span class="chip">期限変更</span></div><div class="pg">進行中</div><div class="dm-row"><span><b>請求書の確認</b><em class="d">担当 佐藤</em></span><span class="chip p">完了</span></div><div class="pg">完了</div><div class="dm-row done"><span><b>会議室の予約</b><em class="d">完了済み</em></span></div></div></div></div></div>
         </div>
       </div>
-      <p class="demo-note" style="text-align:center">※画面はイメージです。通知の時刻や休日などは、導入先に合わせて設定します。</p>
+      <p class="demo-note" style="text-align:center">※画面はイメージです。通知の時刻や休日などは、管理者が設定から変えられます。</p>
     </div>
   </section>
 
@@ -747,9 +762,9 @@
       <div class="steps">
         <div class="step reveal"><div class="num">STEP 01</div><h3>メンションで頼む</h3><p>頼まれたメッセージに @Remind-Jin とつけます。絵文字・ショートカットでも可。</p><span class="who cus">依頼者</span></div>
         <div class="step reveal"><div class="num">STEP 02</div><h3>AIが内容を整理</h3><p>AIがタスク名と期限を読み取り、担当・依頼者とあわせてスレッドに確認を返します。</p><span class="who auto">自動</span></div>
-        <div class="step reveal"><div class="num">STEP 03</div><h3>平日はDMで知らせる</h3><p>平日9:00・16:00に、期限が近いタスクと超過したタスクをまとめて送ります。</p><span class="who auto">自動</span></div>
+        <div class="step reveal"><div class="num">STEP 03</div><h3>平日はDMで知らせる<span class="wip-chip">検証中</span></h3><p>平日9:00・16:00に、期限が近いタスクと超過したタスクをまとめて送ります。</p><span class="who auto">自動</span></div>
         <div class="step reveal"><div class="num">STEP 04</div><h3>ボタンで完了</h3><p>通知の「完了」ボタンを押すだけ。期限や担当の変更も同じ画面から。</p><span class="who staff">担当者</span></div>
-        <div class="step reveal"><div class="num">STEP 05</div><h3>超過は催促のち保留</h3><p>期限切れは翌営業日から最大5回スレッドで声をかけ、そのあと自動で「保留」にします。</p><span class="who auto">自動</span></div>
+        <div class="step reveal"><div class="num">STEP 05</div><h3>超過は催促のち保留<span class="wip-chip">検証中</span></h3><p>期限切れは翌営業日から最大5回スレッドで声をかけ、そのあと自動で「保留」にします。</p><span class="who auto">自動</span></div>
       </div>
     </div>
   </section>
@@ -775,7 +790,7 @@
           <div class="tm"><span class="av hum">佐</span><div><div class="name">佐藤<time>月 10:12</time></div><div class="body">「完了」ボタンを押しました</div></div></div>
           <div class="tm"><img class="av bot" src="remind-jin.png" alt=""><div><div class="name">リマインド人<time>月 10:12</time></div><div class="body"><span class="m">@田中</span> ✅ ダンニャワード（ありがとうございます）！田中ジー、完了のお知らせです: 見積書を提出する</div></div></div>
         </div>
-        <p class="demo-note">表示内容は説明用の見本です。お名前・文言は導入先に合わせて設定します。</p>
+        <p class="demo-note">表示内容は説明用の見本です。お名前は架空のものです。</p>
       </div>
     </div>
   </section>
@@ -784,7 +799,7 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">REMIND</span>
-        <h2>催促は、こんなふうに届きます</h2>
+        <h2>催促は、こんなふうに届きます<span class="wip-chip">検証中</span></h2>
         <p style="color:var(--ink-2)">期限の前日から、リマインド人が丁寧にお声がけします。言いにくい催促も、角を立てずにアプリが代わりに。</p>
       </div>
       <div class="rtl reveal">
@@ -831,10 +846,10 @@
         <h2>現場が増やす作業を、できるだけ減らす</h2>
       </div>
       <div class="features">
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>3つの入口からタスク化</h3><p>メンション、絵文字リアクション、メッセージのショートカット。使いやすい方法でタスクにできます。同じメッセージから2回作ることはありません。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>3つの入口からタスク化</h3><p>メンション、絵文字リアクション、メッセージのショートカット。使いやすい方法でタスクにできます。同じメッセージから重複して作らない作りです。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div><h3>日本の休日に対応</h3><p>土日・祝日は催促を止めて、休み明けから再開します。期限の読み取りも「明日まで」「金曜18時」などの日本語の言い回しが前提です。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-eye"/></svg></div><h3>見える範囲はSlackに合わせる</h3><p>自分が関わるタスクと、参加しているチャンネルのタスクが見えます。変えられるのは依頼者・担当・管理者だけです。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-db"/></svg></div><h3>Notionと同期</h3><p>タスクの状態と期限を、Notionのデータベースと双方向で同期できます。利用にはNotionの接続設定が必要です。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-db"/></svg></div><h3>データを人質にしない<span class="wip-chip">検証中</span></h3><p>タスクはポータルからCSVで書き出せます。試用が切れて止まっている間も、見る・完了にする・書き出すはできます。Notion・Googleカレンダーとの連携は、配布版では最初は止めています。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>Claude Codeから操作</h3><p>MCPに対応。手元のClaude Codeから、自分のタスクの確認・追加・完了ができます。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></div><h3>週次の振り返り</h3><p>今週の作成数・完了数を集計して、チームの動きを数字で振り返れます。</p></div>
       </div>
@@ -863,31 +878,33 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">WHY US</span>
-        <h2>自社の運用で動かしながら、<br>導入先の環境でテストしてお届けします</h2>
+        <h2>自社で使いながら直していて、<br>自分たちのSlackで確かめてから決められます</h2>
       </div>
       <div class="reasons">
         <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3>作り手が、自社で使っている</h3><p>タスク化や一覧のポータルなどの基本機能は、自社のSlackで運用を始めています。使いながら直しているので、現場の困りごとに即した作りです。</p></div>
-        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>本番前に、実際のSlackでテスト</h3><p>導入時はテスト用のチャンネルで、タスク化・通知・催促・完了までを実際に通し、結果を記録してお渡しします。Notion連携など、使う機能も事前に確認します。</p></div>
+        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>14日間、自社のSlackで試せる</h3><p>カードを登録しなくても始められます。いつものチャンネルで、タスク化・通知・催促・完了までを実際に動かして、合うかどうかを確かめてから続けるかを決められます。</p></div>
         <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3>自分たちで直せるようにもなれる</h3><p>仕組みを入れるだけでなく、社内で同じものを作れるようになる <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
       </div>
     </div>
   </section>
 
-  <section class="sec-bg">
+  <section id="flow" class="sec-bg">
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">FLOW</span>
-        <h2>導入の流れ</h2>
-        <p>テスト用のチャンネルで試してから、本番に切り替えます。</p>
+        <h2>始め方は、Slackに追加するだけ</h2>
+        <p>追加したその日から使えるように作っています。</p>
       </div>
       <div class="flow">
+        <p class="wip-box reveal"><b>Slackに追加して試す配布版は、いまは先行登録（招待制）で準備中です。</b>下の流れ（追加・試用・お支払い・解約）は、公開したときの予定です。</p>
         <ol>
-          <li class="reveal"><span class="n">01</span><div><h3>今の依頼の流れを伺う</h3><p>どんな依頼がSlackで飛び交い、どこでこぼれているか。対象のチャンネルや、通知の時刻・休日などを決めます。</p></div></li>
-          <li class="reveal"><span class="n">02</span><div><h3>Slackアプリの準備</h3><p>貴社のSlackで使えるよう、アプリの用意とインストールを行います。インストールの承認は貴社の管理者にお願いします（進め方はヒアリングで決めます）。</p></div></li>
-          <li class="reveal"><span class="n">03</span><div><h3>設定と結線</h3><p>通知の時刻・休日などを設定し、必要に応じてNotion連携などをつなぎます。</p></div></li>
-          <li class="reveal"><span class="n">04</span><div><h3>テストチャンネルで確認</h3><p>実際のSlackで、タスク化・DM通知・催促・完了を通し、結果を記録します。</p></div></li>
-          <li class="reveal"><span class="n">05</span><div><h3>本番への切り替え</h3><p>対象のチャンネルにアプリを招待して運用を開始します。使い方の簡単な案内もお付けします。</p></div></li>
+          <li class="reveal"><span class="n">01</span><div><h3>「無料で試す」から、Slackで「許可する」</h3><p>Slackの許可画面で「許可する」を押すと、14日間の試用が始まります。管理者の承認が要るワークスペースでは、承認された日から数えます。</p></div></li>
+          <li class="reveal"><span class="n">02</span><div><h3>使いたいチャンネルに招待する</h3><p>追加した人に、使い方とはじめの手順がDMで届きます。チャンネルで <span class="code">/invite @リマインド人</span> をすれば準備は完了。通知の時刻や休日は、管理者が設定から変えられます。</p></div></li>
+          <li class="reveal"><span class="n">03</span><div><h3>14日間、そのまま使える</h3><p>試用中も、契約後と同じ機能をいつものSlackで使えます。試用の残りが3日・1日になると、アプリを入れた人（最初の管理者）にDMでお知らせします。</p></div></li>
+          <li class="reveal"><span class="n">04</span><div><h3>続けるなら、プランを選んでカード登録</h3><p>DMの「プランを選ぶ」から、カードを登録します（決済はStripe）。請求書の確認やカードの変更は、ポータルの「プランと請求」からいつでもできます。</p></div></li>
+          <li class="reveal"><span class="n">05</span><div><h3>やめるときは、アプリを外すか解約</h3><p>Slackからアプリを外すか、「プランと請求」から解約します。契約中にアプリを外したときは、その期間の終わりで解約になります。</p></div></li>
         </ol>
+        <p class="flow-note reveal"><b>試用が切れたとき・お支払いが止まったとき</b><span class="wip-chip">検証中</span>は、新しいタスク化と通知が止まり、管理者に1日1回お知らせします。それまでのタスクを<b>見る・完了にする・書き出す</b>ことはできます。カードを登録すれば、また動き出します。Slackからアプリを外した場合は、30日後にその会社のデータを消します。<br>※ Enterprise Grid の組織全体へのインストールには、いまは対応していません（中の1つのワークスペースに入れることはできます）。</p>
       </div>
     </div>
   </section>
@@ -896,31 +913,33 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">PRICE</span>
-        <h2>料金</h2>
-        <p>導入費・運用費は、チームの規模と使う機能を伺ってからお見積もりします。</p>
+        <h2>料金は、使った人の数だけ</h2>
+        <p>14日間は無料。続けるときだけ、カードを登録してください。</p>
       </div>
+      <p class="wip-box reveal"><b>いまは先行登録（招待制）で受け付けて、順にご案内しています。</b>試用とお支払いの仕組みは、配布版の公開に向けて準備中です。</p>
       <div class="plans">
         <div class="plan main reveal">
-          <span class="pl">導入費</span>
-          <div class="price">お見積もり<small>（ヒアリング後）</small></div>
+          <span class="pl">リマインド人</span>
+          <div class="price">¥300<small>／人・月（税抜）</small><span class="tax">税込 ¥330</span></div>
           <ul>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>今の依頼の流れのヒアリングと設計</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>貴社Slackへのアプリ追加と設定（通知時刻・休日・催促のルール）</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>テストチャンネルでの動作確認と記録</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>必要に応じたNotion連携の設定</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>使い方の案内</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>数えるのは、その月にタスクの依頼者か担当者になった人だけ</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>使った人が0人の月は ¥0。最低料金・最低人数はありません</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>はじめの14日間は無料。カード登録なしで始められます（1社1回）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>月末で締めて、翌月にカードでお支払い（Stripe）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg><span>請求書の確認・カードの変更・解約は「プランと請求」から<span class="wip-chip">検証中</span></span></li>
           </ul>
-          <a class="btn btn-primary" href="/doryo/contact/?type=quote&amp;product=remind">見積もりを依頼する</a>
+          <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=remind">14日間 無料で試す</a>
         </div>
         <div class="plan reveal">
-          <span class="pl">運用費</span>
-          <div class="price">お見積もり<small>（利用規模に応じて）</small></div>
+          <span class="pl">ほかに必要なもの・ご注意</span>
+          <div class="price">月額のほかは<small>原則かかりません</small></div>
           <ul>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Slack：お使いのプランで動くかを導入前に確認します</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>AIの利用料：タスク化にAIを使うため、利用量に応じた費用がかかります</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Notion連携を使う場合は、Notion側のご契約が必要です</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導入後の保守・更新対応の範囲は、お見積もりの際にご説明します</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Slack：アプリを追加できるワークスペースが必要です（Slackのご契約はお客さま側）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>AIの読み取りは月額に含みます。月ごとの上限を超えた月は、AIを使わずに本文の先頭をタスク名にします</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Notion・Googleカレンダーとの連携は、配布版では最初は止めています</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>設定に不安があれば、お気軽にご相談ください</li>
           </ul>
+          <a class="btn btn-ghost" href="/doryo/contact/?type=contact&amp;product=remind">導入の相談をする</a>
         </div>
       </div>
     </div>
@@ -933,12 +952,16 @@
         <h2>よくある質問</h2>
       </div>
       <div class="faq">
-        <details><summary><span class="q">Q</span>Slackのどの機能が必要ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>アプリを追加できるSlackワークスペースが必要です。お使いのプランで動くかは、導入前に確認します。</p></details>
+        <details><summary><span class="q">Q</span>Slackのどの機能が必要ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>アプリを追加できるSlackワークスペースが必要です。管理者の承認が要るワークスペースでは、「追加」を押すと管理者への承認依頼になり、承認された日から試用が始まります。Enterprise Grid の組織全体へのインストールには、いまは対応していません。</p></details>
+        <details><summary><span class="q">Q</span>試用期間が終わったらどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>カードを登録していなければ、新しいタスク化と通知が止まり、管理者に1日1回お知らせします。それまでのタスクを見る・完了にする・書き出すことはできます。カードを登録すれば、また動き出します。試用は1社1回です。<span class="wip-chip">検証中</span></p></details>
+        <details><summary><span class="q">Q</span>人数はどう数えますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>その月に、タスクの依頼者か担当者になった人を数えます。ワークスペースにいるだけの人は数えません。使った人が0人の月は ¥0 です。</p></details>
+        <details><summary><span class="q">Q</span>解約はどうすればいいですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>ポータルの「プランと請求」から解約できます（Stripe の画面に移ります）。Slackからアプリを外した場合も、契約中ならその期間の終わりで解約になります。<span class="wip-chip">検証中</span></p></details>
+        <details><summary><span class="q">Q</span>やめたあと、データはどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Slackからアプリを外すと、その会社のデータは30日間残したあと消します。止まっている間（試用切れ・お支払いの停止）も、タスクを見る・書き出すことはできます。必要なタスクは、やめる前にCSVで書き出してください。<span class="wip-chip">検証中</span></p></details>
         <details><summary><span class="q">Q</span>タスクの内容や担当を間違えたらどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>タスク化の返信に「期限変更」「担当変更」のボタンがあり、その場で直せます。作成後も、確認メッセージのボタンからいつでも直せます。</p></details>
-        <details><summary><span class="q">Q</span>他のメンバーのタスクが見えてしまいませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>見える範囲は、自分が関わるタスクと、参加しているチャンネルのタスクです。プライベートチャンネルやDMのタスクは、参加者だけが見えます。</p></details>
-        <details><summary><span class="q">Q</span>催促が多すぎて嫌がられませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>期限切れの催促は、翌営業日から最大5回までで、そのあとは自動で「保留」になります。通知の時刻や休日は、チームに合わせて設定できます。</p></details>
-        <details><summary><span class="q">Q</span>個人情報や社内のやりとりの扱いが心配です。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>タスクにしたメッセージの内容は、タスクの管理のためにデータベースに保存します。また、タスク名や期限の読み取りのため、メッセージの本文を外部のAIサービス（Claude）に送ります。保存先・保存範囲の詳細は、導入前にご説明します。</p></details>
-        <details><summary><span class="q">Q</span>いまのタスク管理ツールから乗り換えられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>今お使いの運用を伺ったうえで、移行の進め方をご提案します。Notionをお使いなら、同期して併用することもできます。</p></details>
+        <details><summary><span class="q">Q</span>他のメンバーのタスクが見えてしまいませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>見える範囲は、自分が関わるタスクと、参加しているチャンネルのタスクです。プライベートチャンネルやDMのタスクは、参加者だけが見えます。会社ごとに分けて保存し、他社のタスクは見えない作りにしています（配布版で検証中）。</p></details>
+        <details><summary><span class="q">Q</span>催促が多すぎて嫌がられませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>期限切れの催促は、翌営業日から最大5回までで、そのあとは自動で「保留」になります。通知の時刻や休日は、管理者が設定から変えられます。</p></details>
+        <details><summary><span class="q">Q</span>個人情報や社内のやりとりの扱いが心配です。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>タスクにしたメッセージの内容は、タスクの管理のためにデータベースに保存します。タスク名や期限の読み取りのため、メッセージの本文を外部のAIサービス（Claude）に送ります。また、スレッドの中の依頼をタスクにするため、リマインド人を招待したチャンネルのメッセージ本文を最大7日間だけ保存します。</p></details>
+        <details><summary><span class="q">Q</span>設定を手伝ってもらえますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>基本はSlackに追加するだけで使えます。設定に不安があれば、お問い合わせからご相談ください。</p></details>
       </div>
     </div>
   </section>
@@ -946,12 +969,14 @@
   <section class="final">
     <div class="container">
       <img class="final-chara" src="remind-jin-full.png" alt="">
-      <h2>Slackで頼んだ仕事が、<br>流れていく悩みを聞かせてください</h2>
-      <p>「うちのSlackでも使えるのか」という段階のご相談で構いません。仕組みを入れる方が早いのか、研修で自社で作れるようになる方が合っているのかも含めてお答えします。</p>
+      <h2>まずは14日間、<br>自分たちのSlackで試してください</h2>
+      <p>カード登録なしで始められます。合わなければ、Slackからアプリを外すだけ。「うちのSlackでも使えるのか」という段階のご質問も歓迎です。</p>
+      <p class="pre">いまは先行登録（招待制）で受け付けています。順にご案内します。</p>
       <div class="row">
-        <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-          <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=contact&amp;product=remind"><svg aria-hidden="true"><use href="#i-mail"/></svg>導入を相談する</a></span>
-        <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=remind">資料をもらう</a>
+        <span class="btn-wrap"><span class="bubble">カード登録なし</span>
+          <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=remind">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+        <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=remind"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a>
+        <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=contact&amp;product=remind">相談する</a>
       </div>
       <p class="meta">担当：杉田 光 ／ contact@parano-ai.com ／ 通常2営業日以内にご返信します</p>
     </div>
@@ -965,9 +990,9 @@
   </div>
 </footer>
 
-<a class="floating" href="/doryo/contact/?type=contact&amp;product=remind" aria-label="無料で導入を相談する（お問い合わせフォーム）">
-  <span class="ic" aria-hidden="true"><svg><use href="#i-chat"/></svg></span>
-  <span><small>ご相談は無料</small>導入を相談する</span>
+<a class="floating" href="/doryo/contact/?type=trial&amp;product=remind" aria-label="14日間 無料で試す（先行登録フォーム）">
+  <span class="ic" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+  <span><small>カード登録なし・先行登録</small>14日間 無料で試す</span>
 </a>
 
 <script>
