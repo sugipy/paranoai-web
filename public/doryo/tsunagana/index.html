@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ツナガーナ人｜ホームページの申込を、LINEとSlackで取りこぼさない</title>
-<meta name="description" content="ツナガーナ人は、ホームページの申込を受付番号でLINEにつなぎ、担当者のやりとりをSlackの1スレッドに集め、前日リマインドまで自動で送る同僚です。参加後のアンケートや、その後のお知らせまでLINEで届けられます。">
+<meta name="description" content="ツナガーナ人は、ホームページの申込を受付番号でLINEにつなぎ、担当者のやりとりをSlackの1スレッドに集め、前日リマインドまで自動で送る同僚です。HPの改修はいらず、受け付けフォームのURLを貼るだけ。Slackに追加して使う配布版は準備中で、いまは先行登録（招待制）で受け付けています。">
 <meta name="color-scheme" content="light">
 <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 <meta property="og:title" content="ツナガーナ人｜ホームページの申込を、LINEとSlackで取りこぼさない">
-<meta property="og:description" content="HP × LINE × Slack を受付番号ひとつでつなぐ。前日リマインド、参加後のアンケート、その後のお知らせまで。">
+<meta property="og:description" content="HP × LINE × Slack を受付番号ひとつでつなぐ。前日リマインドまで自動で。配布版は準備中、いまは先行登録（招待制）で受付中。">
 <meta property="og:url" content="https://parano-ai.com/doryo/tsunagana/">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://parano-ai.com/doryo/tsunagana/">
@@ -93,6 +93,25 @@
   .bubble { position: absolute; left: 50%; top: -15px; transform: translateX(-50%) rotate(-3deg); white-space: nowrap; background: var(--gold); border: 2px solid var(--black); border-radius: 999px; font-size: .6875rem; font-weight: 800; padding: 0 10px; line-height: 1.6; z-index: 2; }
   .hero-points { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 24px; font-weight: 800; font-size: .875rem; }
   .hero-points li { display: flex; align-items: center; gap: 6px; }
+  .pre-note { margin-top: 14px; font-size: .8125rem; font-weight: 700; color: var(--ink-2); }
+  .b-note { margin: 0 auto 28px; max-width: 760px; background: var(--card); border: 2px dashed var(--black); border-radius: 14px; padding: 12px 16px; font-size: .875rem; font-weight: 600; }
+  .b-note b { color: var(--red-d); }
+  .wip { display: inline-block; font-size: .6875rem; font-weight: 800; background: var(--gold-l); border: 2px solid var(--black); border-radius: 999px; padding: 0 8px; margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
+  .inds { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); max-width: 860px; margin: 0 auto; }
+  @media (min-width: 768px) { .inds { grid-template-columns: repeat(3, 1fr); } }
+  .ind { background: var(--card); border: 3px solid var(--black); border-radius: var(--radius); box-shadow: 5px 5px 0 var(--black); padding: 20px 12px; text-align: center; font-weight: 800; font-size: .9375rem; line-height: 1.6; }
+  .ind .ic { width: 52px; height: 52px; margin: 0 auto 10px; border-radius: 50%; background: var(--gold-l); border: 2px solid var(--black); color: var(--green-d); display: grid; place-items: center; }
+  .ind .ic svg { width: 28px; height: 28px; }
+  .setup-mock { max-width: 560px; margin: 0 auto 36px; }
+  .setup-mock .bd { gap: 10px; }
+  .setup-mock fieldset { border: 2px solid var(--line); border-radius: 12px; padding: 8px 12px 10px; }
+  .setup-mock legend { font-weight: 800; padding: 0 4px; }
+  .setup-mock .f { display: grid; gap: 2px; margin-top: 4px; }
+  .setup-mock .f span { color: var(--ink-3); font-size: .6875rem; }
+  .setup-mock .f b { font-weight: 600; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  .setup-mock .ok { display: inline-block; margin-left: 6px; font-size: .6875rem; color: #fff; background: var(--green); border-radius: 999px; padding: 0 8px; }
+  .setup-mock .save { justify-self: start; background: var(--red); color: #fff; font-weight: 800; border: 2px solid var(--black); border-radius: 999px; padding: 3px 16px; }
+  .flow h3 .fi { width: 22px; height: 22px; color: var(--green); vertical-align: -4px; margin-right: 6px; }
   .hero-points svg { width: 22px; height: 22px; color: #fff; background: var(--green); border-radius: 50%; padding: 3px; flex: none; }
 
   /* ヒーローの絵 */
@@ -352,6 +371,17 @@
     <symbol id="a-diamond" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"><path d="M20 4l16 16-16 16L4 20z"/><path d="M20 12l8 8-8 8-8-8z"/></g></symbol>
     <symbol id="a-sun" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><circle cx="20" cy="20" r="7"/><path d="M20 4v6M20 30v6M4 20h6M30 20h6M9 9l4 4M27 27l4 4M31 9l-4 4M13 27l-4 4"/></g></symbol>
     <symbol id="a-home" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20L20 6l15 14"/><path d="M10 17v17h20V17"/><path d="M16 34V24h8v10"/></g></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4.5"/><path d="M11.5 12L20 3.5M16.5 7l3 3M14 9.5l2.5 2.5"/></g></symbol>
+    <symbol id="i-hash" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" d="M9 3L7 21M17 3l-2 18M4 8.5h17M3 15.5h17"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 5.7 0l3.6-3.6a4 4 0 0 0-5.7-5.7L12 6.3"/><path d="M14 10a4 4 0 0 0-5.7 0l-3.6 3.6a4 4 0 0 0 5.7 5.7L12 17.7"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path stroke-linecap="round" d="M3.5 10h17M8 3v4M16 3v4"/></g></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path stroke-linecap="round" d="M2.5 10h19M6 15h4"/></g></symbol>
+    <symbol id="i-door" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H6v16h8"/><path d="M11 12h10M18 9l3 3-3 3"/></g></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M12 6c-2-1.5-5-2-8-1.5v14c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-14c-3-.5-6 0-8 1.5z"/><path d="M12 6v14"/></g></symbol>
+    <symbol id="i-run" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4.5" r="2"/><path d="M6 21l4-6 3 2 1 4M9 11l3-3 3 3 3 1M12 8l-1 5"/></g></symbol>
+    <symbol id="i-flower" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="9" r="2.5"/><path d="M12 6.5C12 3 16 3 15 6.6M14.5 9c3.5 0 3.5 4 0 3M9.5 9c-3.5 0-3.5 4 0 3M12 11.5V21M12 17c-2-2-5-2-6-1M12 17c2-2 5-2 6-1"/></g></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
   </defs>
 </svg>
 
@@ -366,13 +396,13 @@
     <nav class="nav" aria-label="ページ内">
       <a href="#concept">しくみ</a>
       <a href="#value">できること</a>
-      <a href="#features">特長</a>
+      <a href="#flow">始め方</a>
       <a href="#price">料金</a>
       <a href="#faq">よくある質問</a>
     </nav>
     <div class="header-cta">
       <a class="btn btn-ghost" href="/doryo/contact/?type=document&amp;product=tsunagana">資料請求</a>
-      <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=tsunagana">お問い合わせ</a>
+      <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=tsunagana">無料で試す</a>
     </div>
   </div>
   <div class="kente thin" aria-hidden="true"></div>
@@ -384,19 +414,20 @@
   <div class="hero">
     <div class="container">
       <div>
-        <span class="tag"><b>NEW</b>申込者が、公式LINEの友だちになる</span>
+        <span class="tag"><b>先行登録</b>配布版を準備中｜Slackに追加して14日間 無料で試せる</span>
         <h1><span class="nw">ホームページの</span><span class="nw">申込を、</span><br><span class="mark">LINEとSlack</span>で<br><span class="r nw">取りこぼさない。</span></h1>
-        <p class="lead"><b>ツナガーナ人</b>は、HPの申込とLINEとSlackを受付番号ひとつでつなぐ同僚です。申込をきっかけにお客様が公式LINEの友だちになり、前日の参加リマインド、参加後のアンケート、そしてその後もお知らせでつながり続けることまで、LINEで自然にできるようになります。社内のやりとりはSlackの1スレッドに集約。今の申込フォームを活かして導入します（受付番号とLINEボタンを加える改修を含みます）。</p>
+        <p class="lead"><b>ツナガーナ人</b>は、HPの申込とLINEとSlackを受付番号ひとつでつなぎ、前日の参加リマインドまで自動で送る同僚です。HPの改修はいらず、受け付けフォームのURLをボタンに貼るだけ。参加後のお礼・ご案内やSlackからの返信は、配布版で検証中の機能です（Slackを社内連絡に使っている会社向け）。</p>
         <div class="hero-cta">
+          <span class="btn-wrap"><span class="bubble">カード登録なしで始められる</span>
+            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=tsunagana">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
           <span class="btn-wrap"><span class="bubble">無料・1分で入力</span>
-            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=document&amp;product=tsunagana"><svg aria-hidden="true"><use href="#i-doc"/></svg>資料をもらう</a></span>
-          <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=contact&amp;product=tsunagana">導入を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=tsunagana"><svg aria-hidden="true"><use href="#i-doc"/></svg>資料をもらう</a></span>
         </div>
+        <p class="pre-note">いまは先行登録（招待制）で受け付けています。順にご案内します。Slackに追加して使う配布版は準備中で、本番での確認はこれからです。申込 → LINE連携 → スレッドへの通知 → 前日リマインドは、もとになった版を実際の事業で運用しています。</p>
         <ul class="hero-points">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>HPの改修なし（URLを貼るだけ）</li>
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>前日の参加リマインド</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>参加後のアンケート</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>その後もLINEでつながり続ける</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>14日間 無料で試せる</li>
         </ul>
       </div>
 
@@ -417,9 +448,9 @@
             </div>
           </div>
           <div class="mock">
-            <div class="hd"><i></i><i></i><i></i># 体験申込通知</div>
+            <div class="hd"><i></i><i></i><i></i># 申込通知</div>
             <div class="bd">
-              <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="ment">@担当者</span> 🔗 LINEとつながりました</div></div></div>
+              <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="ment">@担当者</span> 🔗 LINEとつながりました</div></div></div>
               <div class="sk-msg"><span class="sk-av hum"><svg><use href="#i-person"/></svg></span><div><div class="sk-who">担当者<time>10:40</time></div><div class="sk-text"><code>確定 10/14 10:00</code></div></div></div>
             </div>
           </div>
@@ -436,8 +467,8 @@
     <div class="container">
       <div class="stats-grid">
         <div class="stat"><div class="k">来る前に</div><div class="v">前日リマインド</div><div class="k">LINEで自動送信</div></div>
-        <div class="stat"><div class="k">来た後に</div><div class="v">アンケート</div><div class="k">LINEの中で回答・お客様ごとに保存</div></div>
-        <div class="stat"><div class="k">その後も</div><div class="v">つながる</div><div class="k">状態に合わせてお知らせ</div></div>
+        <div class="stat"><div class="k">受付番号</div><div class="v">自動で発行</div><div class="k">完了画面に表示</div></div>
+        <div class="stat"><div class="k">HPの改修</div><div class="v">なし</div><div class="k">フォームのURLを貼るだけ</div></div>
         <div class="stat"><div class="k">お客様の手間</div><div class="v">1<small>回の送信</small></div><div class="k">受付番号を送るだけ</div></div>
       </div>
     </div>
@@ -456,10 +487,10 @@
         <li class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-x"/></svg></span><p>HPから来た人とLINEで話している人が、同じ人なのか分からない</p></li>
         <li class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-x"/></svg></span><p>前日の確認連絡を忘れて、当日に来ない人が出る</p></li>
         <li class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-x"/></svg></span><p>体験や見学に来た人と、その後の連絡が途切れてしまう</p></li>
-        <li class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-x"/></svg></span><p>参加した人の感想や、申し込まなかった理由を聞けていない</p></li>
+        <li class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-x"/></svg></span><p>仕組みを変えたくても、HPのフォームを作り直す手間はかけられない</p></li>
       </ul>
       <div class="arrow-down" aria-hidden="true"><svg><use href="#i-down"/></svg></div>
-      <p class="answer reveal">申込者とLINEで<span class="hl">つながる</span>ことで、<br>来る前も、来た後も、その後も手が届きます。</p>
+      <p class="answer reveal">申込者とLINEで<span class="hl">つながる</span>ことで、<br>来る前も、来た後も手が届きます。</p>
     </div>
   </section>
 
@@ -472,9 +503,9 @@
         <p>新しいツールを覚える必要はありません。お客様はいつものLINE、担当者はいつものSlackのまま。</p>
       </div>
       <div class="nodes reveal">
-        <div class="node n-hp"><span class="badge"><i></i>ホームページ</span><p>申込はこれまでどおりHPで完結。受付番号を発行し、完了画面とメールに表示します。</p></div>
+        <div class="node n-hp"><span class="badge"><i></i>ホームページ</span><p>HPのボタンから、ツナガーナ人の受け付けフォームへ。送信すると受付番号を発行し、完了画面に表示します。</p></div>
         <div class="chain" aria-hidden="true"><svg><use href="#i-chain"/></svg></div>
-        <div class="node n-line"><span class="badge"><i></i>LINE</span><p>番号を受け取ると、申込内容をLINEの友だち情報に自動で書き込みます。</p></div>
+        <div class="node n-line"><span class="badge"><i></i>LINE</span><p>番号が届くと、申込とLINEの友だちを結びつけ、「確認しました」と自動で返します。</p></div>
         <div class="chain" aria-hidden="true"><svg><use href="#i-chain"/></svg></div>
         <div class="node n-slack"><span class="badge"><i></i>Slack</span><p>通知・お客様の発言・確定・リマインドが、申込ごとの1スレッドに集まります。</p></div>
       </div>
@@ -488,27 +519,29 @@
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>WHAT YOU CAN DO</span>
         <h2>LINEでつながると、<br><span class="nw">申込の「前」も「後」も手が届く</span></h2>
-        <p>受付番号を送ってもらうことで、お客様が公式LINEの友だちになります。そこから先は、来る前・来た後・その後まで、LINEでお客様に寄り添えます。</p>
+        <p>受付番号を送ってもらうことで、お客様が貴社のLINE公式アカウントの友だちになります。そこから先は、来る前・来た後のご連絡まで、LINEで届けられます。</p>
       </div>
 
+      <p class="b-note reveal"><b>配布版について：</b>申込 → LINE連携 → スレッド → 前日リマインドは、もとになった版（LINEの管理ツールを使う版）を実際の事業で運用しています。配布版はこれをLINEに直接つなぐ形に作り直したもので、「検証中」と書いた部分を含め、本番での確認はこれからです。</p>
+
       <ol class="journey reveal" aria-label="お客様の流れ">
-        <li>申込<small>HPから</small></li>
+        <li>申込<small>HPのボタンから</small></li>
         <li>LINEで番号を送る<small>申込 → LINE</small></li>
         <li class="t-before">前日<small>参加のリマインド</small></li>
         <li>当日<small>来店・参加</small></li>
-        <li class="t-after">翌日<small>参加後のアンケート</small></li>
-        <li class="t-later">その後<small>お知らせでつながり続ける</small></li>
+        <li class="t-after">翌日以降<small>お礼・ご案内</small></li>
+        <li class="t-later">いつでも<small>Slackから返信</small></li>
       </ol>
 
       <div class="value c-g reveal">
         <div class="v-text">
           <span class="v-num"><b>01</b>来る前に</span>
           <h3>前日に、参加のリマインドが届く</h3>
-          <p>予約の前日に、日時と場所をLINEでお送りします。普段使っているLINEに届くので気づきやすく、「うっかり忘れていた」による欠席を防ぐ助けになります。</p>
+          <p>予約の前日18時に、日時と連絡先をLINEでお送りします。普段使っているLINEに届くので気づきやすく、「うっかり忘れていた」による欠席を防ぐ助けになります。</p>
           <ul class="checks">
-            <li>担当者は日程を決めて書くだけ。送信は自動</li>
+            <li>担当者は日程を決めて書くだけ。LINEにつながった方へは送信は自動</li>
             <li>送ったことは担当者にも知らせるので、送り忘れの心配がない</li>
-            <li>送る時刻や文面はお店に合わせて決められる</li>
+            <li>文面はひな形から、設定ページで自社に合わせて変えられる</li>
           </ul>
         </div>
         <div class="phone" role="img" aria-label="LINE画面のイメージ。前日18時にお店から明日の予約のリマインドが届き、お客様が返信している。">
@@ -524,50 +557,50 @@
       <div class="value rev c-r reveal">
         <div class="v-text">
           <span class="v-num"><b>02</b>来た後に</span>
-          <h3>参加後に、アンケートを集められる</h3>
-          <p>担当者が「来店済み」の印を付けると、お礼とアンケートがLINEで自動で届きます（翌日に送るなど、タイミングも決められます）。LINEの中で答えられるので回答の手間が少なく、答えはお客様の情報として保存されます。</p>
+          <h3>参加後に、お礼やご案内を届けられる<span class="wip">検証中</span></h3>
+          <p>予約の90分後に、スレッドで「どうでしたか？」と担当者に聞きます。絵文字ひとつで結果（参加・検討中・見送り・欠席）を付けると、結果ごとに決めておいた文面を、決めた日時にLINEでお送りします。</p>
           <ul class="checks">
-            <li>満足度や感想、入会・購入を迷っている理由を聞ける</li>
-            <li>回答はお客様の情報にひもづいて残るので、次の連絡に活かせる（同じ質問は最新の回答で更新）</li>
-            <li>紙のアンケートの集計や入力がいらない</li>
+            <li>結果ごとに、文字のメッセージを最大3通（何日後の何時に送るかも決められる）</li>
+            <li>アンケートを取りたいときは、文面にアンケートのURL（Googleフォームなど）を入れて送る</li>
+            <li>結果が変わったら、まだ送っていない分は送らない（入会した方に入会のご案内を送らない）</li>
           </ul>
         </div>
-        <div class="phone" role="img" aria-label="LINE画面のイメージ。参加の翌日にお礼とアンケートが届き、満足度を5段階で、気になったことを選択肢で答える。">
+        <div class="phone" role="img" aria-label="LINE画面のイメージ。参加の翌日にお礼とアンケートのURLが届き、4日後に入会のご案内が届いている。">
           <div class="top">体験受付</div>
           <div class="chat">
             <div class="t">10/15（木）12:00</div>
-            <div class="b shop">昨日はご参加ありがとうございました！1分ほどのアンケートにご協力ください</div>
-            <div class="b shop">今日の満足度は？（5段階）<div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span class="on">5</span></div></div>
-            <div class="b shop">気になったことはありますか？<div class="opts"><span class="on">料金・コースについて</span><span>日程・通いやすさ</span></div><div class="send">送信する</div></div>
+            <div class="b shop">昨日はご参加ありがとうございました！よろしければ、1分ほどのアンケートにご協力ください（アンケートのURL）</div>
+            <div class="t">10/18（日）19:00</div>
+            <div class="b shop">先日はありがとうございました。入会のご案内をお送りします。ご不明な点は、このLINEでお気軽にどうぞ</div>
+            <div class="b me">平日午前のクラスについて聞きたいです</div>
           </div>
         </div>
       </div>
 
       <div class="value c-y reveal">
         <div class="v-text">
-          <span class="v-num"><b>03</b>その後も</span>
-          <h3>すぐ決めなかった人とも、つながり続けられる</h3>
-          <p>体験や見学のあと、その場で申し込む人ばかりではありません。LINEでつながっていれば、空き状況やキャンペーン、役立つ情報を少しずつ届けて、「また今度」を「今」に変えるきっかけを作れます。いわゆる「ナーチャリング（見込みのお客様を育てること）」です。</p>
+          <span class="v-num"><b>03</b>いつでも</span>
+          <h3>LINEの返信も、Slackのスレッドから<span class="wip">検証中</span></h3>
+          <p>お客様からLINEで届いた発言は、その申込のスレッドに転記されます。返したいときは、スレッドに <code>@ツナガーナ人</code> を付けて書くだけ。その文がお客様にLINEで届きます。</p>
           <ul class="checks">
-            <li>担当者が付けた印（「体験済み」「迷い中」など）やアンケートの回答をもとに、送る相手を分けられる</li>
-            <li>あらかじめ決めた順番・間隔で、自動で届けられる</li>
-            <li>LINEなので気づきやすく、そのまま返信ももらえる</li>
+            <li>メンションを付けない書き込みは、スタッフ同士の相談。お客様には届かない</li>
+            <li>送るたびに、今月何通目かをスレッドに表示</li>
+            <li>送れるのは文字だけ。画像やスタンプは、LINE公式アカウントのチャット画面から送れる</li>
           </ul>
         </div>
-        <div class="phone" role="img" aria-label="LINE画面のイメージ。1週間後に空き状況、2週間後にキャンペーンのお知らせが届き、お客様が見学の相談を返信している。">
+        <div class="phone" role="img" aria-label="LINE画面のイメージ。お客様が空き状況をたずね、お店から返信が届いている。">
           <div class="top">体験受付</div>
           <div class="chat">
-            <div class="t">1週間後</div>
-            <div class="b shop">先日はありがとうございました。来月の平日午前クラスに空きが出ました！</div>
-            <div class="t">2週間後</div>
-            <div class="b shop">【今月だけ】入会金が無料になるキャンペーンのお知らせです</div>
-            <div class="b me">平日午前、見学できますか？</div>
+            <div class="t">10/12（月）10:31</div>
+            <div class="b me">水曜の10時は空いていますか？</div>
+            <div class="t">10:38</div>
+            <div class="b shop">空いています！10/14（水）10:00でお取りしますね。前日にこのLINEでご案内をお送りします</div>
           </div>
         </div>
       </div>
 
-      <div class="cost-note reveal">お知らせやアンケートの案内も、LINE公式アカウントの月の通数に含まれます。お知らせを続けて送る場合は、LINEの有料プランが現実的です。</div>
-      <p class="small-note">※画面はイメージです。送る内容・タイミングは導入先に合わせて設定します。アンケートとお知らせ配信は、導入時に設定し、導入先の環境でテストしてお届けする機能です。</p>
+      <div class="cost-note reveal">リマインド・参加後のLINE・スレッドからの返信は、貴社のLINE公式アカウントの月の通数に数えられます（無料プランは月200通。受付番号を確認したときの自動の返事は数えません）。ツナガーナ人は設定した上限（はじめは200通）を超えて送りません。上限は設定ページで変えられるようにする予定です。LINE側の通数と料金は貴社のご契約です。</div>
+      <p class="small-note">※画面はイメージです。参加後のLINEは、はじめはオフになっています。設定ページで文面を確かめてオンにしたときだけ送ります。</p>
     </div>
   </section>
 
@@ -579,11 +612,11 @@
         <h2>お客様がすることは、<br><span class="nw">受付番号をLINEで送るだけ</span></h2>
       </div>
       <ol class="steps">
-        <li class="step reveal"><span class="who">お客様</span><div class="n">STEP 01</div><h3>HPから申込む</h3><p>送信すると受付番号が発行され、Slackに申込通知が届きます。</p></li>
+        <li class="step reveal"><span class="who">お客様</span><div class="n">STEP 01</div><h3>HPから申込む</h3><p>HPのボタンから受け付けフォームへ。送信すると受付番号が発行され、Slackに申込通知が届きます。</p></li>
         <li class="step reveal"><span class="who">お客様</span><div class="n">STEP 02</div><h3>LINEで番号を送る</h3><p>完了画面のボタンでLINEが開き、番号は入力済み。友だち追加して送るだけ。</p></li>
-        <li class="step reveal"><span class="who a">自動</span><div class="n">STEP 03</div><h3>ひとりの人としてつながる</h3><p>申込内容をLINEの友だち情報に書き込み、スレッドで担当者に知らせます。</p></li>
+        <li class="step reveal"><span class="who a">自動</span><div class="n">STEP 03</div><h3>ひとりの人としてつながる</h3><p>申込とLINEの友だちを結びつけ、スレッドで担当者に知らせます。</p></li>
         <li class="step reveal"><span class="who s">担当者</span><div class="n">STEP 04</div><h3>「確定」と書くだけ</h3><p>スレッドに <code>確定 10/14 10:00</code> と書けば予約が入ります。</p></li>
-        <li class="step reveal"><span class="who a">自動</span><div class="n">STEP 05</div><h3>前日に自動リマインド</h3><p>前日18時（設定可）にLINEで送り、送ったことを担当者に知らせます。LINEでつながっていない方は、電話・メールでの連絡を促します。</p></li>
+        <li class="step reveal"><span class="who a">自動</span><div class="n">STEP 05</div><h3>前日に自動リマインド</h3><p>前日18時にLINEで送り、送ったことを担当者に知らせます。LINEでつながっていない方は、電話・メールでの連絡を促します。</p></li>
       </ol>
     </div>
   </section>
@@ -595,7 +628,7 @@
         <div class="t-text reveal">
           <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>SCREEN</span>
           <h2>1件の申込の経過が、<br>ひとつのスレッドで追える</h2>
-          <p>通知・お客様の発言・確定・リマインドの記録は、すべてこのスレッドに集まります。誰が・いつ・何をしたかが時系列で残るので、引き継ぎや聞き直しが減ります。お客様へのLINEの送信は、専用のチャット画面から行います。</p>
+          <p>通知・お客様の発言・確定・リマインドの記録は、このスレッドに集まります。誰が・いつ・何をしたかが時系列で残るので、引き継ぎや聞き直しのときも追いやすくなります。お客様への返信も、このスレッドで <code>@ツナガーナ人</code> を付けて書けばLINEで届きます（検証中）。</p>
           <ul class="checks">
             <li>LINEでつながったかどうかが一目で分かる</li>
             <li>お客様のLINEの発言もスレッドに届く</li>
@@ -604,22 +637,24 @@
           </ul>
         </div>
         <div class="reveal">
-          <div class="slack" role="img" aria-label="Slackのスレッド画面のイメージ。申込通知、LINEとつながった知らせ、お客様のLINEの発言、確定の書き込み、前日リマインドの送信記録が時系列に並ぶ。">
-            <div class="side"><b>〇〇スクール</b><em>▾ チャンネル</em><span># 全体連絡</span><span class="cur"># 体験申込通知</span><span># シフト調整</span><span># 備品・設備</span><em>▾ ダイレクトメッセージ</em><span>● 担当者</span></div>
+          <div class="slack" role="img" aria-label="Slackのスレッド画面のイメージ。申込通知、LINEとつながった知らせ、お客様のLINEの発言、担当者の返信とLINEで送った記録、確定の書き込み、前日リマインドの送信記録が時系列に並ぶ。">
+            <div class="side"><b>〇〇スクール</b><em>▾ チャンネル</em><span># 全体連絡</span><span class="cur"># 申込通知</span><span># シフト調整</span><span># 備品・設備</span><em>▾ ダイレクトメッセージ</em><span>● 担当者</span></div>
             <div class="thread">
-              <div class="thead">スレッド<span># 体験申込通知（見本）</span></div>
+              <div class="thead">スレッド<span># 申込通知（見本）</span></div>
               <div class="msgs">
-                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10:02</time></div><div class="sk-text">【体験申込】受付番号 K7M2-Q9PX ／ 山田 花子 様 ／ 希望: 平日午前<br>LINE連携: 受付番号の送信待ち</div></div></div>
-                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="ment">@担当者</span> 🔗 この申込がLINEとつながりました</div></div></div>
-                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10:31</time></div><div class="sk-text"><span class="ment">@担当者</span> 💬 LINEでメッセージが届きました<br>水曜の10時は空いていますか？<br><span class="rx">👀 1</span></div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:02</time></div><div class="sk-text">【申込】受付番号 K7M2-Q9PX ／ 山田 花子 様<br>LINE連携: 受付番号の送信待ち</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:05</time></div><div class="sk-text"><span class="ment">@担当者</span> 🔗 この申込がLINEとつながりました</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:31</time></div><div class="sk-text"><span class="ment">@担当者</span> 💬 LINEでメッセージが届きました<br>水曜の10時は空いていますか？</div></div></div>
+                <div class="sk-msg"><span class="sk-av hum"><svg><use href="#i-person"/></svg></span><div><div class="sk-who">担当者<time>10:38</time></div><div class="sk-text"><span class="ment">@ツナガーナ人</span> 空いています！10/14（水）10:00でお取りしますね</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:38</time></div><div class="sk-text">📤 LINEで送りました（今月 12 通目）</div></div></div>
                 <div class="sk-msg"><span class="sk-av hum"><svg><use href="#i-person"/></svg></span><div><div class="sk-who">担当者<time>10:40</time></div><div class="sk-text"><code>確定 10/14 10:00</code></div></div></div>
-                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10:40</time></div><div class="sk-text"><span class="ment">@担当者</span> 📅 10月14日（水）10:00 で確定しました。前日18時にLINEでリマインドします<br><span class="rx">✅ 1</span></div></div></div>
-                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">申込受付アプリ<span class="sk-app">アプリ</span><time>10/13 18:00</time></div><div class="sk-text"><span class="ment">@担当者</span> 📩 LINEでリマインドを送りました</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10:40</time></div><div class="sk-text"><span class="ment">@担当者</span> 📅 10月14日（水）10:00 で確定しました。前日18時にLINEでリマインドします<br><span class="rx">✅ 1</span></div></div></div>
+                <div class="sk-msg"><span class="sk-av"><svg><use href="#i-bot"/></svg></span><div><div class="sk-who">ツナガーナ人<span class="sk-app">アプリ</span><time>10/13 18:00</time></div><div class="sk-text"><span class="ment">@担当者</span> 📩 LINEでリマインドを送りました</div></div></div>
               </div>
               <div class="reply">返信する…</div>
             </div>
           </div>
-          <p class="small-note" style="text-align:center">表示内容は説明用の見本です。お名前・文言は導入先に合わせて設定します。</p>
+          <p class="small-note" style="text-align:center">表示内容は説明用の見本です。施設名やLINEの文面は、設定ページで自社に合わせて変えられます。</p>
         </div>
       </div>
     </div>
@@ -630,15 +665,15 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>FEATURES</span>
-        <h2>現場が増やす作業は、<br><span class="nw">ほとんどありません</span></h2>
+        <h2>現場が増やす作業は、<br><span class="nw">「書く」くらい</span></h2>
       </div>
       <div class="feats">
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-sun"/></svg><h3>LINE登録を強制しない</h3><p>申込はHPで完結するので、LINEを使わない方も取りこぼしません。つながったかどうかはスレッドで分かります。</p></div>
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-home"/></svg><h3>いつものチャットに集まる</h3><p>通知も記録も、普段使っているSlackの申込スレッドに集まります。お客様へLINEを送るときだけ、専用のチャット画面を使います。</p></div>
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-diamond"/></svg><h3>書くだけで予約・リマインド</h3><p>「確定 10/14 10:00」と書けば予約が入り、前日の決まった時刻（例: 18時）にLINEでリマインドを送ります。変更・キャンセルも同じ書き方です。</p></div>
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-star"/></svg><h3>失敗も同じ場所に出る</h3><p>番号の打ち間違いや送信・書き込みの失敗の多くは、⚠️ 付きで同じチャンネルに知らせます。ごくまれに通知が出ない失敗もありうるため、リマインドの📩が出ているかを確認する運用もあわせてご案内します。</p></div>
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-sankofa"/></svg><h3>いつでも元に戻せる</h3><p>HP側の設定を外して再公開すれば、従来の申込フローに戻ります。Slackへの自動書き込みも設定で個別に止められます。</p></div>
-        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-ram"/></svg><h3>データは貴社のアカウントに</h3><p>LINE・Cloudflare・Slackは貴社名義でご用意いただきます。照合のために預かる申込データは60日で自動的に消えます。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-sun"/></svg><h3>LINE登録を強制しない</h3><p>申込はフォームで完了するので、LINEを使わない方も取りこぼしません。つながったかどうかはスレッドで分かります。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-home"/></svg><h3>いつものチャットに集まる</h3><p>通知も記録も、普段使っているSlackの申込スレッドに集まります。お客様への返信も、同じスレッドから送れます（検証中）。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-diamond"/></svg><h3>書くだけで予約・リマインド</h3><p>「確定 10/14 10:00」と書けば予約が入り、前日18時にLINEでリマインドを送ります。変更・キャンセルも同じ書き方です。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-star"/></svg><h3>失敗も同じ場所に出る</h3><p>番号の打ち間違いや送信の失敗の多くは、⚠️ 付きで同じチャンネルに知らせます。Slackへの通知が失敗しても申込は受け付け、あとで通知を立て直します。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-sankofa"/></svg><h3>いつでもやめられる</h3><p>HPのボタンのリンクを元に戻せば、従来の申込方法に戻ります。やめるときは、Slackからアプリを外すか、「プランと請求」から解約します。</p></div>
+        <div class="feat reveal"><svg class="adk" aria-hidden="true"><use href="#a-ram"/></svg><h3>LINEは貴社の名義のまま</h3><p>お客様に届くLINEの送り主は、貴社のLINE公式アカウントです。照合のために預かる申込データは、申込から60日で自動的に消える設計です（現時点の設計。規約は準備中です）。</p></div>
       </div>
     </div>
   </section>
@@ -648,17 +683,16 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>USE CASES</span>
-        <h2>「申込 → 日程調整 → 来店」が<br><span class="nw">ある仕事に</span></h2>
+        <h2>体験・説明会・見学の<br><span class="nw">申込を受ける仕事に</span></h2>
       </div>
-      <ul class="chips reveal">
-        <li>スクール・教室の体験レッスン</li>
-        <li>スポーツ施設・ジム</li>
-        <li>サロン・治療院の初回予約</li>
-        <li>住宅・不動産の見学予約</li>
-        <li>説明会・個別相談会</li>
-        <li>採用の応募受付</li>
-      </ul>
-      <p class="chips-note">問い合わせフォームのあるHPと、社内連絡にSlackをお使いであることを想定しています。それ以外の場合もご相談ください。</p>
+      <div class="inds">
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-book"/></svg></div>スクール・教室の<br>体験レッスン</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-run"/></svg></div>スポーツ施設・<br>ジムの体験</div>
+                <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-mic"/></svg></div>説明会・<br>個別相談会</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-eye"/></svg></div>教室・施設の<br>見学</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div>習い事の<br>体験・見学</div>
+      </div>
+      <p class="chips-note">社内連絡にSlackをお使いの会社向けです（スタッフの返信の窓口がSlackのスレッドになるため、Slackを使っていない会社は、いまは対象外です）。LINE公式アカウントは無料プランから使えます。</p>
     </div>
   </section>
 
@@ -667,31 +701,56 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>WHY US</span>
-        <h2>自社で検証した仕組みを、<br><span class="nw">導入先の環境でテストしてお届けします</span></h2>
+        <h2>運用している仕組みを、<br><span class="nw">自社のSlackで確かめてから</span></h2>
       </div>
       <div class="reasons">
-        <div class="reason reveal"><div class="k"><b>01</b>REASON</div><h3>作り手が、自社で検証している</h3><p>申込 → LINE連携 → スレッドへの通知 → 予約の確定までは、自社の事業で本物のLINE・Slackを使ってテストしています。リマインド・アンケート・お知らせ配信は、導入時に設定し、導入先の環境でテストして提供します。</p></div>
-        <div class="reason reveal"><div class="k"><b>02</b>REASON</div><h3>本番前に、本物の環境でテスト</h3><p>導入時はテスト申込で、LINE連携・確定・リマインド・失敗時の通知までを実際に通し、結果を記録してお渡しします。</p></div>
-        <div class="reason reveal"><div class="k"><b>03</b>REASON</div><h3>自分たちで直せるようにもなれる</h3><p>仕組みを入れるだけでなく、社内で同じものを作れるようになる <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
+        <div class="reason reveal"><div class="k"><b>01</b>REASON</div><h3>もとになった版を、実際の事業で運用している</h3><p>申込 → LINE連携 → スレッドへの通知 → 予約の確定 → 前日リマインドは、もとになった版を実際の事業で、本物のLINE・Slackを使って運用しています。配布版は、これを複数の会社で使えるように作り直したものです。</p></div>
+        <div class="reason reveal"><div class="k"><b>02</b>REASON</div><h3>14日間、自社の環境で試せる</h3><p>Slackに追加して、貴社のLINE公式アカウントをつなげば、本物の申込の流れで14日間試せます。合わなければ、カードを登録せずにやめられます（配布版は先行登録の方から順にご案内します）。</p></div>
+        <div class="reason reveal"><div class="k"><b>03</b>REASON</div><h3>自分たちで直せるようにもなれる</h3><p>仕組みを使うだけでなく、社内で同じものを作れるようになる <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
       </div>
     </div>
   </section>
 
   <!-- 導入の流れ -->
-  <section class="sec-bg">
+  <section class="sec-bg" id="flow">
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>FLOW</span>
-        <h2>導入の流れ</h2>
-        <p>本物のLINEとSlackで試してから、本番に切り替えます。</p>
+        <h2>始め方</h2>
+        <p>用意するのは、Slack・LINE公式アカウント・申込ボタンを置けるHPの3つです。L Harness などの別のツールはいりません。</p>
+      </div>
+      <p class="b-note reveal"><b>いまは先行登録（招待制）です。</b>配布版（LINEへの直接の接続・設定ページ・試用・カード登録）は準備中で、本番での確認はこれからです。下の流れは、配布版を公開したときの予定です。</p>
+      <div class="setup-mock reveal" role="img" aria-label="設定ページの画面イメージ。申込を流すチャンネルと担当者、LINE公式アカウントの接続状態、施設名・連絡先・プライバシーポリシーのURL・前日リマインドの文面を入力する欄が並ぶ。">
+        <div class="mock">
+          <div class="hd"><i></i><i></i><i></i>ツナガーナ人 設定ページ</div>
+          <div class="bd">
+            <fieldset><legend>Slack</legend>
+              <div class="f"><span>申込を流すチャンネル</span><b>C0123ABCD（# 申込通知）</b></div>
+              <div class="f"><span>メンションする担当者</span><b>U0456EFGH（担当者）</b></div>
+            </fieldset>
+            <fieldset><legend>LINE公式アカウント<span class="ok">つながっています</span></legend>
+              <div class="f"><span>チャネルシークレット・チャネルアクセストークン（変えるときだけ入力）</span><b>••••••••</b></div>
+            </fieldset>
+            <fieldset><legend>申込フォームとLINEの文面</legend>
+              <div class="f"><span>施設名</span><b>〇〇スクール</b></div>
+              <div class="f"><span>プライバシーポリシーのURL（無いとフォームを公開しません）</span><b>https://…/privacy</b></div>
+              <div class="f"><span>前日リマインドの文面</span><b>{お名前}{施設名}です。{日時} から…</b></div>
+            </fieldset>
+            <span class="save">保存する</span>
+          </div>
+        </div>
+        <p class="img-note" style="margin-top:10px">※画面はイメージです（配布版は準備中です）</p>
       </div>
       <ol class="flow">
-        <li class="reveal"><span class="no">01</span><div><h3>今の流れを伺う</h3><p>申込から来店まで、誰が・何で・どう連絡しているか。担当者、通知先、リマインドの時刻などを決めます。</p></div></li>
-        <li class="reveal"><span class="no">02</span><div><h3>アカウントの準備</h3><p>LINE公式アカウント・Cloudflare・Slackを貴社名義でご用意いただきます。手順はご案内し、パスワードや鍵はご自身で入力していただきます。</p></div></li>
-        <li class="reveal"><span class="no">03</span><div><h3>構築と結線</h3><p>HPのフォームに受付番号とLINEボタンを加え、LINE・照合サーバー・Slackをつなぎます。</p></div></li>
-        <li class="reveal"><span class="no">04</span><div><h3>本物の環境でテスト</h3><p>テスト申込で、LINE連携・確定・リマインド・アンケート・お知らせ配信・失敗時の通知までを実際に通し、結果を記録します。</p></div></li>
-        <li class="reveal"><span class="no">05</span><div><h3>担当者のリハーサルと本番</h3><p>担当者の方に申込から体験後のフォローまでを一度通していただき、問題がなければ本番に切り替えます。</p></div></li>
+        <li class="reveal"><span class="no">01</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-arrow"/></svg>「無料で試す」から、Slackで「許可する」</h3><p>Slackの許可画面で「許可する」を押すと、14日間の試用が始まり、入れた方に設定ページのリンクがSlackのDMで届きます。いまは先行登録（招待制）のため、ご案内のあとに始められます。</p></div></li>
+        <li class="reveal"><span class="no">02</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-hash"/></svg>通知先のチャンネルと担当者を選ぶ</h3><p>設定ページで、申込を流すチャンネルとメンションする担当者を選びます。チャンネルにツナガーナ人を招待（/invite）してから保存します。社外と共有しているチャンネル（Slackコネクト）は選べません。</p></div></li>
+        <li class="reveal"><span class="no">03</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-key"/></svg>自社のLINE公式アカウントをつなぐ<span class="wip">検証中</span></h3><p>LINE公式アカウントでMessaging APIを有効にし、チャネルシークレットとチャネルアクセストークン（長期）を設定ページに貼ります。LINE側で「応答メッセージ」をオフ、「Webhook」をオンにします。LINEの仕組み上、ここは貴社ご自身での操作になります（手順はご案内します）。</p></div></li>
+        <li class="reveal"><span class="no">04</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-link"/></svg>文面を確かめて、URLをHPに貼る</h3><p>施設名・連絡先・プライバシーポリシーのURL・リマインドの文面を確かめ、受け付けフォームのURLをHPのボタンに貼ります。文面はひな形が入っているので、変えなければそのまま使えます。</p></div></li>
+        <li class="reveal"><span class="no">05</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-cal"/></svg>14日間、試せる</h3><p>試用中も、有料の契約と同じ機能を使えます。残りが3日・1日になったらSlackのDMでお知らせする予定です（検証中）。</p></div></li>
+        <li class="reveal"><span class="no">06</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-card"/></svg>続けるなら、カードを登録<span class="wip">検証中</span></h3><p>設定ページの「プランと請求」からカードを登録すると、そのまま続けて使えます。決済はStripeです。金額は検討中で、先行登録の方へ個別にご案内します。</p></div></li>
+        <li class="reveal"><span class="no">07</span><div><h3><svg class="fi" aria-hidden="true"><use href="#i-door"/></svg>やめるときは、アプリを外すか解約</h3><p>「プランと請求」から解約するか、Slackからアプリを外します。アプリを外しただけではカードの契約は解約されないので、「プランと請求」からの解約もお願いします。LINE Developers の Webhook もオフにしてください。</p></div></li>
       </ol>
+      <div class="cost-note reveal">試用が終わったとき・お支払いが確認できないまま猶予の期間を過ぎたとき・解約したときは、新しい申込の受け付け（フォーム）とLINEへの送信を止めます。止まったことはチャンネルでお知らせする予定です（検証中）。申込とつながっているお客様のLINEの発言は、スレッドへの転記を続けます。申込のデータは、申込から60日で消えます。</div>
     </div>
   </section>
 
@@ -701,34 +760,31 @@
       <div class="sec-head reveal">
         <span class="eyebrow"><svg aria-hidden="true"><use href="#i-star"/></svg>PRICE</span>
         <h2>料金</h2>
-        <p>構築費は、今の流れを伺ってからお見積もりします。</p>
+        <p>金額は検討中です。先行登録の方へ個別にご案内します。14日間は無料で、カード登録なしで試せます。</p>
       </div>
       <div class="prices">
         <div class="price reveal">
-          <span class="lab">構築費</span>
-          <div class="big">お見積もり（ヒアリング後）</div>
+          <span class="lab">ツナガーナ人の利用料</span>
+          <div class="big">金額は検討中（先行登録の方へ個別にご案内）</div>
           <ul class="checks">
-            <li>今の申込の流れのヒアリングと設計</li>
-            <li>HPのフォームへの受付番号・LINEボタンの追加</li>
-            <li>LINE・照合サーバー・Slackの結線</li>
-            <li>本物の環境でのテストと記録</li>
-            <li>リマインド・アンケート・お知らせ配信の初期設定</li>
-            <li>担当者の運用リハーサル</li>
+            <li>14日間の無料試用（カード登録なしで始められます。1つのSlackワークスペースにつき1回）</li>
+            <li>1契約で、LINE公式アカウント1つ・Slackワークスペース1つ</li>
+            <li>続けるときのお支払いは、カード（Stripe）を予定しています</li>
+            <li>請求書の確認・カードの変更・解約は、設定ページの「プランと請求」から（準備中）</li>
           </ul>
-          <a class="btn btn-primary" href="/doryo/contact/?type=quote&amp;product=tsunagana">見積もりを依頼する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-primary" href="/doryo/contact/?type=quote&amp;product=tsunagana">料金について問い合わせる<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         </div>
         <div class="price run reveal">
-          <span class="lab">運用費</span>
+          <span class="lab">別にかかるもの</span>
           <div class="big">各サービスの利用料（貴社のご契約）</div>
           <ul class="checks">
-            <li>LINE公式アカウント：無料プランから。月200通までで、スタッフからの送信・リマインド・アンケートの案内・お知らせの配信が数に入ります（自動応答は入りません）</li>
-            <li>Cloudflare：無料プランで始められます。画像の保存にR2を使うためカード登録が必要で、容量を超えた分は課金されます（通常の使い方では無料枠内の想定です）</li>
-            <li>Slack：お使いのプランで動くかを導入前に確認します</li>
-            <li>アンケートやお知らせ配信を続ける場合は、LINEの有料プランが現実的です。件数に応じてご案内します</li>
-            <li>導入後の保守・更新対応の範囲は、お見積もりの際にご説明します</li>
+            <li>LINE公式アカウント：無料プランから。月200通までで、リマインド・参加後のLINE・スレッドからの返信が数に入ります（受付番号を確認したときの自動の返事は入りません）</li>
+            <li>ツナガーナ人は設定した上限を超えて送りません。LINE側の通数と料金は貴社のご契約です。足りなくなりそうなら、LINEの有料プランをご検討ください</li>
+            <li>Slack：料金は貴社のご契約のままです</li>
           </ul>
         </div>
       </div>
+      <p class="small-note" style="text-align:center">いまは先行登録（招待制）で受け付けています。順にご案内します。</p>
     </div>
   </section>
 
@@ -740,13 +796,18 @@
         <h2>よくある質問</h2>
       </div>
       <div class="faq">
-        <details><summary><span class="q">Q</span>LINEで受付番号を送らないお客様はどうなりますか？</summary><div class="a">申込自体はHPで完了しているので、従来どおり電話やメールでご連絡いただけます。スレッドに「LINEとつながりました」が出ていないことで、担当者はすぐ判断できます。</div></details>
-        <details><summary><span class="q">Q</span>今のホームページのままで使えますか？</summary><div class="a">申込フォームに、受付番号の発行とLINEボタンを加える改修が必要です。HPを改修できること（制作会社経由でも可）が前提で、自社以外のHPの構成で動くかは事前に確認します。</div></details>
-        <details><summary><span class="q">Q</span>LINEでたくさん送ると、ブロックされませんか？</summary><div class="a">送る相手（体験済み・迷い中など）と頻度を絞って届けられます。どの人に、いつ、何を送るかはヒアリングで一緒に決め、送りすぎない設計にします。</div></details>
-        <details><summary><span class="q">Q</span>すでにLINE公式アカウントを持っています。</summary><div class="a">今のアカウントを使うか、申込受付用に新しいアカウントを分けるかを、ヒアリングで一緒に決めます。既存の配信やお客様リストに影響が出ない形を優先します。</div></details>
-        <details><summary><span class="q">Q</span>個人情報の扱いが心配です。</summary><div class="a">申込内容とLINEの情報は、貴社名義のアカウントの中に保存されます。受付番号を照合するために一時的に預かる申込データは、60日で自動的に削除されます。</div></details>
-        <details><summary><span class="q">Q</span>Slackを使っていません。</summary><div class="a">現在はSlackへの通知を前提に組んでいます。ほかの連絡ツールをお使いの場合は、対応できるかを個別に確認しますのでご相談ください。</div></details>
-        <details><summary><span class="q">Q</span>うまく動かなくなったらどうなりますか？</summary><div class="a">送信や書き込みの失敗の多くは、⚠️ 付きでSlackに知らせます。照合の仕組みが止まっていても、HPの申込は受け付け、LINEボタンを出さずに従来どおり処理する設計です。必要ならHP側の設定を外して、従来の申込フローに戻せます。</div></details>
+        <details><summary><span class="q">Q</span>試用期間が終わったらどうなりますか？</summary><div class="a">続ける場合は、設定ページの「プランと請求」からカードを登録してください（残りが3日・1日になったら、入れた方とSlackの管理者にDMでお知らせする予定です。検証中）。登録しないまま試用が終わると、新しい申込の受け付けとLINEへの送信が止まります。止まったことはチャンネルでお知らせする予定です（検証中）。届いたLINEの発言のスレッドへの転記は続けます。</div></details>
+        <details><summary><span class="q">Q</span>解約はどうすればいいですか？</summary><div class="a">設定ページの「プランと請求」（Stripeの顧客ポータル）から解約できます。Slackからアプリを外しただけでは、カードの契約は解約されません。アプリを外したあとは、請求のメールのリンクから顧客ポータルに入れます。</div></details>
+        <details><summary><span class="q">Q</span>データはどうなりますか？</summary><div class="a">現時点の設計では、申込のデータは申込から60日で自動的に消えます（規約は準備中です）。Slackからアプリを外すと、SlackとLINEの接続に使う鍵はその場で消します（会社の設定と契約の記録は残ります）。申込者から削除を頼まれたときは、設定ページからその方の記録を消せます。</div></details>
+        <details><summary><span class="q">Q</span>料金は、使う人数で決まりますか？</summary><div class="a">金額と決め方は検討中で、先行登録の方へ個別にご案内します。契約の単位は、LINE公式アカウント1つとSlackワークスペース1つの予定です。</div></details>
+        <details><summary><span class="q">Q</span>LINEで受付番号を送らないお客様はどうなりますか？</summary><div class="a">申込自体はフォームで完了しているので、従来どおり電話やメールでご連絡いただけます。スレッドに「LINEとつながりました」が出ていないことで、担当者はすぐ判断できます。</div></details>
+        <details><summary><span class="q">Q</span>今のホームページのままで使えますか？</summary><div class="a">はい。HPの改修はいりません。受け付けフォームのURLを、HPのボタンやリンクに貼るだけです。ただし、今お使いのフォーム（WordPressのプラグイン、Googleフォーム、予約システムなど）をそのまま使い続けることには対応していません。開発者の方がいれば、サーバーから申込を送るAPIも使えます（つなぎ込みのお手伝いはしていません）。</div></details>
+        <details><summary><span class="q">Q</span>すでにLINE公式アカウントを持っています。</summary><div class="a">今のアカウントをそのまま使えます。ただし、LINEのWebhookの送り先は1つだけなので、Lステップなど、Webhookを使うほかのツールとは同時に使えません。設定ページでつなぐときに、ほかのサービスにつながっていれば表示し、確認なしには切り替えません。分けたい場合は、申込受付用に新しいアカウントを作る方法もあります。</div></details>
+        <details><summary><span class="q">Q</span>LINEでたくさん送ると、ブロックされませんか？</summary><div class="a">ブロックされるかどうかは、文面や送る頻度によって変わります。ツナガーナ人は一斉配信をしない設計で、送るのは前日のリマインド、設定した参加後のLINE（結果ごとに最大3通・検証中）、スタッフの返信だけです。参加後のLINEは、はじめはオフで、文面を確かめてからオンにします。</div></details>
+        <details><summary><span class="q">Q</span>LINEの設定が難しそうです。</summary><div class="a">Messaging APIの有効化やチャネルアクセストークンの発行は、LINEの仕組み上、貴社ご自身で行っていただく必要があります。手順はご案内します。設定に不安があれば<a href="/doryo/contact/?type=contact&amp;product=tsunagana">お問い合わせ</a>ください。</div></details>
+        <details><summary><span class="q">Q</span>個人情報の扱いが心配です。</summary><div class="a">現時点の設計では、申込の内容はParanoAIが貴社の委託を受けて預かり、申込から60日で自動的に消えます（委託の範囲を定める規約は準備中です）。申込とつながっていない友だちの普段の発言は、はじめの設定では保存もSlackへの転記もしません。フォームは、貴社のプライバシーポリシーのURLを設定するまで公開されません。</div></details>
+        <details><summary><span class="q">Q</span>Slackを使っていません。</summary><div class="a">スタッフの返信の窓口がSlackのスレッドになるため、いまはSlackを使っている会社向けです。</div></details>
+        <details><summary><span class="q">Q</span>うまく動かなくなったらどうなりますか？</summary><div class="a">送信や書き込みの失敗の多くは、⚠️ 付きでSlackに知らせます。Slackへの通知が失敗しても申込は受け付け（申込者には受付番号を出します）、あとで通知を立て直します。HPのボタンのリンクを元に戻せば、従来の申込方法に戻せます。</div></details>
       </div>
     </div>
   </section>
@@ -754,10 +815,10 @@
   <!-- 最後のCTA -->
   <section class="final">
     <div class="container">
-      <h2><span>今の申込の流れを、</span>1つ聞かせてください</h2>
-      <p class="t">「うちのフォームでもできるのか」という段階のご相談で構いません。仕組みを入れる方が早いのか、研修で自社で作れるようになる方が合っているのかも含めてお答えします。</p>
+      <h2><span>申込のつながり方を、</span>自社のSlackで試してください</h2>
+      <p class="t">いまは先行登録（招待制）で受け付けています。順にご案内します。配布版は準備中で、本番での確認はこれからです。「うちの申込でも使えるか」のご相談や、料金のお問い合わせもお気軽にどうぞ。</p>
       <div class="final-cta">
-        <span class="btn-wrap"><span class="bubble">ご相談は無料</span><a class="btn btn-primary btn-lg" href="/doryo/contact/?type=contact&amp;product=tsunagana">導入を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+        <span class="btn-wrap"><span class="bubble">カード登録なしで始められる</span><a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=tsunagana">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
         <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=tsunagana"><svg aria-hidden="true"><use href="#i-doc"/></svg>資料をもらう</a>
       </div>
       <p class="who-line">担当：杉田 光 ／ contact@parano-ai.com ／ 通常2営業日以内にご返信します</p>
@@ -771,14 +832,14 @@
 <footer>
   <div class="container">
     <p>ツナガーナ人（HP × LINE × Slack）は、<a href="/doryo/">世界のAI同僚</a> の1人です。<a href="/doryo/remind/">リマインド人</a>・<a href="/doryo/kintai/">勤タイ人</a></p>
-    <p>LINE・Slack・Cloudflareは各社の商標または登録商標です。本ページは各社と提携・承認の関係にありません。</p>
+    <p>LINE・Slack・Stripeは各社の商標または登録商標です。本ページは各社と提携・承認の関係にありません。</p>
     <p><a href="/training/">AIエージェント研修</a>　／　杉田 光</p>
   </div>
 </footer>
 
-<div class="sticky-cta" id="sticky" role="region" aria-label="お問い合わせ">
+<div class="sticky-cta" id="sticky" role="region" aria-label="お申し込み">
   <a class="btn btn-ghost" href="/doryo/contact/?type=document&amp;product=tsunagana">資料をもらう</a>
-  <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=tsunagana">導入を相談する</a>
+  <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=tsunagana">14日間 無料で試す</a>
 </div>
 
 <script>

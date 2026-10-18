@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>資料請求・お見積もり・お問い合わせ｜世界のAI同僚</title>
-<meta name="description" content="世界のAI同僚（リマインド人・勤タイ人・ツナガーナ人・ニッポー人）の資料請求、お見積もりのご依頼、お問い合わせはこちらのフォームから。">
+<title>先行登録・資料請求・お見積もり・お問い合わせ｜世界のAI同僚</title>
+<meta name="description" content="世界のAI同僚（リマインド人・勤タイ人・ツナガーナ人・ニッポー人）の先行登録（14日間の無料試用）、資料請求、お見積もりのご依頼、お問い合わせはこちらのフォームから。">
 <meta name="color-scheme" content="light">
-<meta property="og:title" content="資料請求・お見積もり・お問い合わせ｜世界のAI同僚">
+<meta property="og:title" content="先行登録・資料請求・お見積もり・お問い合わせ｜世界のAI同僚">
 <meta property="og:url" content="https://parano-ai.com/doryo/contact/">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://parano-ai.com/doryo/contact/">
@@ -58,8 +58,9 @@
   h1 { font-size: clamp(1.5rem, 4vw, 2.125rem); line-height: 1.45; margin: 0 0 10px; letter-spacing: .02em; text-wrap: balance; }
   .lead { margin: 0; color: var(--ink-2); max-width: 44rem; }
 
-  /* ── 用件の切り替え（3枚のカード） ── */
-  .kinds { border: 0; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  /* ── 用件の切り替え（4枚のカード） ── */
+  .kinds { border: 0; margin: 24px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 520px) { .kinds { grid-template-columns: 1fr 1fr; } }
   .kinds legend { font-weight: 700; font-size: .9375rem; margin-bottom: 10px; padding: 0; }
   .kind { position: relative; }
   .kind input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
@@ -205,11 +206,15 @@
   <div class="page-head">
     <div class="container">
       <p class="crumb"><a href="/">ParanoAI</a> ／ <a href="/doryo/">世界のAI同僚</a> ／ フォーム</p>
-      <h1><span class="nw">資料請求・</span><span class="nw">お見積もり・</span><span class="nw">お問い合わせ</span></h1>
+      <h1><span class="nw">先行登録・</span><span class="nw">資料請求・</span><span class="nw">お見積もり・</span><span class="nw">お問い合わせ</span></h1>
       <p class="lead">ご用件を選んで、必要なところだけご入力ください。通常2営業日以内に、ご入力のメールアドレスへご連絡します。</p>
 
       <fieldset class="kinds" id="kinds">
         <legend>ご用件</legend>
+        <div class="kind">
+          <input type="radio" name="kind_ui" id="k-trial" value="trial">
+          <label for="k-trial"><svg aria-hidden="true"><use href="#i-check"/></svg><span class="k-name">先行登録</span><span class="k-sub">14日間 無料で試したい</span></label>
+        </div>
         <div class="kind">
           <input type="radio" name="kind_ui" id="k-document" value="document" checked>
           <label for="k-document"><svg aria-hidden="true"><use href="#i-doc"/></svg><span class="k-name">資料請求</span><span class="k-sub">まずは機能と流れを知りたい</span></label>
@@ -228,18 +233,27 @@
 
   <div class="container main">
     <aside class="aside" aria-label="ご用件の説明">
+      <section class="panel" data-panel="trial">
+        <h2>先行登録について</h2>
+        <p>世界のAI同僚は、Slackに追加してから14日間、無料で試せます。いまは先行登録（招待制）で受け付けていて、順にご案内しています。</p>
+        <ol class="steps">
+          <li><b>このフォームを送る</b><span>試したい同僚と、会社名・メールアドレスをご入力ください</span></li>
+          <li><b>ご案内のメールが届く</b><span>試用を始める手順をお送りします</span></li>
+          <li><b>Slackに追加して、14日間 試す</b><span>続ける場合だけ、プランを選んでカードを登録します</span></li>
+        </ol>
+      </section>
       <section class="panel" data-panel="document">
         <h2>資料でわかること</h2>
         <p>次のことをまとめた資料を、担当者からメールでお送りします。</p>
         <ul class="ticks">
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>それぞれの同僚がSlackの中でしてくれること</li>
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>お申し込みから使い始めるまでの流れ</li>
-          <li><svg aria-hidden="true"><use href="#i-check"/></svg>料金の決まり方（規模と使う機能で決まります）</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>料金と、14日間の無料試用のしくみ</li>
         </ul>
       </section>
       <section class="panel" data-panel="quote">
         <h2>お見積もりまでの流れ</h2>
-        <p>料金は、チームの人数と使う機能で決まります。今の運用を伺ってから金額をお出しします。</p>
+        <p>料金を公開していない同僚（ツナガーナ人）や、設定のご相談を含む場合は、今の運用を伺ってから金額をお出しします。</p>
         <ol class="steps">
           <li><b>このフォームを送る</b><span>人数や今の運用は、分かる範囲で構いません</span></li>
           <li><b>オンラインで状況を伺う</b><span>日程はメールでご相談します</span></li>
@@ -259,9 +273,9 @@
         <h3>世界のAI同僚</h3>
         <div class="crew">
           <a href="/doryo/remind/"><img src="../remind/remind-jin.png" alt=""><span><b>リマインド人</b><small>頼まれごとを、完了まで見届ける</small></span></a>
-          <a href="/doryo/kintai/"><img src="../kintai/icon.png" alt=""><span><b>勤タイ人</b><small>Slackで勤怠・会議室予約</small></span></a>
+          <a href="/doryo/kintai/"><img src="../kintai/icon.png" alt=""><span><b>勤タイ人</b><small>Slackで打刻する勤怠</small></span></a>
           <a href="/doryo/tsunagana/"><img src="../tsunagana/icon.png" alt=""><span><b>ツナガーナ人</b><small>HPの申込をLINEとSlackでつなぐ</small></span></a>
-          <a href="/doryo/nippo/"><img src="../nippo/icon.png" alt=""><span><b>ニッポー人<span class="chip wip">開発中</span></b><small>退勤の打刻から、日報を書く</small></span></a>
+          <a href="/doryo/nippo/"><img src="../nippo/icon.png" alt=""><span><b>ニッポー人</b><small>Slackの中で日報を書いて・読んで・返す</small></span></a>
         </div>
         <p style="height:12px;margin:0"></p>
       </div>
@@ -276,9 +290,9 @@
           <legend>気になる同僚<span class="opt">任意・複数可</span></legend>
           <div class="picks">
             <div class="pick"><input type="checkbox" name="products" id="p-remind" value="リマインド人"><label for="p-remind"><img src="../remind/remind-jin.png" alt=""><span>リマインド人<small>依頼の見届け</small></span></label></div>
-            <div class="pick"><input type="checkbox" name="products" id="p-kintai" value="勤タイ人"><label for="p-kintai"><img src="../kintai/icon.png" alt=""><span>勤タイ人<small>勤怠・会議室</small></span></label></div>
+            <div class="pick"><input type="checkbox" name="products" id="p-kintai" value="勤タイ人"><label for="p-kintai"><img src="../kintai/icon.png" alt=""><span>勤タイ人<small>勤怠</small></span></label></div>
             <div class="pick"><input type="checkbox" name="products" id="p-tsunagana" value="ツナガーナ人"><label for="p-tsunagana"><img src="../tsunagana/icon.png" alt=""><span>ツナガーナ人<small>申込・LINE連携</small></span></label></div>
-            <div class="pick" data-only="contact"><input type="checkbox" name="products" id="p-nippo" value="ニッポー人"><label for="p-nippo"><img src="../nippo/icon.png" alt=""><span>ニッポー人<small>日報（開発中）</small></span></label></div>
+            <div class="pick"><input type="checkbox" name="products" id="p-nippo" value="ニッポー人"><label for="p-nippo"><img src="../nippo/icon.png" alt=""><span>ニッポー人<small>日報</small></span></label></div>
             <div class="pick"><input type="checkbox" name="products" id="p-undecided" value="まだ決めていない"><label for="p-undecided"><span>まだ決めていない</span></label></div>
           </div>
         </fieldset>
@@ -314,9 +328,9 @@
           <p class="err" id="email-err">メールアドレスを正しく入力してください。</p>
         </div>
 
-        <div class="row2" data-only="document quote">
+        <div class="row2" data-only="trial document quote">
           <div class="field" data-check="employees">
-            <label for="employees">従業員数<span class="req" data-only="quote">必須</span><span class="opt" data-only="document">任意</span></label>
+            <label for="employees">従業員数<span class="req" data-only="quote">必須</span><span class="opt" data-only="trial document">任意</span></label>
             <select id="employees" name="employees">
               <option value="">選んでください</option>
               <option>1〜9名</option><option>10〜29名</option><option>30〜99名</option><option>100〜299名</option><option>300名以上</option>
@@ -332,7 +346,7 @@
           </div>
         </div>
 
-        <fieldset class="group" data-only="quote">
+        <fieldset class="group" data-only="trial quote">
           <legend>Slackのご利用<span class="opt">任意</span></legend>
           <div class="picks three">
             <div class="pick radio"><input type="radio" name="slack" id="s-yes" value="使っている"><label for="s-yes">使っている</label></div>
@@ -384,6 +398,9 @@
   const ENDPOINT = "https://api.parano-ai.com/contact";
   const opened = Date.now();
   const KINDS = {
+    trial: { name: "先行登録", title: "先行登録フォーム", submit: "先行登録する",
+      msgLabel: "ご質問・ご要望", msgReq: false, msgPh: "例）まず総務の3人で試してみたい。Slackは有料プランです。",
+      doneTitle: "先行登録を受け付けました", doneText: "順にご案内しています。試用を始める手順を、ご入力のメールアドレスへお送りします。" },
     document: { name: "資料請求", title: "資料請求フォーム", submit: "資料を請求する",
       msgLabel: "ご質問・ご要望", msgReq: false, msgPh: "例）社内で比較検討する予定です。勤タイ人の料金の考え方を詳しく知りたい。",
       doneTitle: "資料請求を受け付けました", doneText: "通常2営業日以内に、担当者からご入力のメールアドレスへ資料をお送りします。" },
@@ -405,7 +422,6 @@
     const K = KINDS[k];
     document.body.dataset.kind = k;
     document.querySelectorAll("[data-only]").forEach((el) => { el.hidden = !el.dataset.only.split(" ").includes(k); });
-    if (k !== "contact") $("p-nippo").checked = false;
     $("k-" + k).checked = true;
     $("card-title").textContent = K.title;
     $("submit-label").textContent = K.submit;
@@ -477,7 +493,7 @@
     else und.checked = false;
   });
 
-  // 各LPのボタンから ?type=document|quote|contact&product=remind|kintai|tsunagana|nippo で来る
+  // 各LPのボタンから ?type=trial|document|quote|contact&product=remind|kintai|tsunagana|nippo で来る
   const q = new URLSearchParams(location.search);
   setKind(q.get("type") || "document");
   const pid = PRODUCT_BY_KEY[q.get("product")];
@@ -497,7 +513,7 @@
       email: fd.get("email"), phone: fd.get("phone"),
       employees: kind === "contact" ? "" : fd.get("employees"),
       timeline: kind === "contact" ? "" : fd.get("timeline"),
-      slack: kind === "quote" ? (fd.get("slack") || "") : "",
+      slack: (kind === "quote" || kind === "trial") ? (fd.get("slack") || "") : "",
       message: fd.get("message"), website: fd.get("website"),
       elapsed_ms: Date.now() - opened,
     };

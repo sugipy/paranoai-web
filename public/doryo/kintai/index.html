@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>勤タイ人 — Slackで使える勤怠・会議室予約ツール</title>
-<meta name="description" content="Slackでログインする勤怠ツール。退勤忘れの声かけ、在席一覧、会議室予約、来客登録まで。Slackに「出勤」と書くだけで打刻できる新機能を自社で検証中。記録は貴社のGoogleスプレッドシートに残ります。">
+<title>勤タイ人 — Slackで打刻する勤怠ツール（先行登録受付中）</title>
+<meta name="description" content="Slackの勤怠チャンネルに「出勤」と書くだけで打刻。退勤忘れの声かけ、出勤予定の未打刻のお知らせ、在席一覧、月次ダッシュボード。Slackに追加して試せる配布版は、いまは先行登録（招待制）で受付中。14日間無料、その後は打刻した人1人あたり月¥200（税抜。税込¥220）。">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -602,18 +602,18 @@
   <div class="container">
     <a class="logo" href="#top" aria-label="勤タイ人 ページの先頭へ">
       <img class="logo-img" src="icon.png" alt="" width="34" height="34">
-      <span>勤タイ人<small>Slackで勤怠・会議室予約</small></span>
+      <span>勤タイ人<small>Slackで打刻する勤怠</small></span>
     </a>
     <nav class="nav" aria-label="ページ内">
       <a href="#how">しくみ</a>
       <a href="#features">機能</a>
-      <a href="#data">記録</a>
+      <a href="#flow">始め方</a>
       <a href="#price">料金</a>
       <a href="#faq">よくある質問</a>
     </nav>
     <div class="header-cta">
       <a class="btn btn-ghost" href="/doryo/contact/?type=document&amp;product=kintai">資料請求</a>
-      <a class="btn btn-primary" href="/doryo/contact/?type=contact&amp;product=kintai">お問い合わせ</a>
+      <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=kintai">無料で試す</a>
     </div>
   </div>
 </header>
@@ -626,22 +626,22 @@
         <span class="tag"><b>Slack</b>いつものチャンネルで打刻できる</span>
         <div class="garland" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <h1><span class="nw">打刻は、Slackに</span><br><span class="hl"><span class="blue">「出勤」</span>と書くだけ。</span></h1>
-        <p class="lead">Slackでログインして打刻。退勤を押し忘れていれば、<b>勤タイ人が声をかけます</b>。在席一覧・会議室予約・来客登録まで1つの画面にまとめ、記録は<b>貴社のGoogleスプレッドシート</b>に残ります。さらに、勤怠チャンネルに<b>「出勤」「休憩」「退勤」と書くだけで記録できる</b>新機能を、いま自社で検証しています。</p>
+        <p class="lead">勤怠チャンネルに<b>「出勤」「休憩」「退勤」</b>と書けば記録。退勤を押し忘れていれば<b>勤タイ人が声をかけ</b>、出勤予定の時刻を過ぎても打刻がない人にはメンションで知らせます。ログインもSlackのまま。Slackに追加して試せる形を、先行登録の会社から順にご案内します。</p>
         <div class="hero-cta">
+          <span class="btn-wrap"><span class="bubble">カード登録なしで始められる</span>
+            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=kintai">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
           <span class="btn-wrap"><span class="bubble">無料・1分で入力</span>
-            <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=document&amp;product=kintai"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a></span>
-          <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=contact&amp;product=kintai">導入を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+            <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=kintai"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a></span>
         </div>
         <ul class="hero-points">
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>Slackから打刻<span class="wip-chip">検証中</span></span></li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>Slackから打刻</li>
           <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>退勤忘れに声かけ</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>会議室予約・来客登録も</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>打刻した人だけ ¥200／月（税抜）</li>
         </ul>
-        <p class="hero-wip">※Slackからの打刻・休憩・出社/リモート・打刻の修正・月次ダッシュボードは、自社で検証中の新機能です（本番での稼働実績はまだありません）。導入時は貴社の環境で実際に通してからお渡しします。</p>
+        <p class="hero-wip">※いまは先行登録（招待制）で受け付けています。順にご案内します。<br>※料金は1人あたり月¥200（税抜。税込¥220）で、その月に1回以上打刻した人の数だけかかります。</p>
       </div>
 
-      <div class="visual" role="img" aria-label="画面イメージ。勤タイ人の打刻画面に時刻と出社・リモートの選択、出勤・休憩・退勤のボタン、在席中のメンバー。Slackの勤怠チャンネルで「出勤」と投稿すると、スレッドに記録した時刻が返ってくる様子。">
+      <div class="visual" role="img" aria-label="画面イメージ。勤タイ人の打刻画面に時刻と出社・リモートの選択、出勤・休憩・退勤のボタン、在席中のメンバー。Slackの勤怠チャンネルで「リモート出勤」と投稿すると、スレッドに記録した時刻が返ってくる様子。">
         <div class="card v-app">
           <div class="bar"><i></i><i></i><i></i><span><img src="icon.png" alt="">勤タイ人</span></div>
           <div class="body">
@@ -654,11 +654,11 @@
         <div class="v-chara arch-frame"><div class="arch"><div class="arch"><div class="arch"><img src="kintaijin.jpg" alt="" width="150" height="186"></div></div></div></div>
         <div class="say" lang="ja">サワディーカー🙏<small lang="th">สวัสดีค่ะ</small></div>
         <div class="card v-slack sk">
-          <div class="sk-pane-head"><b>スレッド</b><span class="ch"># attendance</span><span class="x" aria-hidden="true">×</span></div>
+          <div class="sk-pane-head"><b>スレッド</b><span class="ch"># 勤怠</span><span class="x" aria-hidden="true">×</span></div>
           <div class="sk-msg"><span class="sk-av hum"><svg aria-hidden="true"><use href="#i-sk-person"/></svg></span><div><div class="sk-who"><b>鈴木</b><time>9:02</time></div><div class="sk-text">リモート出勤</div></div></div>
-          <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>9:03</time></div><div class="sk-text">🟢 出勤（🏠リモート） を 9:02 で記録しました</div></div></div>
+          <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>9:02</time></div><div class="sk-text">🟢 出勤（🏠リモート） を 9:02 で記録しました</div></div></div>
         </div>
-        <p class="img-note">※画面はイメージです（Slackからの打刻は検証中の機能）</p>
+        <p class="img-note">※画面はイメージです（名前とチャンネル名は例です）</p>
       </div>
     </div>
   </div>
@@ -666,10 +666,10 @@
   <div class="stats">
     <div class="container">
       <div class="stats-grid reveal">
-        <div class="stat"><div class="k">打刻 <span class="wip-chip" style="margin-left:2px">検証中</span></div><div class="v">1<small>語</small></div><div class="k">Slackに書くだけ</div></div>
+        <div class="stat"><div class="k">打刻</div><div class="v">1<small>語</small></div><div class="k">Slackに書くだけ</div></div>
         <div class="stat"><div class="k">退勤忘れ</div><div class="v">10<small>時間後</small></div><div class="k">勤タイ人が声をかける</div></div>
-        <div class="stat"><div class="k">ログイン</div><div class="v">Slack</div><div class="k">新しいIDは不要</div></div>
-        <div class="stat"><div class="k">記録の置き場所</div><div class="v">自社<small>のスプシ</small></div><div class="k">Googleスプレッドシート</div></div>
+        <div class="stat"><div class="k">無料のお試し</div><div class="v">14<small>日間</small></div><div class="k">カード登録なし</div></div>
+        <div class="stat"><div class="k">料金（税抜）</div><div class="v">¥200<small>/人・月</small></div><div class="k">打刻した人の分だけ</div></div>
       </div>
     </div>
   </div>
@@ -685,8 +685,8 @@
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>退勤の押し忘れが、月末の締めでまとめて見つかる</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-edit"/></svg></span><p>打刻の修正をチャットで頼まれ、誰がいつ直したか残らない</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-house"/></svg></span><p>出社とリモートが混ざり、今だれが働いているか分からない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-door"/></svg></span><p>会議室や撮影部屋が、気づいたら二重に押さえられている</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-yen"/></svg></span><p>人数ごとに課金される勤怠サービスが、小さな会社には割高</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></span><p>シフトの人が来ていないことに、だいぶ後で気づく</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-yen"/></svg></span><p>打刻しない人の分まで、勤怠サービスの料金がかかっている</p></div>
       </div>
       <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
       <p class="answer reveal">毎日開いている<span class="hl">Slackの中で</span>、<br>打刻から月末の確認まで済ませられます。</p>
@@ -697,9 +697,9 @@
     <div class="container">
       <div class="demo">
         <div class="reveal">
-          <span class="eyebrow">HOW IT WORKS</span><span class="wip-chip">検証中</span>
+          <span class="eyebrow">HOW IT WORKS</span>
           <h2>勤怠チャンネルに、<br>決まった言葉を書くだけ</h2>
-          <p style="color:var(--ink-2)">言葉だけの投稿を見つけると、記録してスレッドに結果を返します。文末の「。」「！」や絵文字はついていても大丈夫。記録できなかったときは ⚠️ で理由を返します。</p>
+          <p style="color:var(--ink-2)">言葉だけの投稿を見つけると、記録してスレッドに結果を返します。文末の「。」「！」や絵文字はついていても大丈夫。<span class="code">@勤タイ人 出勤</span> のようにメンションを付けても受け付けます。記録できなかったときは ⚠️ で理由を返します。</p>
           <div class="kw">
             <div><b>出勤</b><p><span class="code">出勤</span><span class="code">出社</span></p></div>
             <div><b>リモート出勤</b><p><span class="code">リモート出勤</span><span class="code">在宅出勤</span><span class="code">リモート</span></p></div>
@@ -710,28 +710,29 @@
         </div>
         <div class="reveal">
           <div class="card sk-win sk">
-            <div class="sk-top"><span class="dots"><i></i><i></i><i></i></span><span class="search">#attendance を検索</span></div>
+            <div class="sk-top"><span class="dots"><i></i><i></i><i></i></span><span class="search">#勤怠 を検索</span></div>
             <div class="sk-body">
               <div class="sk-side">
                 <div class="ws">株式会社サンプル</div>
                 <div class="grp">チャンネル</div>
                 <div class="chn"># general</div>
-                <div class="chn on"># attendance</div>
-                <div class="chn"># 会議室</div>
+                <div class="chn on"># 勤怠</div>
+                <div class="chn"># お知らせ</div>
               </div>
               <div class="sk-main">
-                <div class="sk-pane-head"><b># attendance</b></div>
+                <div class="sk-pane-head"><b># 勤怠</b></div>
                 <div class="sk-msg"><span class="sk-av hum"><svg aria-hidden="true"><use href="#i-sk-person"/></svg></span><div><div class="sk-who"><b>佐藤</b><time>8:58</time></div><div class="sk-text">出勤</div></div></div>
                 <div class="sk-replies">返信 1件 ／ 勤タイ人</div>
+                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>9:30</time></div><div class="sk-text"><span class="sk-men">@田中</span> サワディーカー🙏 今日は 9:00 出勤の予定カー。まだ出勤の打刻がないカー…⏰</div></div></div>
                 <div class="sk-msg"><span class="sk-av hum"><svg aria-hidden="true"><use href="#i-sk-person"/></svg></span><div><div class="sk-who"><b>高橋</b><time>12:30</time></div><div class="sk-text">休憩入ります！</div></div></div>
-                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>12:31</time></div><div class="sk-text">☕ 休憩開始 を 12:30 で記録しました</div></div></div>
-                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>18:05</time></div><div class="sk-text">✏️ 打刻を修正 佐藤: 10/13 18:00 退勤 → 10/13 19:10 退勤　理由: 押し忘れ</div></div></div>
-                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>19:58</time></div><div class="sk-text"><span class="sk-men">@鈴木</span> サワディーカー🙏 退勤、忘れてないカー？🕙 (出勤から10時間経過)</div></div></div>
-                <div class="sk-composer"><span>#attendance へのメッセージ</span><span class="send"></span></div>
+                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>12:30</time></div><div class="sk-text">☕ 休憩開始 を 12:30 で記録しました</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>18:05</time></div><div class="sk-text">✏️ 打刻を修正 佐藤: 10/12 18:00 退勤 → 10/12 19:10 退勤　理由: 押し忘れ</div></div></div>
+                <div class="sk-msg"><span class="sk-av"><img src="icon.png" alt=""></span><div><div class="sk-who"><b>勤タイ人</b><span class="sk-app">アプリ</span><time>19:02</time></div><div class="sk-text"><span class="sk-men">@鈴木</span> サワディーカー🙏 退勤、忘れてないカー？🕙 (出勤から10時間経過)</div></div></div>
+                <div class="sk-composer"><span>#勤怠 へのメッセージ</span><span class="send"></span></div>
               </div>
             </div>
           </div>
-          <p class="demo-note">※画面はイメージです。名前とチャンネルは例です。打刻の修正は画面から行い、その記録がチャンネルに流れます。</p>
+          <p class="demo-note">※画面はイメージです。名前とチャンネル名は例で、勤怠チャンネルはお使いのチャンネルから選べます。打刻の修正は画面から行い、その記録がチャンネルに流れます。</p>
         </div>
       </div>
     </div>
@@ -741,20 +742,20 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">FEATURES</span>
-        <h2><span class="nw">勤怠と、</span><span class="nw">オフィスの</span><span class="nw">ちょっとした共有を</span><br>ひとつの画面に</h2>
+        <h2><span class="nw">打刻から</span><span class="nw">月末の確認まで、</span><br>ひとつの画面に</h2>
         <p>Slackでログインするだけ。新しいIDやパスワードは配りません。</p>
       </div>
-      <p class="wip-box reveal"><b>検証中</b>の印がある機能（Slackからの打刻・休憩・出社/リモート・打刻の修正・月次ダッシュボード・在席一覧のリモート/休憩表示）は、2026年10月に作った新機能で、自社で検証している段階です。本番での稼働実績はまだありません。印のない機能は、作り手の会社で日々使っています。</p>
+      <p class="wip-box reveal">打刻・Slackからの打刻・退勤忘れの声かけ・出勤予定と未打刻のお知らせ・打刻の修正・月次ダッシュボード・在席一覧・お知らせは、作り手の関連する施設の本番（1社で使う形）で毎日動いています。<b>検証中</b>の印がある機能（CSVで書き出す）は、作り終えてテストを通した段階です。Slackに追加して試す形（お試し・お支払い・解約）は、いま先行登録で準備しています。</p>
       <div class="features">
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><h3>打刻</h3><p>出勤・休憩開始・休憩終了・退勤の4つのボタン（休憩と、出社/リモートの選択は<span class="wip-chip" style="margin-left:0">検証中</span>）。出勤のときに「🏢 出社」か「🏠 リモート」を選びます。押した内容は勤怠チャンネルにも流れます。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>Slackから打刻<span class="wip-chip">検証中</span></h3><p>勤怠チャンネルに「出勤」「休憩」「退勤」などと書くだけ。毎分確認して記録し、スレッドに時刻を返します。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><h3>打刻</h3><p>出勤・休憩開始・休憩終了・退勤の4つのボタン。出勤のときに「🏢 出社」か「🏠 リモート」を選びます。押した内容は勤怠チャンネルにも流れます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>Slackから打刻</h3><p>勤怠チャンネルに「出勤」「休憩」「退勤」などと書くだけ。記録して、スレッドに時刻を返します。同じ投稿を二重に記録しない作りです。</p></div>
         <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-bell"/></svg></div><h3>退勤忘れの声かけ</h3><p>出勤から10時間たっても退勤がなければ、勤タイ人がメンションで声をかけます。48時間たっても退勤がない場合は、自動で退勤を記録します。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-edit"/></svg></div><h3>打刻の修正<span class="wip-chip">検証中</span></h3><p>時刻・区分・場所の修正、取り消し、打刻忘れの追加。理由は必須で、行は消さずに修正前の値と修正者を残します。本人は自分の分だけ、管理者は全員分を直せます。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></div><h3>月次ダッシュボード<span class="wip-chip">検証中</span></h3><p>メンバーごとの稼働日数・実働・休憩・出社/リモートの日数・平均の出勤/退勤時刻。退勤忘れや休憩終了忘れは「要確認」に出ます。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-users"/></svg></div><h3>在席一覧</h3><p>いま出勤中のメンバーをSlackのアイコン付きで表示。8時間以上働いている人には🔥が付きます。🏠リモート・☕休憩中の表示は<span class="wip-chip" style="margin-left:0">検証中</span>。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div><h3>会議室予約</h3><p>部屋ごとに30分単位で予約。毎日・毎週・平日のみの繰り返しで登録でき、重なる予約は入れられません。編集・削除は予約した本人だけ。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-badge"/></svg></div><h3>来客登録</h3><p>日時・場所・お名前・会社・用件を登録して全員に共有。受付で「今日だれが来るの？」がなくなります。</p></div>
-        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-mega"/></svg></div><h3>お知らせ</h3><p>Slackで <span class="code">/お知らせ</span> から始めて投稿した内容を、画面の上部に表示します。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></div><h3>出勤予定と未打刻のお知らせ</h3><p>出勤する日と予定の時刻を登録しておくと、予定から30分（会社ごとに変更可）たっても打刻がない人に、勤怠チャンネルでメンションします。曜日・期間でまとめて登録でき、管理者は他の人の分も入れられます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-edit"/></svg></div><h3>打刻の修正</h3><p>時刻・区分・場所の修正、取り消し、打刻忘れの追加。理由は必須で、行は消さずに修正前の値と修正者を残します。本人は自分の分だけ、管理者は全員分を直せます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></div><h3>月次ダッシュボード</h3><p>メンバーごとの稼働日数・実働・休憩・出社/リモートの日数・平均の出勤/退勤時刻。退勤忘れや休憩終了忘れは「要確認」に出ます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-users"/></svg></div><h3>在席一覧</h3><p>いま出勤中のメンバーをSlackのアイコン付きで表示。8時間を超えて働いている人には🔥、🏠リモート・☕休憩中の印が付きます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-mega"/></svg></div><h3>お知らせ</h3><p>Slackで <span class="code">/お知らせ</span> から始めて投稿した内容を、画面の上部に表示します。毎朝8時には、勤タイ人が一言投稿します。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-sheet"/></svg></div><h3>CSVで書き出す<span class="wip-chip">検証中</span></h3><p>月ごとの勤務（日付・名前・出勤・退勤・場所・休憩・実働・要確認）をCSVで書き出します。管理者は全員分、本人は自分の分。給与計算ソフトに取り込むときの元データにできます。</p></div>
       </div>
     </div>
   </section>
@@ -766,8 +767,9 @@
         <div class="reveal">
           <span class="eyebrow">CHARACTER</span>
           <h2>声をかけるのは、<br>勤タイ人です</h2>
-          <p style="color:var(--ink-2)">「退勤してください」と人から言われると角が立つことも、キャラクターなら柔らかく届きます。打刻や修正の記録は、あとで読み返せるように飾らない文面のままです。キャラクターの口調の文面は2026年10月に切り替えたもので、自社で検証中です。</p>
+          <p style="color:var(--ink-2)">「退勤してください」「まだ来てないよ」と人から言われると角が立つことも、キャラクターなら柔らかく届きます。打刻や修正の記録は、あとで読み返せるように飾らない文面のままです。</p>
           <div class="lines">
+            <div class="line-i"><span class="when">未打刻（予定から30分）</span><span>サワディーカー🙏 今日は 9:00 出勤の予定カー。まだ出勤の打刻がないカー…⏰</span></div>
             <div class="line-i"><span class="when">退勤忘れ（10時間後）</span><span>サワディーカー🙏 退勤、忘れてないカー？🕙</span></div>
             <div class="line-i"><span class="when">自動退勤（48時間後）</span><span>退勤、代わりに押しておいたカー🙏</span></div>
             <div class="line-i"><span class="when">打刻の記録</span><span>🟢 出勤 を 9:02 で記録しました</span></div>
@@ -782,27 +784,27 @@
       <div class="data">
         <div class="reveal">
           <span class="eyebrow">YOUR DATA</span>
-          <h2>記録は、<br><span class="hl nw">貴社のスプレッドシート</span>に<br>残ります</h2>
-          <p style="color:var(--ink-2)">勤怠・会議室予約・来客は、貴社のGoogleアカウントのスプレッドシートに1行ずつ書き込みます。見るのも、集計するのも、給与計算用に書き出すのも、いつものスプレッドシートのまま。</p>
+          <h2>記録は、<br><span class="hl nw">CSVで持ち出せる</span><br>ようにします<span class="wip-chip">検証中</span></h2>
+          <p style="color:var(--ink-2)">打刻の記録は、勤タイ人のデータベースに会社ごとに分けて保存します。サーバーやスプレッドシートを用意していただく必要はありません。月ごとの勤務をCSVで書き出す機能は検証中で、本番での稼働はこれからです。書き出せれば、給与計算や保存はいつもの手順のままです。</p>
           <ul class="checks">
-            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>どの打刻がWeb・Slack・自動・修正画面から来たかが分かる</li>
-            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>修正しても行は消さず、修正前の値・理由・<span class="nw">修正者を残す</span><span class="wip-chip">検証中</span></span></li>
-            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>Slackの同じ投稿を<span class="nw">二重に記録しない</span><span class="wip-chip">検証中</span></span></li>
+            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>修正しても行は消さず、修正前の値・理由・<span class="nw">修正者を残す</span></span></li>
+            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>退勤忘れ・休憩終了忘れは<span class="nw">「要確認」の列に出る</span></span></li>
+            <li><svg aria-hidden="true"><use href="#i-check-c"/></svg><span>契約が切れても、見ることと<span class="nw">CSVの書き出しはできる</span><span class="wip-chip">検証中</span></span></li>
           </ul>
         </div>
         <div class="reveal">
           <div class="sheet-wrap">
-            <table class="sheet" aria-label="記録のスプレッドシートの見本">
-              <thead><tr><th>timestamp</th><th>user_name</th><th>type</th><th>source</th><th>location</th><th>note</th><th>edited_by</th></tr></thead>
+            <table class="sheet" aria-label="書き出すCSVの見本">
+              <thead><tr><th>日付</th><th>名前</th><th>出勤</th><th>退勤</th><th>場所</th><th>休憩(分)</th><th>実働(分)</th><th>要確認</th></tr></thead>
               <tbody>
-                <tr><td>2026-10-13 08:58</td><td>佐藤</td><td>in</td><td>slack</td><td>office</td><td></td><td></td></tr>
-                <tr><td>2026-10-13 09:02</td><td>鈴木</td><td>in</td><td>slack</td><td>remote</td><td></td><td></td></tr>
-                <tr><td>2026-10-13 12:30</td><td>高橋</td><td>break_start</td><td>web</td><td></td><td></td><td></td></tr>
-                <tr><td class="edit">2026-10-13 19:10</td><td>佐藤</td><td>out</td><td>web</td><td></td><td class="edit">押し忘れ</td><td class="edit">佐藤</td></tr>
+                <tr><td>2026-10-13</td><td>佐藤</td><td>08:58</td><td class="edit">19:10</td><td>出社</td><td>60</td><td>552</td><td></td></tr>
+                <tr><td>2026-10-13</td><td>鈴木</td><td>09:02</td><td>18:04</td><td>リモート</td><td>45</td><td>497</td><td></td></tr>
+                <tr><td>2026-10-13</td><td>高橋</td><td>09:15</td><td>18:30</td><td>出社</td><td>0</td><td>555</td><td class="edit">休憩終了の打刻なし</td></tr>
+                <tr><td>2026-10-14</td><td>田中</td><td>09:41</td><td></td><td>出社</td><td>0</td><td>0</td><td class="edit">退勤の打刻なし</td></tr>
               </tbody>
             </table>
           </div>
-          <p class="sheet-note">※見本です。色付きのセルは修正された行で、修正前の値は別の列に残ります。リモート・休憩・修正の列は、検証中の機能で使うものです。</p>
+          <p class="sheet-note">※見本です。実際のCSVには、SlackのユーザーIDの列もあります。色付きのセルは修正した時刻と「要確認」です。CSVの書き出しは検証中の機能です。</p>
         </div>
       </div>
     </div>
@@ -812,32 +814,34 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">WHY US</span>
-        <h2>毎日使っている仕組みを、<br>貴社の環境に組み立てます</h2>
+        <h2>毎日使っている仕組みを、<br>そのままお届けします</h2>
       </div>
       <div class="reasons">
-        <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3><span class="nw">作り手の会社で、</span><span class="nw">毎日使っている</span></h3><p>打刻・在席一覧・会議室予約・来客登録・退勤忘れの声かけは、作り手の会社で日々の勤怠に使っています。困ったところを直しながら育ててきた仕組みです。</p></div>
-        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>貴社名義で、貴社の中に</h3><p>Slackアプリ・スプレッドシート・公開先は貴社名義で用意します。人数が増えても、1人ごとの利用料は増えません（各サービスの利用料は別途かかります）。</p></div>
-        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3><span class="nw">自分たちで</span><span class="nw">直せるようにも</span><span class="nw">なれる</span></h3><p>部屋の名前を変える、項目を足す。そうした手直しを社内でできるようになる <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
+        <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3><span class="nw">本番で使いながら、</span><span class="nw">直している</span></h3><p>勤タイ人は、作り手の関連する施設の勤怠に毎日使っています。打刻の言葉の揺れや退勤忘れなど、現場で困ったところを直しながら育てています。</p></div>
+        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3><span class="nw">入れて、</span><span class="nw">チャンネルを選ぶだけ</span></h3><p>Slackに追加したら、勤怠チャンネルを選べば使い始められます。サーバーやデータベースはこちらで用意するので、貴社で準備するものはありません。</p></div>
+        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3><span class="nw">自社のSlackで</span><span class="nw">確かめてから決める</span></h3><p>最初の14日間は無料で、カード登録もいりません。続けるときの料金は、その月に打刻した人の分だけ。打刻しない方の分はかかりません。</p></div>
       </div>
     </div>
   </section>
 
-  <section class="sec-bg">
+  <section id="flow" class="sec-bg">
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">FLOW</span>
-        <h2>導入の流れ</h2>
-        <p>本物のSlackとスプレッドシートで試してから、全員に使ってもらいます。</p>
+        <h2>始め方</h2>
+        <p>自分たちで、その日のうちに始められます。</p>
       </div>
+      <p class="wip-box reveal"><b>いまは先行登録（招待制）</b>で受け付けています。下の流れ（Slackに追加・お試し・カード登録・解約）は、ご案内に向けて準備している形です。「無料で試す」からご登録いただいた会社に、順にご案内します。</p>
       <div class="flow">
         <ol>
-          <li class="reveal"><span class="n">01</span><div><h3>今の勤怠の付け方を伺う</h3><p>人数、出社とリモートの割合、勤怠チャンネルの有無、会議室の数と名前、修正できる管理者を決めます。</p></div></li>
-          <li class="reveal"><span class="n">02</span><div><h3>アカウントの準備</h3><p>Slackアプリ・Googleのスプレッドシート・公開先（Vercel）を貴社名義でご用意いただきます。手順はご案内し、パスワードや鍵はご自身で入力していただきます。</p></div></li>
-          <li class="reveal"><span class="n">03</span><div><h3>構築と結線</h3><p>画面を公開し、Slackでのログイン・勤怠チャンネル・スプレッドシートをつなぎます。部屋の名前やお知らせのチャンネルもここで設定します。</p></div></li>
-          <li class="reveal"><span class="n">04</span><div><h3>本物の環境でテスト</h3><p>打刻・Slackからの打刻・退勤忘れの声かけ・修正・会議室予約までを実際に通し、スプレッドシートに正しく残ることを確かめて記録します。検証中の機能も、ここで貴社の環境で確認してからお渡しします。</p></div></li>
-          <li class="reveal"><span class="n">05</span><div><h3>数人で試してから全員へ</h3><p>まず数人で1〜2週間使っていただき、言葉の揺れや運用のずれを直してから全員に案内します。</p></div></li>
+          <li class="reveal"><span class="n">01</span><div><h3>「無料で試す」を押して、Slackで「許可する」</h3><p>Slackの許可画面に移ります。管理者の承認が要るワークスペースでは、承認されたところで入ります。</p></div></li>
+          <li class="reveal"><span class="n">02</span><div><h3>Slackでログインして、勤怠チャンネルを選ぶ</h3><p>入れた人が最初の管理者です。勤タイ人を招待したチャンネルから勤怠チャンネルを選びます（まだなら <span class="code">/invite @勤タイ人</span>）。お知らせのチャンネル、未打刻のお知らせまでの猶予、ほかの管理者は、あとからでも設定できます。</p></div></li>
+          <li class="reveal"><span class="n">03</span><div><h3>14日間、そのまま使える</h3><p>チャンネルに「出勤」と書くか、画面のボタンで打刻を始めます。お試しの残りが3日と1日になると、入れた人に勤怠チャンネルでお知らせします。</p></div></li>
+          <li class="reveal"><span class="n">04</span><div><h3>続けるなら、プランを選んでカードを登録</h3><p>画面の「プランと請求」から手続きします。お支払いはカード（Stripe）で、請求書の確認やカードの変更も同じ画面からできます。</p></div></li>
+          <li class="reveal"><span class="n">05</span><div><h3>やめるときは、アプリを外すか解約する</h3><p>Slackから勤タイ人を外すか、「プランと請求」から解約します。契約中にアプリを外した場合は、その請求期間の終わりで解約になります。</p></div></li>
         </ol>
       </div>
+      <p class="b-note reveal">お試しが終わってカードを登録していないとき・解約したとき・お支払いが7日を過ぎても確認できないときは、打刻（画面・Slackとも）・修正・予定の登録・設定と、勤タイ人からのお知らせを止めます。記録を見ることとCSVの書き出しは続けてできます。止まっている間にSlackで打刻しようとすると、1日1回「記録されません」とお返しします。</p>
     </div>
   </section>
 
@@ -846,31 +850,30 @@
       <div class="sec-head reveal">
         <span class="eyebrow">PRICE</span>
         <h2>料金</h2>
-        <p>構築費は、今の勤怠の付け方を伺ってからお見積もりします。</p>
+        <p>数えるのは、その月に1回以上打刻した人だけです。</p>
       </div>
       <div class="plans">
         <div class="plan main reveal">
-          <span class="pl">構築費</span>
-          <div class="price">お見積もり<small>（ヒアリング後）</small></div>
+          <span class="pl">勤タイ人</span>
+          <div class="price">¥200<small>／人・月（税抜。税込¥220）</small></div>
           <ul>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>今の勤怠・会議室・来客の運用のヒアリング</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>画面の公開とSlackログインの設定</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>勤怠チャンネル・スプレッドシートの結線</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>部屋・管理者・お知らせの初期設定</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>本物の環境でのテストと記録</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>数人での試用と調整</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>その月に1回以上打刻した人の数だけかかります</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>最初の14日間は無料。カード登録なしで始められます</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>最低料金はありません</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>お支払いはカード（Stripe）。請求書・カード変更・解約は「プランと請求」から</li>
           </ul>
-          <a class="btn btn-primary" href="/doryo/contact/?type=quote&amp;product=kintai">見積もりを依頼する</a>
+          <span class="btn-wrap" style="align-self:flex-start;margin-top:auto"><span class="bubble">カード登録なし</span>
+            <a class="btn btn-primary" href="/doryo/contact/?type=trial&amp;product=kintai">14日間 無料で試す</a></span>
+          <p style="font-size:.8125rem;color:var(--ink-3)">いまは先行登録（招待制）で受け付けています。お試しとお支払いの仕組みはご案内に向けて準備中で、順にご案内します。</p>
         </div>
         <div class="plan reveal">
-          <span class="pl">運用費</span>
-          <div class="price">各サービスの利用料<small>（貴社のご契約）</small></div>
+          <span class="pl">ほかにかかるもの</span>
+          <div class="price">Slackの利用料<small>（貴社のご契約のまま）</small></div>
           <ul>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Vercel（画面の公開先）：Slackからの打刻を毎分取り込むには有料のProプランが必要です。無料プランでは、Webからの打刻と1日1回の処理（自動退勤・朝のお知らせ）だけになります</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Googleスプレッドシート：お持ちのGoogleアカウントで使えます</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Slack：お使いのプランで動くかを導入前に確認します</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>人数ごとの利用料はかかりません</li>
-            <li><svg aria-hidden="true"><use href="#i-check"/></svg>導入後の保守・更新対応の範囲は、お見積もりの際にご説明します</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Slackの利用料は、勤タイ人の料金には含まれません</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>サーバーやデータベースの費用はかかりません（こちらで用意しています）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>お試し中は料金がかかりません。続けないときは、そのまま止まります</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>設定に不安があれば、<a href="/doryo/contact/?type=contact&amp;product=kintai" style="color:var(--brand);font-weight:700">お問い合わせ</a>からご相談ください</li>
           </ul>
         </div>
       </div>
@@ -884,13 +887,17 @@
         <h2>よくある質問</h2>
       </div>
       <div class="faq">
-        <details><summary><span class="q">Q</span>スマートフォンからも打刻できますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>スマートフォンのSlackアプリから、勤怠チャンネルに「出勤」などと書けば打刻できます。外出先や直行・直帰のときも、いつものSlackのままです（Slackからの打刻は自社で検証中の機能です）。</p></details>
-        <details><summary><span class="q">Q</span>給与計算ソフトとつながりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>給与計算ソフトとの直接の連携はしていません。記録はスプレッドシートにあるので、CSVで書き出して取り込む形になります。お使いのソフトの取り込み形式に合わせた集計が必要かは、ヒアリングで伺います。</p></details>
+        <details><summary><span class="q">Q</span>試用期間が終わったらどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>14日のお試しが終わるまでにカードを登録していなければ、打刻・修正・予定の登録・設定と、勤タイ人からのお知らせが止まります。記録を見ることとCSVの書き出しはできます。「プランと請求」からカードを登録すれば、そのまま再開できます。お試しは1つのワークスペースにつき1回です。</p></details>
+        <details><summary><span class="q">Q</span>解約はどうすればいいですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>画面の「プランと請求」から解約できます。Slackから勤タイ人を外した場合も、契約中ならその請求期間の終わりで解約になります。</p></details>
+        <details><summary><span class="q">Q</span>やめたあと、データはどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>Slackから勤タイ人を外したあとも、記録は30日間残し、その後に消す運用にします（準備中）。消す前に、CSVでの書き出しをお願いするお知らせをメールでお送りする予定です。勤怠の記録は会社に保存の義務があるため、やめる前にCSVで書き出しておいてください。</p></details>
+        <details><summary><span class="q">Q</span>人数はどう数えますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>その月に、画面かSlackで1回以上打刻した人の数です。ワークスペースの全員ではありません。管理者が修正で追加しただけの人や、自動退勤だけの人は数えません。</p></details>
+        <details><summary><span class="q">Q</span>スマートフォンからも打刻できますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>スマートフォンのSlackアプリから、勤怠チャンネルに「出勤」などと書けば打刻できます。</p></details>
+        <details><summary><span class="q">Q</span>給与計算ソフトとつながりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>給与計算ソフトとの直接の連携はしていません。月ごとの勤務をCSVで書き出して取り込む形になります（CSVの書き出しは検証中の機能です）。</p></details>
         <details><summary><span class="q">Q</span>法律で求められる勤怠管理として使えますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>打刻の時刻・方法・修正の履歴（修正前の値・理由・修正者）を残す作りにしています。ただし、貴社の労務管理として要件を満たすかどうかの判断はできかねるため、社会保険労務士などの専門家にご確認ください。</p></details>
-        <details><summary><span class="q">Q</span>勤怠チャンネルの普通の会話まで記録されませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>「出勤」「休憩入ります」のように、決まった言葉だけの投稿を記録します。「出勤したら連絡します」のような文は記録しません。</p></details>
-        <details><summary><span class="q">Q</span>会議室の数や名前は変えられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>導入時に、貴社の部屋に合わせて設定します。会議室のほかに、撮影部屋や応接スペースなども予約の対象にできます。</p></details>
-        <details><summary><span class="q">Q</span>Slackを使っていません。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>ログインもSlackで行うため、現在はSlackをお使いであることが前提です。ほかの連絡ツールの場合は、対応できるかを個別に確認しますのでご相談ください。</p></details>
-        <details><summary><span class="q">Q</span>キャラクターの口調は変えられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>声かけの文面は、導入時に貴社の雰囲気に合わせて変えられます。キャラクターを使わず、落ち着いた文面にすることもできます。</p></details>
+        <details><summary><span class="q">Q</span>勤怠チャンネルの普通の会話まで記録されませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>「出勤」「休憩入ります」のように、決まった言葉だけの投稿を記録します。「出勤したら連絡します」のような文は記録しません。スレッドの返信も打刻にはしません。</p></details>
+        <details><summary><span class="q">Q</span>使えない環境はありますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>いまは次の場合に対応していません。Enterprise Grid（組織全体へのインストール）、日本時間以外の時刻、1つの会社で勤怠チャンネルを2つ以上使うこと。Slackコネクトでつながった他社の方の投稿は記録しません。</p></details>
+        <details><summary><span class="q">Q</span>Slackを使っていません。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>ログインもSlackで行うため、Slackをお使いであることが前提です。</p></details>
+        <details><summary><span class="q">Q</span>キャラクターの口調は変えられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>いまは、声かけの文面を会社ごとに変える設定はありません。ご要望があればお問い合わせからお知らせください。</p></details>
       </div>
     </div>
   </section>
@@ -898,29 +905,30 @@
   <div class="eave" aria-hidden="true"></div>
   <section class="final">
     <div class="container">
-      <h2>今の勤怠の付け方を、<br>1つ聞かせてください</h2>
-      <p>「うちの人数でも合うのか」という段階のご相談で構いません。仕組みを入れる方が早いのか、研修で自社で作れるようになる方が合っているのかも含めてお答えします。</p>
+      <h2>まずは14日間、<br>自社のSlackで試してください</h2>
+      <p>カード登録なしで始められます。合わなければ、Slackからアプリを外すだけです。いまは先行登録（招待制）で受け付けていて、順にご案内します。</p>
       <div class="row">
-        <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-          <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=contact&amp;product=kintai"><svg aria-hidden="true"><use href="#i-mail"/></svg>導入を相談する</a></span>
-        <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=kintai">資料をもらう</a>
+        <span class="btn-wrap"><span class="bubble">カード登録なし</span>
+          <a class="btn btn-primary btn-lg" href="/doryo/contact/?type=trial&amp;product=kintai">14日間 無料で試す<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+        <a class="btn btn-ghost btn-lg" href="/doryo/contact/?type=document&amp;product=kintai"><svg aria-hidden="true"><use href="#i-mail"/></svg>資料をもらう</a>
       </div>
-      <p class="meta">担当：杉田 光 ／ contact@parano-ai.com ／ 通常2営業日以内にご返信します</p>
+      <p class="meta">ご質問は <a href="/doryo/contact/?type=contact&amp;product=kintai" style="color:#fff">お問い合わせ</a> から ／ 担当：杉田 光 ／ contact@parano-ai.com ／ 通常2営業日以内にご返信します</p>
     </div>
   </section>
 </main>
 
 <footer class="site">
   <div class="container">
-    <span>勤タイ人（Slackで勤怠・会議室予約）<br>Slack・Google・Vercelは各社の商標または登録商標です。本ページは各社と提携・承認の関係にありません。</span>
+    <span>勤タイ人（Slackで打刻する勤怠）<br>Slack・Stripe・Cloudflareは各社の商標または登録商標です。本ページは各社と提携・承認の関係にありません。</span>
     <span><a href="/">ParanoAI</a>　／　<a href="/training/">AIエージェント研修</a>　／　杉田 光</span>
   </div>
 </footer>
 
-<a class="floating" href="/doryo/contact/?type=contact&amp;product=kintai" aria-label="無料で導入を相談する（お問い合わせフォーム）">
-  <span class="ic" aria-hidden="true"><svg><use href="#i-chat"/></svg></span>
-  <span><small>ご相談は無料</small>導入を相談する</span>
+<a class="floating" href="/doryo/contact/?type=trial&amp;product=kintai" aria-label="14日間 無料で試す（先行登録フォーム）">
+  <span class="ic" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+  <span><small>先行登録 受付中</small>14日間 無料で試す</span>
 </a>
+
 
 <script>
   (function () {
