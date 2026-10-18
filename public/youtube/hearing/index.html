@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ParanoAI 導入支援｜YouTube ヒアリングシート</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<style>
+:root{
+  --brand:#C8323B; --brand-d:#9E2028; --brand-l:#FCE8E9; --brand-ll:#FFF6F6; --accent:#FFD43B;
+  --ink:#1F1A1C; --ink-2:#5A5054; --ink-3:#8A7F83; --line:#EBDDDE; --bg:#FBF5F5; --paper:#FFFFFF; --ok:#1F9D61;
+  --font:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",YuGothic,"Noto Sans JP",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.8;font-feature-settings:"palt" 1;
+  padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{max-width:760px;margin:0 auto;padding:40px 0 20px}
+.logo{font-weight:800;color:var(--brand);font-size:.85rem;letter-spacing:.08em}
+h1{font-size:clamp(1.5rem,4vw,2rem);line-height:1.4;margin:8px 0 12px;text-wrap:balance}
+.lead{color:var(--ink-2)}
+form{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+fieldset{border:1px solid var(--line);background:var(--paper);border-radius:16px;padding:20px 22px;margin:0;display:flex;flex-direction:column;gap:18px;min-width:0}
+legend{font-weight:800;color:var(--brand);padding:0 6px;font-size:.9rem;letter-spacing:.06em}
+.q{display:flex;flex-direction:column;gap:6px}
+.t{font-weight:700}
+.req{display:inline-block;margin-left:6px;font-size:.7rem;color:#fff;background:var(--brand);border-radius:4px;padding:0 6px;vertical-align:2px}
+.hint{font-size:.8rem;color:var(--ink-3)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;background:var(--paper);font-size:.92rem}
+.opts input{accent-color:var(--brand)}
+.opts label:has(input:checked){border-color:var(--brand);background:var(--brand-l);color:var(--brand-d);font-weight:700}
+input[type=text],input[type=email],input[type=number],textarea{font:inherit;color:var(--ink);background:var(--brand-ll);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input[type=number]{width:8em}
+textarea{min-height:90px;resize:vertical}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.submit{display:flex;flex-direction:column;align-items:center;gap:10px;padding:8px 0}
+button{font:inherit;font-weight:800;font-size:1.05rem;border:0;border-radius:999px;background:var(--brand);color:#fff;padding:14px 40px;cursor:pointer;box-shadow:0 6px 16px rgba(200,50,59,.28)}
+button:disabled{opacity:.6;cursor:wait}
+.err{color:var(--brand-d);font-weight:700;font-size:.9rem}
+.done{max-width:760px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:28px 24px;text-align:center}
+.done h2{margin:0 0 8px;color:var(--ok)}
+.note{font-size:.8rem;color:var(--ink-3);max-width:760px;margin:0 auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">ParanoAI 導入支援 ／ YouTube</div>
+  <h1>YouTube ヒアリングシート</h1>
+  <p class="lead">お問い合わせありがとうございます。いまの状況とご希望を伺い、貴社に合わせた進め方とお見積もりをご用意します。分からない項目は空欄のままで構いません。所要時間は10分ほどです。</p>
+</header>
+
+<form id="f" novalidate>
+  <fieldset>
+    <legend>ご連絡先</legend>
+    <div class="q"><label class="t" for="name">お名前<span class="req">必須</span></label><input type="text" id="name" name="name" autocomplete="name" required maxlength="100"></div>
+    <div class="q"><label class="t" for="email">メールアドレス<span class="req">必須</span></label><input type="email" id="email" name="email" autocomplete="email" required maxlength="200"></div>
+  </fieldset>
+  <div id="qs" style="display:contents"></div>
+  <div class="hp" aria-hidden="true"><label for="website">website</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off"></div>
+  <div class="submit">
+    <button type="submit" id="send">回答を送る</button>
+    <p class="err" id="err" role="alert" hidden></p>
+  </div>
+  <p class="note">いただいた内容は、ご提案とお見積もりの準備にだけ使います。担当：杉田 光 ／ contact@parano-ai.com</p>
+</form>
+
+<div class="done" id="done" hidden>
+  <h2>回答を受け取りました</h2>
+  <p>ありがとうございます。内容を確認し、通常2営業日以内に、進め方とお見積もりのご案内をメールでお送りします。</p>
+</div>
+
+<script>
+const HEARING = [{"sec": "基本", "id": "company", "q": "会社名・業種", "type": "text", "hint": "例：株式会社〇〇（不動産仲介）"}, {"sec": "基本", "id": "person", "q": "ご担当者と、最終的に決める方", "type": "text", "hint": "例：広報の田中（担当）／社長（最終決定）"}, {"sec": "基本", "id": "start", "q": "始めたい時期", "type": "text", "hint": "例：12月中に1本目を出したい"}, {"sec": "目的", "id": "goal", "q": "YouTubeで一番得たいもの", "type": "radio", "options": ["問い合わせ・来店", "採用の応募", "商品・講座の売上", "認知・信頼", "まだ決まっていない"], "hint": "いちばん近いものを1つ"}, {"sec": "目的", "id": "kpi", "q": "月に何件くらい欲しいか（問い合わせ・応募など）", "type": "text", "hint": "例：問い合わせを月5件、応募を月2件。まだ分からなければ空欄で構いません"}, {"sec": "現状", "id": "status", "q": "チャンネルの状況", "type": "radio", "options": ["まだ無い", "あるが更新が止まっている", "続けているが伸び悩んでいる", "ParanoAIの立ち上げ支援を終えた"], "hint": ""}, {"sec": "現状", "id": "videos", "q": "公開済みの本数", "type": "number", "min": 0, "max": 999, "hint": "まだ無ければ0"}, {"sec": "現状", "id": "ctr", "q": "直近のクリック率（分かれば）", "type": "text", "hint": "YouTube Studio のアナリティクスに出ている「インプレッションのクリック率」。分からなければ空欄で構いません"}, {"sec": "現状", "id": "access", "q": "アナリティクスの閲覧権限とサムネ素材（写真・ロゴ）を渡せるか", "type": "radio", "options": ["渡せる", "スクショなら渡せる", "渡せない"], "hint": "既存の動画を診断する場合に使います"}, {"sec": "依頼", "id": "want", "q": "お願いしたいこと", "type": "radio", "options": ["サムネ・タイトルを見てほしい", "ゼロから立ち上げてほしい", "毎月の制作を任せたい", "自社で回すので、見てほしい", "まだ分からない"], "hint": "いちばん近いものを1つ"}, {"sec": "相手", "id": "target", "q": "見てほしい人（年代・状況・悩み）", "type": "text", "hint": "例：家を建てるか迷っている30代の夫婦。何から決めればいいか分からない"}, {"sec": "相手", "id": "refs", "q": "参考にしたいチャンネル・動画（2〜5本）", "type": "text", "hint": "URLを貼ってください。同業でなくても構いません"}, {"sec": "出演", "id": "cast", "q": "出演する人数", "type": "radio", "options": ["1人", "2人", "3人以上", "まだ決まっていない"], "hint": ""}, {"sec": "出演", "id": "castdays", "q": "出演者が撮影に使える日数（月あたり）", "type": "text", "hint": "例：月に2日なら撮影に使える"}, {"sec": "撮影", "id": "shoot", "q": "撮影はどうするか", "type": "radio", "options": ["自社で撮れる", "撮影ごと頼みたい", "立ち会いだけほしい"], "hint": ""}, {"sec": "撮影", "id": "shootdays", "q": "毎月の撮影日数（撮影をお任せする場合）", "type": "number", "min": 0, "max": 4, "hint": "撮影ごと・立ち会いをご希望の場合。1日に最大4本撮れます"}, {"sec": "撮影", "id": "area", "q": "撮影場所", "type": "radio", "options": ["首都圏の貴社（撮影先）", "首都圏のスタジオ", "首都圏外"], "hint": ""}, {"sec": "本数", "id": "long", "q": "長尺の本数（月あたり）", "type": "number", "min": 0, "max": 12, "hint": "10〜15分の動画の本数。分からなければ空欄で構いません（2本で見積もります）"}, {"sec": "本数", "id": "short", "q": "ショートの本数（月あたり）", "type": "number", "min": 0, "max": 20, "hint": "60秒以内の縦型動画。不要なら0"}, {"sec": "体制", "id": "editor", "q": "社内に編集できる人はいるか", "type": "radio", "options": ["いる", "いない", "外注先がある"], "hint": ""}, {"sec": "体制", "id": "weekly", "q": "数字の報告の頻度", "type": "radio", "options": ["隔週で十分", "毎週ほしい"], "hint": ""}, {"sec": "体制", "id": "training", "q": "社内でAIを使って台本・サムネを作れるようにしたいか", "type": "radio", "options": ["したい", "今はいい"], "hint": ""}, {"sec": "導線", "id": "funnel", "q": "見たあとの行き先（あるものすべて）", "type": "text", "hint": "例：LINE公式アカウント、問い合わせフォーム、採用ページ"}, {"sec": "導線", "id": "line", "q": "LINE公式アカウントの状況", "type": "radio", "options": ["あって使っている", "あるが使っていない", "無い（作りたい）", "無い（不要）"], "hint": ""}, {"sec": "条件", "id": "budget", "q": "ご予算の目安（初期・月額）", "type": "text", "hint": "例：初期は50万円まで、毎月は30万円まで"}, {"sec": "条件", "id": "ng", "q": "出せない情報・AIに渡せない情報・NGの表現", "type": "text", "hint": "例：お客様の顔は出せない、競合の社名は出さない、社外秘の数字はAIに渡さない"}];
+const ENDPOINT = "https://api.parano-ai.com/youtube-hearing";
+const started = Date.now();
+const qs = document.getElementById("qs");
+const secs = [...new Set(HEARING.map(h => h.sec))];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+secs.forEach(sec => {
+  const fs = document.createElement("fieldset");
+  fs.innerHTML = `<legend>${esc(sec)}</legend>`;
+  HEARING.filter(h => h.sec === sec).forEach(h => {
+    const hint = h.hint ? `<span class="hint">${esc(h.hint)}</span>` : "";
+    let body;
+    if (h.type === "radio") body = `<span class="t" id="l-${h.id}">${esc(h.q)}</span><div class="opts" role="radiogroup" aria-labelledby="l-${h.id}">${h.options.map((o,k) => `<label><input type="radio" name="${h.id}" value="${esc(o)}">${esc(o)}</label>`).join("")}</div>${hint}`;
+    else if (h.type === "number") body = `<label class="t" for="${h.id}">${esc(h.q)}</label><input type="number" id="${h.id}" name="${h.id}" min="${h.min}" max="${h.max}" step="1" inputmode="numeric">${hint}`;
+    else { const long = ["target","refs","ng","funnel","kpi"].includes(h.id);
+      body = `<label class="t" for="${h.id}">${esc(h.q)}</label>${long ? `<textarea id="${h.id}" name="${h.id}" maxlength="2000"></textarea>` : `<input type="text" id="${h.id}" name="${h.id}" maxlength="300">`}${hint}`; }
+    const d = document.createElement("div"); d.className = "q"; d.innerHTML = body; fs.appendChild(d);
+  });
+  qs.appendChild(fs);
+});
+// ?c=会社名 で会社名を入れておく（杉田がURLを送るとき）
+const c = new URLSearchParams(location.search).get("c");
+if (c) document.getElementById("company").value = c.slice(0, 100);
+const f = document.getElementById("f"), err = document.getElementById("err"), send = document.getElementById("send");
+f.addEventListener("submit", async (e) => {
+  e.preventDefault(); err.hidden = true;
+  const name = document.getElementById("name").value.trim(), email = document.getElementById("email").value.trim();
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = "お名前とメールアドレスをご記入ください。"; err.hidden = false; return; }
+  const answers = {};
+  HEARING.forEach(h => {
+    if (h.type === "radio") { const r = f.querySelector(`input[name="${h.id}"]:checked`); answers[h.id] = r ? r.value : ""; }
+    else answers[h.id] = (f.querySelector(`[name="${h.id}"]`).value || "").trim();
+  });
+  send.disabled = true; send.textContent = "送信中…";
+  try {
+    const res = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, answers, website: document.getElementById("website").value, elapsed_ms: Date.now() - started }) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok || !j.ok) throw new Error(j.error || res.status);
+    f.hidden = true; document.getElementById("done").hidden = false; window.scrollTo(0, 0);
+  } catch (ex) {
+    err.textContent = "送信できませんでした。時間をおいてもう一度お試しいただくか、contact@parano-ai.com までご連絡ください。"; err.hidden = false;
+    send.disabled = false; send.textContent = "回答を送る";
+  }
+});
+</script>
+</body>
+</html>
