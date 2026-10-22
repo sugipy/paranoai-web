@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HPお引っ越し — WordPressの更新に追われないサイトへ｜ParanoAI 導入支援</title>
+<meta name="description" content="WordPressで作ったホームページを、見た目と文章はそのままに、更新の要らない静的サイトへ作り直して Cloudflare に引っ越します。全URLの突き合わせ、フォームの作り直し、切り替えの立ち会い、旧サーバーの解約のご案内まで。URLを送るだけの無料診断から。">
+<meta name="color-scheme" content="light">
+<style>
+  :root {
+    --brand: #1F5A45;
+    --brand-d: #123A2C;
+    --brand-l: #E4F0E9;
+    --brand-ll: #F3F8F5;
+    --accent: #FFD43B;
+    --ok: #1F5A45;
+    --ok-l: #E4F0E9;
+    --wip: #9A5B00;
+    --wip-l: #FFF4E0;
+    --ink: #16211B;
+    --ink-2: #4A5550;
+    --ink-3: #67716B;
+    --line: #E1E8E3;
+    --bg: #FFFFFF;
+    --bg-2: #F4F7F5;
+    --radius: 16px;
+    --shadow: 0 10px 30px rgba(18, 58, 44, .10);
+    --shadow-s: 0 4px 14px rgba(18, 58, 44, .08);
+    --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, "Noto Sans JP", Meiryo, sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+  img, svg { display: block; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+  /* ── ボタン ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5em;
+    border-radius: 999px; font-weight: 700; text-decoration: none; letter-spacing: .02em;
+    padding: .9em 1.8em; font-size: 1rem; line-height: 1.2;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    white-space: nowrap;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36, 83, 199, .3); }
+  .btn-primary:hover { background: var(--brand-d); }
+  .btn-ghost { background: #fff; color: var(--brand); border: 2px solid var(--brand); }
+  .btn-ghost:hover { background: var(--brand-l); }
+  .btn-lg { padding: 1.05em 2.2em; font-size: 1.0625rem; }
+  .btn svg { width: 1.1em; height: 1.1em; }
+  .btn-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; }
+  .bubble {
+    position: relative; background: var(--accent); color: var(--ink); font-size: .75rem; font-weight: 700;
+    border-radius: 999px; padding: .2em .9em; line-height: 1.6;
+  }
+  .bubble::after {
+    content: ""; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%);
+    border: 5px solid transparent; border-top-color: var(--accent); border-bottom: 0;
+  }
+
+  /* ── ヘッダー ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.94);
+    backdrop-filter: saturate(1.4) blur(8px); border-bottom: 1px solid var(--line);
+  }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 1.125rem; letter-spacing: .02em; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand); display: grid; place-items: center; flex: none; }
+  .logo-mark svg { width: 20px; height: 20px; }
+  img.logo-mark { background: #dde1f4; object-fit: cover; }
+  .logo small { display: block; font-size: .625rem; font-weight: 500; color: var(--ink-3); letter-spacing: .04em; line-height: 1.2; }
+  .nav { display: none; gap: 28px; font-size: .875rem; font-weight: 600; }
+  .nav a { text-decoration: none; color: var(--ink-2); }
+  .nav a:hover { color: var(--brand); }
+  .header-cta { display: flex; gap: 8px; }
+  .header-cta .btn { padding: .6em 1.2em; font-size: .875rem; }
+  .header-cta .btn-ghost { display: none; }
+  @media (min-width: 960px) { .nav { display: flex; } }
+  .logo > span:last-child { white-space: nowrap; }
+  @media (max-width: 400px) { .logo { font-size: .9375rem; gap: 8px; } .header-cta .btn { padding: .55em 1em; font-size: .8125rem; } }
+  @media (min-width: 560px) { .header-cta .btn-ghost { display: inline-flex; } }
+
+  /* ── ヒーロー ── */
+  .hero {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(1200px 500px at 85% -10%, #DCE6FF 0%, transparent 60%),
+      linear-gradient(180deg, var(--brand-ll) 0%, #fff 100%);
+    padding: 48px 0 88px;
+  }
+  .hero .container { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .hero { padding: 72px 0 120px; } .hero .container { grid-template-columns: 1.05fr 1fr; gap: 48px; } }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line);
+    border-radius: 999px; padding: 6px 14px 6px 6px; font-size: .8125rem; font-weight: 700; color: var(--ink-2);
+    box-shadow: var(--shadow-s);
+  }
+  .tag b { background: var(--brand); color: #fff; border-radius: 999px; padding: 2px 10px; font-size: .75rem; }
+  .hero h1 {
+    font-size: clamp(1.75rem, 4.2vw, 3rem); line-height: 1.36; font-weight: 800; letter-spacing: .01em;
+    margin: 20px 0 20px;
+  }
+  .nw { white-space: nowrap; }
+  .hl { background: linear-gradient(transparent 62%, var(--accent) 62%); }
+  .hero h1 .blue { color: var(--brand); }
+  .hero .lead { font-size: 1.0625rem; color: var(--ink-2); margin: 0 0 32px; max-width: 34em; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .hero-points { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 28px 0 0; padding: 0; list-style: none; font-size: .875rem; font-weight: 600; color: var(--ink-2); }
+  .hero-points li { display: flex; align-items: center; gap: 6px; }
+  .hero-points svg { width: 18px; height: 18px; color: var(--ok); flex: none; }
+
+  /* ヒーローの画面イメージ */
+  .visual { position: relative; min-height: 440px; }
+  .card { background: #fff; border-radius: 14px; box-shadow: var(--shadow); border: 1px solid var(--line); }
+  .v-form { position: absolute; left: 0; top: 10px; width: 62%; padding: 16px 18px; }
+  .v-form .bar { display: flex; gap: 5px; margin-bottom: 12px; }
+  .v-form .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .v-form .done { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: .9375rem; }
+  .v-form .done svg { width: 22px; height: 22px; color: var(--ok); flex: none; }
+  .v-form .label { font-size: .6875rem; color: var(--ink-3); margin-top: 10px; }
+  .v-form .num { font-family: var(--mono); font-size: 1.25rem; font-weight: 700; letter-spacing: .06em; color: var(--brand); }
+  .v-form .linebtn { margin-top: 10px; background: var(--ok); color: #fff; font-size: .75rem; font-weight: 700; border-radius: 999px; padding: 6px 12px; display: inline-block; }
+  .v-phone {
+    position: absolute; right: 2%; top: 0; width: 42%; max-width: 210px; aspect-ratio: 9 / 18;
+    background: #111827; border-radius: 30px; padding: 9px; box-shadow: var(--shadow);
+  }
+  .v-phone .screen { background: #EEF2F7; border-radius: 22px; height: 100%; padding: 14px 10px 10px; display: flex; flex-direction: column; gap: 8px; font-size: .6875rem; line-height: 1.5; }
+  .v-phone .head { text-align: center; font-weight: 700; font-size: .6875rem; color: var(--ink-2); margin-bottom: 4px; }
+  .msg-r, .msg-l { max-width: 85%; padding: 7px 10px; border-radius: 12px; }
+  .msg-r { align-self: flex-end; background: #BFEBC4; border-bottom-right-radius: 4px; }
+  .msg-l { align-self: flex-start; background: #fff; border-bottom-left-radius: 4px; }
+  .v-thread { position: absolute; left: 8%; bottom: 0; width: 72%; padding: 12px 14px; font-size: .75rem; line-height: 1.55; }
+  .v-thread .t-head { font-size: .6875rem; color: var(--ink-3); font-weight: 700; margin-bottom: 6px; }
+  .t-row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; padding: 6px 0; border-top: 1px dashed var(--line); }
+  .t-row:first-of-type { border-top: 0; }
+  .t-av { width: 22px; height: 22px; border-radius: 6px; background: var(--brand-l); color: var(--brand); font-size: .5625rem; font-weight: 800; display: grid; place-items: center; }
+  img.t-av { background: #dde1f4; object-fit: cover; flex: none; }
+  .t-row .m { color: var(--brand); font-weight: 700; }
+  .img-note { position: absolute; right: 0; bottom: -26px; font-size: .6875rem; color: var(--ink-3); }
+  .float-badge {
+    position: absolute; right: 0; bottom: 34%; background: var(--accent); font-weight: 800; font-size: .8125rem;
+    border-radius: 12px; padding: 8px 12px; box-shadow: var(--shadow-s); line-height: 1.4;
+  }
+  @media (max-width: 559px) {
+    .visual { min-height: 0; display: grid; gap: 14px; }
+    .v-form, .v-phone, .v-thread, .float-badge, .img-note { position: static; width: auto; max-width: none; }
+    .v-phone { display: none; }
+    .float-badge { justify-self: start; }
+  }
+
+  /* ── 共通セクション ── */
+  section { padding: 72px 0; }
+  @media (min-width: 960px) { section { padding: 104px 0; } }
+  .sec-bg { background: var(--bg-2); }
+  .sec-head { text-align: center; max-width: 760px; margin: 0 auto 48px; }
+  .eyebrow { display: inline-block; color: var(--brand); font-weight: 800; font-size: .8125rem; letter-spacing: .14em; margin-bottom: 10px; }
+  h2 { font-size: clamp(1.5rem, 3.6vw, 2.25rem); line-height: 1.45; font-weight: 800; margin: 0 0 16px; letter-spacing: .01em; }
+  h3 { font-size: 1.125rem; font-weight: 800; line-height: 1.55; margin: 0; }
+  .sec-head p { color: var(--ink-2); margin: 0; }
+  p { margin: 0; }
+
+  /* ── 数字の帯 ── */
+  .stats { margin-top: -48px; position: relative; z-index: 2; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); background: #fff; border-radius: var(--radius);
+    box-shadow: var(--shadow); border: 1px solid var(--line); overflow: hidden;
+  }
+  @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+  .stat { padding: 22px 14px; text-align: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .stat:nth-child(2n) { border-right: 0; }
+  @media (min-width: 768px) { .stat { border-bottom: 0; } .stat:nth-child(2n) { border-right: 1px solid var(--line); } .stat:last-child { border-right: 0; } }
+  .stat .k { font-size: .75rem; color: var(--ink-3); font-weight: 700; }
+  .stat .v { font-size: 1.75rem; font-weight: 800; color: var(--brand); line-height: 1.3; }
+  .stat .v small { font-size: .875rem; color: var(--ink); margin-left: 2px; }
+  .after-stats { margin-top: -56px; padding-top: 128px; }
+
+  /* ── お悩み ── */
+  .pains { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .pains { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .pains { grid-template-columns: repeat(3, 1fr); } }
+  .pain { background: #fff; border-radius: var(--radius); padding: 24px; border: 1px solid var(--line); display: flex; gap: 14px; align-items: flex-start; }
+  .pain .ic { flex: none; width: 44px; height: 44px; border-radius: 12px; background: #FFF1F1; color: #D14343; display: grid; place-items: center; }
+  .pain .ic svg { width: 22px; height: 22px; }
+  .pain p { font-weight: 700; line-height: 1.65; }
+  .arrow-down { display: grid; place-items: center; margin: 40px auto 0; color: var(--brand); }
+  .arrow-down svg { width: 40px; height: 40px; }
+  .answer { text-align: center; margin-top: 12px; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 800; line-height: 1.6; }
+
+  /* ── ハブ図 ── */
+  .hub { max-width: 860px; margin: 0 auto; }
+  .hub > svg { width: 100%; height: auto; }
+  .hub-legend { display: grid; gap: 16px; margin-top: 32px; }
+  @media (min-width: 768px) { .hub-legend { grid-template-columns: repeat(3, 1fr); } }
+  .hub-legend div { background: #fff; border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); }
+  .hub-legend b { color: var(--brand); }
+  .hub-legend p { font-size: .9375rem; color: var(--ink-2); margin-top: 6px; }
+
+  /* ── できること ── */
+  .journey { list-style: none; padding: 0; margin: 0 auto 56px; max-width: 880px; display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+  .journey::before { content: ""; position: absolute; left: 10%; right: 10%; top: 27px; height: 3px; background: var(--line); }
+  .journey li { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .j-dot { width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 3px solid var(--line); display: grid; place-items: center; font-weight: 800; font-size: .8125rem; color: var(--ink-3); position: relative; }
+  .journey li.on .j-dot { background: var(--brand); border-color: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(36,83,199,.3); }
+  .j-t { font-size: .8125rem; font-weight: 700; color: var(--ink-2); line-height: 1.5; }
+  .journey li.on .j-t { color: var(--brand); }
+  @media (max-width: 559px) { .j-dot { width: 46px; height: 46px; font-size: .6875rem; } .journey::before { top: 22px; } .j-t { font-size: .6875rem; } }
+  .benefit { display: grid; gap: 28px; align-items: center; padding: 40px 0; border-top: 1px solid var(--line); }
+  .benefit:first-of-type { border-top: 0; }
+  @media (min-width: 900px) { .benefit { grid-template-columns: 1.15fr .85fr; gap: 64px; padding: 56px 0; } .benefit.rev .b-text { order: 2; } }
+  .b-no { font-family: var(--mono); font-weight: 800; font-size: 2.75rem; color: var(--brand); line-height: 1; margin-right: 12px; vertical-align: middle; }
+  .b-when { display: inline-block; vertical-align: middle; background: var(--accent); font-weight: 800; font-size: .875rem; border-radius: 999px; padding: 3px 14px; }
+  .benefit h3 { font-size: clamp(1.375rem, 3vw, 1.875rem); line-height: 1.45; margin: 16px 0 14px; }
+  .benefit p { color: var(--ink-2); }
+  .b-list { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 10px; }
+  .b-list li { display: flex; gap: 10px; font-weight: 600; font-size: .9375rem; }
+  .b-list svg { flex: none; width: 20px; height: 20px; color: var(--brand); margin-top: 4px; }
+  .b-visual { background: linear-gradient(160deg, var(--brand-l), var(--brand-ll)); border-radius: 24px; padding: 32px 16px; display: grid; place-items: center; }
+  .phone-s { width: 100%; max-width: 250px; background: #111827; border-radius: 32px; padding: 9px; box-shadow: var(--shadow); }
+  .phone-s .scr { background: #EEF2F7; border-radius: 24px; min-height: 360px; padding: 18px 12px; display: flex; flex-direction: column; gap: 10px; font-size: .75rem; line-height: 1.55; }
+  .p-time { align-self: center; font-size: .625rem; color: var(--ink-3); background: rgba(255,255,255,.7); border-radius: 999px; padding: 1px 10px; }
+  .form-s { background: #fff; border-radius: 12px; padding: 12px; display: grid; gap: 6px; }
+  .f-q { font-weight: 700; font-size: .6875rem; }
+  .f-scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .f-scale span { border: 1px solid var(--line); border-radius: 6px; text-align: center; font-size: .6875rem; padding: 2px 0; }
+  .f-scale span.on { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 700; }
+  .b-note { text-align: center; font-size: .875rem; color: var(--ink-2); background: var(--wip-l); border-radius: 12px; padding: 12px 16px; margin: 8px auto 12px; max-width: 760px; }
+  .f-opt { border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: .6875rem; }
+  .f-opt.on { border-color: var(--brand); background: var(--brand-l); color: var(--brand); font-weight: 700; }
+  .f-btn { background: var(--brand); color: #fff; text-align: center; border-radius: 999px; padding: 5px; font-weight: 700; font-size: .6875rem; margin-top: 4px; }
+
+  /* ── ステップ ── */
+  .steps { display: grid; gap: 16px; }
+  @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .steps { grid-template-columns: repeat(5, 1fr); gap: 14px; } }
+  .step { position: relative; background: #fff; border-radius: var(--radius); padding: 22px 20px; border: 1px solid var(--line); box-shadow: var(--shadow-s); }
+  .step .num { font-family: var(--mono); font-weight: 800; color: var(--brand); font-size: .8125rem; letter-spacing: .1em; }
+  .step h3 { font-size: 1rem; margin: 6px 0 8px; }
+  .step p { font-size: .875rem; color: var(--ink-2); line-height: 1.7; }
+  .who { display: inline-block; font-size: .6875rem; font-weight: 800; border-radius: 999px; padding: 2px 10px; margin-top: 10px; }
+  .who.cus { background: var(--brand-l); color: var(--brand); }
+  .who.auto { background: var(--ok-l); color: var(--ok); }
+  .who.staff { background: var(--wip-l); color: var(--wip); }
+  .code { font-family: var(--mono); background: var(--bg-2); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; font-size: .8125rem; color: var(--ink); white-space: nowrap; }
+
+  /* ── デモ（スレッド） ── */
+  .demo { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .demo { grid-template-columns: 1fr 1.15fr; gap: 56px; } }
+  .checks { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+  .checks li { display: flex; gap: 10px; font-weight: 600; }
+  .checks svg { flex: none; width: 22px; height: 22px; color: var(--brand); margin-top: 3px; }
+  .thread { padding: 0; overflow: hidden; }
+  .thread-top { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--line); font-weight: 700; font-size: .8125rem; color: var(--ink-2); background: var(--bg-2); }
+  .thread-top i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+  .tm { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: .875rem; line-height: 1.65; }
+  .tm:last-child { border-bottom: 0; }
+  .tm.parent { background: var(--brand-ll); }
+  .av { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; font-size: .6875rem; font-weight: 800; }
+  .av.bot { background: var(--brand); color: #fff; }
+  img.av.bot { background: #dde1f4; object-fit: cover; }
+  .av.hum { background: var(--wip-l); color: var(--wip); }
+  .tm .name { font-weight: 800; font-size: .8125rem; }
+  .tm .name time { font-weight: 500; color: var(--ink-3); font-size: .75rem; margin-left: 8px; }
+  .tm .body { color: var(--ink-2); }
+  .tm .m { color: var(--brand); font-weight: 700; }
+  .tm .q { border-left: 3px solid var(--line); padding-left: 10px; margin-top: 4px; color: var(--ink-3); }
+  .demo-note { font-size: .75rem; color: var(--ink-3); margin-top: 10px; }
+
+  /* ── 機能 ── */
+  .features { display: grid; gap: 20px; }
+  @media (min-width: 640px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .features { grid-template-columns: repeat(3, 1fr); } }
+  .feature { background: #fff; border-radius: var(--radius); padding: 28px 24px; border: 1px solid var(--line); }
+  .feature .ic { width: 52px; height: 52px; border-radius: 14px; background: var(--brand-l); color: var(--brand); display: grid; place-items: center; margin-bottom: 16px; }
+  .feature .ic svg { width: 26px; height: 26px; }
+  .feature p { color: var(--ink-2); font-size: .9375rem; margin-top: 8px; }
+
+  /* ── 業種 ── */
+  .inds { display: grid; gap: 14px; grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 768px) { .inds { grid-template-columns: repeat(3, 1fr); } }
+  .ind { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 12px; text-align: center; font-weight: 700; font-size: .9375rem; line-height: 1.6; }
+  .ind .ic { width: 48px; height: 48px; margin: 0 auto 10px; border-radius: 50%; background: var(--brand-l); color: var(--brand); display: grid; place-items: center; }
+  .ind .ic svg { width: 24px; height: 24px; }
+  .ind-note { text-align: center; color: var(--ink-2); font-size: .875rem; margin-top: 24px; }
+
+  /* ── 選ばれる理由 ── */
+  .reasons { display: grid; gap: 20px; }
+  @media (min-width: 960px) { .reasons { grid-template-columns: repeat(3, 1fr); } }
+  .reason { background: #fff; border-radius: var(--radius); padding: 32px 26px; border: 1px solid var(--line); position: relative; }
+  .reason .no { font-size: 3rem; font-weight: 800; color: var(--brand-l); line-height: 1; position: absolute; right: 22px; top: 18px; font-family: var(--mono); }
+  .reason .lbl { color: var(--brand); font-weight: 800; font-size: .75rem; letter-spacing: .14em; }
+  .reason h3 { font-size: 1.25rem; margin: 6px 0 12px; position: relative; }
+  .reason p { color: var(--ink-2); font-size: .9375rem; }
+  .reason a { color: var(--brand); font-weight: 700; }
+
+  /* ── 導入の流れ ── */
+  .flow { max-width: 860px; margin: 0 auto; }
+  .flow ol { padding: 0; margin: 0; display: grid; gap: 12px; }
+  .flow li { list-style: none; display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 16px; align-items: start; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; }
+  .flow .n { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font-weight: 800; font-family: var(--mono); font-size: 1.0625rem; }
+  .flow p { color: var(--ink-2); font-size: .9375rem; margin-top: 4px; }
+
+  /* ── 料金 ── */
+  .plans { display: grid; gap: 20px; max-width: 960px; margin: 0 auto; }
+  @media (min-width: 768px) { .plans { grid-template-columns: 1fr 1fr; } }
+  .plan { background: #fff; border-radius: 20px; padding: 32px 26px; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; }
+  .plan.main { border: 2px solid var(--brand); box-shadow: var(--shadow); }
+  .plan .pl { font-weight: 800; color: var(--brand); font-size: .875rem; }
+  .plan .price { font-size: 1.75rem; font-weight: 800; line-height: 1.3; }
+  .plan .price small { font-size: .875rem; color: var(--ink-2); font-weight: 600; }
+  .plan ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .9375rem; color: var(--ink-2); }
+  .plan li { display: flex; gap: 8px; }
+  .plan li svg { flex: none; width: 18px; height: 18px; color: var(--brand); margin-top: 5px; }
+  .plan .btn { margin-top: auto; align-self: flex-start; }
+
+  /* ── FAQ ── */
+  .faq { max-width: 860px; margin: 0 auto; display: grid; gap: 12px; }
+  .faq details { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 0 20px; }
+  .faq summary { cursor: pointer; list-style: none; display: grid; grid-template-columns: 24px minmax(0, 1fr) 20px; gap: 10px; align-items: center; font-weight: 700; padding: 18px 0; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .q { color: var(--brand); font-weight: 800; font-family: var(--mono); font-size: 1.125rem; }
+  .faq summary .pm { width: 20px; height: 20px; color: var(--ink-3); transition: transform .2s ease; }
+  .faq details[open] summary .pm { transform: rotate(45deg); }
+  .faq details p { padding: 0 0 20px 34px; color: var(--ink-2); font-size: .9375rem; }
+
+  /* ── 最後のCTA ── */
+  .final { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-d) 100%); color: #fff; text-align: center; }
+  .final h2 { color: #fff; }
+  .final p { opacity: .92; max-width: 40em; margin: 0 auto; }
+  .final .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 32px; align-items: flex-end; }
+  .final .btn-primary { background: #fff; color: var(--brand); box-shadow: 0 8px 20px rgba(0,0,0,.18); }
+  .final .btn-primary:hover { background: var(--accent); color: var(--ink); }
+  .final .btn-ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
+  .final .btn-ghost:hover { background: rgba(255,255,255,.12); }
+  .final .meta { font-size: .8125rem; opacity: .8; margin-top: 18px; }
+
+  footer.site { background: #0F1A33; color: #AEB8CC; padding: 40px 0 96px; font-size: .8125rem; }
+  footer.site .container { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+  footer.site a { color: #fff; text-decoration: none; }
+  footer.site a:hover { text-decoration: underline; }
+
+  /* ── 追従CTA ── */
+  .floating {
+    position: fixed; right: 16px; bottom: 16px; z-index: 60;
+    display: flex; align-items: center; gap: 10px; background: var(--brand); color: #fff; text-decoration: none;
+    border-radius: 999px; padding: 8px 18px 8px 8px; box-shadow: 0 10px 24px rgba(23, 42, 90, .3);
+    font-weight: 800; font-size: .875rem; line-height: 1.3; transition: transform .15s ease, background .15s ease;
+  }
+  .floating:hover { transform: translateY(-2px); background: var(--brand-d); }
+  .floating .ic { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: var(--ink); display: grid; place-items: center; }
+  .floating .ic svg { width: 18px; height: 18px; }
+  .floating small { display: block; font-size: .6875rem; font-weight: 600; opacity: .85; }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    * { transition-duration: 1ms !important; }
+  }
+
+  /* ── 見本（リマインド人）から引き継いだ部品 ── */
+  .v-form { width: 56%; }
+  @media (max-width: 559px) { .v-form { width: auto; } }
+  .mn { color: var(--brand); font-weight: 700; }
+  .mk { border-radius: 6px; padding: 0 5px; font-weight: 700; }
+  .m-b { background: var(--brand-l); color: var(--brand); } .m-o { background: var(--wip-l); color: var(--wip); } .m-g { background: var(--ok-l); color: var(--ok); } .m-r { background: #FFF1F1; color: #D14343; }
+  .mflow { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: stretch; margin: 0 auto 56px; max-width: 1000px; }
+  .mflow .fc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-s); padding: 20px 18px; font-size: .875rem; line-height: 1.75; }
+  .mflow .cap { display: inline-block; font-size: .75rem; font-weight: 800; color: #fff; background: var(--brand); border-radius: 999px; padding: 2px 12px; margin-bottom: 12px; }
+  .mflow .arr { display: grid; place-items: center; color: var(--brand); }
+  .mflow .arr svg { width: 26px; height: 26px; }
+  .mflow .ex { display: grid; gap: 8px; }
+  .mflow .ex div { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--line); }
+  .mflow .ex span:first-child { font-size: .75rem; color: var(--ink-3); }
+  .mflow .tcard { margin-top: 10px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .mflow .tcard .mt { font-size: .75rem; color: var(--ink-3); }
+  .chip { display: inline-block; font-size: .6875rem; font-weight: 700; border-radius: 999px; padding: 2px 10px; margin: 6px 6px 0 0; border: 1px solid var(--line); background: #fff; }
+  .chip.p { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .alt { text-align: center; color: var(--ink-2); font-size: .875rem; margin: -32px 0 48px; }
+  @media (max-width: 799px) { .mflow { grid-template-columns: 1fr; } .mflow .arr { height: 36px; transform: rotate(90deg); } .alt { margin-top: -24px; } }
+
+  /* ── HPお引っ越し（2026-10-22）: 深緑グラデ＋黄（ParanoAI スタイルガイド） ── */
+  .logo-mark { background: linear-gradient(135deg,#2F7A5C 0%,#1F5A45 50%,#123A2C 100%); }
+  .btn-primary { background: linear-gradient(135deg,#2F7A5C 0%,#1F5A45 50%,#123A2C 100%); }
+  .hero { background: radial-gradient(900px 480px at 85% 0%, #D5EADF 0%, transparent 62%), linear-gradient(180deg, var(--brand-ll) 0%, var(--bg) 100%); }
+  .v-form { width: 58%; }
+  .wp-alert { display: flex; gap: 8px; align-items: flex-start; background: #FCEBEA; border-radius: 10px; padding: 8px 10px; margin-top: 8px; font-size: .75rem; line-height: 1.5; }
+  .wp-alert svg { width: 18px; height: 18px; color: #B3261E; flex: none; margin-top: 1px; }
+  .wp-alert b { display: block; font-size: .8125rem; color: #B3261E; }
+  .v-site { position: absolute; right: 0; top: 36px; width: 46%; padding: 12px 14px; }
+  .v-site .bar { display: flex; gap: 5px; align-items: center; margin-bottom: 10px; }
+  .v-site .bar i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .v-site .url { margin-left: 6px; font-size: .625rem; color: var(--ink-3); background: var(--bg-2); border-radius: 999px; padding: 1px 8px; }
+  .v-site .label { font-size: .6875rem; color: var(--brand); font-weight: 700; }
+  .site-mock { display: grid; gap: 6px; }
+  .sm-hero { height: 54px; border-radius: 8px; background: linear-gradient(135deg,#CFE3D7,#E4F0E9); }
+  .sm-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+  .sm-row i { height: 26px; border-radius: 6px; background: var(--bg-2); border: 1px solid var(--line); }
+  .sm-line { height: 7px; border-radius: 4px; background: var(--line); }
+  .sm-line.s { width: 60%; }
+  .t-av { width: 34px; font-size: .5625rem; }
+  .t-row { grid-template-columns: 34px 1fr; }
+  .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 14px 0; }
+  .cmp-l { display: inline-block; font-size: .6875rem; font-weight: 800; color: var(--ink-3); margin-bottom: 6px; }
+  .cmp-l.g { color: var(--brand); }
+  .visual .float-badge { bottom: 30%; right: -6px; }
+  @media (max-width: 559px) { .pc-only { display: none; } }
+  .feature .src { font-size: .75rem; color: var(--ink-3); margin-top: 8px; }
+  @media (max-width: 559px) { .v-site { position: static; width: auto; } .v-form { width: auto; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-check-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M7.5 12.3l3 3 6-6.3"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></g></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1 1"/><path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1-1"/></g></symbol>
+    <symbol id="i-thread" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="2"/><path d="M7 10v8h12M7 14h12"/></g></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 004 0"/></g></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4M8.5 14.5l2 2 4-4"/></g></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.5v.01"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></g></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 010 12h-3"/></g></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13l2.5-8h12l2.5 8v6h-17z"/><path d="M3.5 13h5l1.5 2.5h4L15.5 13h5"/></g></symbol>
+    <symbol id="i-user-q" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5"/><path d="M17 6.5a2.3 2.3 0 114 1.5c-.8.6-1.5 1-1.5 2M19.5 13v.01"/></g></symbol>
+    <symbol id="i-unlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4"/><path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4"/><path d="M4 4l16 16"/></g></symbol>
+    <symbol id="i-yen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 8 6-8M12 12v8M8 13h8M8 16.5h8"/></g></symbol>
+    <symbol id="i-school" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M2.5 9L12 4.5 21.5 9 12 13.5z"/><path d="M6.5 11v5c1.5 1.6 3.4 2.5 5.5 2.5s4-.9 5.5-2.5v-5" stroke-linecap="round"/></g></symbol>
+    <symbol id="i-gym" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/></g></symbol>
+    <symbol id="i-salon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/><path d="M8.5 16L18 4M15.5 16L6 4"/></g></symbol>
+    <symbol id="i-house" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5M10 20v-5h4v5"/></g></symbol>
+    <symbol id="i-seminar" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="11" rx="1.5"/><path d="M8 20l4-5 4 5"/></g></symbol>
+    <symbol id="i-badge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3.5" width="16" height="17" rx="2"/><circle cx="12" cy="10" r="2.8"/><path d="M7.5 17c.8-2 2.4-3 4.5-3s3.7 1 4.5 3"/></g></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 8.5V13l3 2M5 4L3 6M19 4l2 2"/></g></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6M4.5 12v6c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3v-6"/></g></symbol>
+    <symbol id="i-term" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7 10l3 2.5L7 15M12.5 15H17"/></g></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+    <symbol id="i-team" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.6-3.6 3-5.5 6-5.5s5.4 1.9 6 5.5M16 14.7c2.4.1 4.3 1.6 5 5.3"/></g></symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="#top" aria-label="HPお引っ越し ページの先頭へ">
+      <span class="logo-mark" aria-hidden="true"><svg style="color:#fff"><use href="#i-house"/></svg></span>
+      <span>HPお引っ越し<small>WordPress乗り換え代行<span class="pc-only"> ／ ParanoAI 導入支援</span></small></span>
+    </a>
+    <nav class="nav" aria-label="ページ内">
+      <a href="#why">なぜ今</a><a href="#how">しくみ</a><a href="#keep">変わること</a><a href="#flow">進め方</a><a href="#price">費用</a><a href="#faq">よくある質問</a>
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-ghost" href="/contact/?topic=hp">相談する</a>
+      <a class="btn btn-primary" href="/contact/?topic=hp">無料診断<span class="pc-only">を申し込む</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="container">
+      <div>
+        <span class="tag"><b>NEW</b>URLを送るだけで、無料診断</span>
+        <h1><span class="nw">WordPressの更新に、</span><br><span class="hl"><span class="blue">追われない</span>サイトへ</span><br>引っ越す。</h1>
+        <p class="lead">いまのホームページの<b>見た目と文章はそのまま</b>に、表示の仕組みだけを作り直して Cloudflare に載せ替えます。WordPress本体・プラグイン・PHPの<b>更新そのものが要らなくなります</b>。切り替えの当日の立ち会いと、<b>旧サーバーの解約のご案内</b>まで代行します。</p>
+        <div class="hero-cta">
+          <span class="btn-wrap"><span class="bubble">URLを送るだけ・無料</span>
+            <a class="btn btn-primary btn-lg" href="/contact/?topic=hp">無料診断を申し込む<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+          <span class="btn-wrap"><span class="bubble">診断は無料</span>
+            <a class="btn btn-ghost btn-lg" href="/contact/?topic=hp"><svg aria-hidden="true"><use href="#i-mail"/></svg>まず相談する</a></span>
+        </div>
+        <ul class="hero-points">
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>見た目・文章・URLはそのまま</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>全ページを機械で突き合わせ</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>フォームも作り直し</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>切り替えは立ち会いで</li>
+        </ul>
+      </div>
+
+      <div class="visual" role="img" aria-label="画面イメージ。WordPressの管理画面に更新のお知らせが並ぶ様子と、引っ越し後に全ページを突き合わせた確認表。">
+        <div class="card v-form">
+          <div class="bar"><i></i><i></i><i></i></div>
+          <div class="label">いまのサイトの管理画面（例）</div>
+          <div class="wp-alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span><b>更新があります</b>本体 1件 ／ プラグイン 7件 ／ テーマ 1件</span></div>
+          <div class="wp-alert"><svg aria-hidden="true"><use href="#i-alert"/></svg><span><b>PHPの更新が必要です</b>サーバー側の作業が要ります</span></div>
+        </div>
+        <div class="card v-site">
+          <div class="bar"><i></i><i></i><i></i><span class="url">www.example.co.jp</span></div>
+          <div class="site-mock"><div class="sm-hero"></div><div class="sm-row"><i></i><i></i><i></i></div><div class="sm-line"></div><div class="sm-line s"></div></div>
+          <div class="label" style="margin-top:8px">見た目はそのまま・お引っ越し後</div>
+        </div>
+        <div class="float-badge">更新の作業が<br>要らなくなる</div>
+        <div class="card v-thread">
+          <div class="t-head">全ページの突き合わせ（例）</div>
+          <div class="t-row"><span class="t-av">OK</span><span><span class="code">/company/</span> 旧と同じ内容で表示</span></div>
+          <div class="t-row"><span class="t-av">OK</span><span><span class="code">/service/</span> 旧と同じ内容で表示</span></div>
+          <div class="t-row"><span class="t-av">転送</span><span><span class="code">/?p=128</span> → <span class="code">/news/128/</span> へ自動で転送</span></div>
+          <div class="t-row"><span class="t-av">OK</span><span>問い合わせフォーム 送信テスト 済み</span></div>
+        </div>
+        <p class="img-note">※画面はイメージです</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="k">送るのは</div><div class="v">URL<small>1つ</small></div><div class="k">無料診断はURLだけで始められます</div></div>
+        <div class="stat"><div class="k">変えないのは</div><div class="v">見た目<small>と文章</small></div><div class="k">文章は要約も言い換えもしません</div></div>
+        <div class="stat"><div class="k">確かめるのは</div><div class="v">全<small>ページ</small></div><div class="k">旧サイトの全URLを新サイトで開いて確認</div></div>
+        <div class="stat"><div class="k">要らなくなるのは</div><div class="v">更新<small>作業</small></div><div class="k">本体・プラグイン・PHPのアップデート</div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="sec-bg after-stats">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PROBLEM</span>
+        <h2>WordPressのサイト、<br>「誰が更新しているか」分かりますか？</h2>
+      </div>
+      <div class="pains">
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-bell"/></svg></span><p>管理画面に「更新があります」が溜まったまま</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>更新したらレイアウトが崩れそうで、怖くて押せない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>作ってくれた制作会社や担当者と、もう連絡がつかない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>管理画面のログイン情報が、誰の手元にあるか分からない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-yen"/></svg></span><p>ほとんど触らないのに、サーバー代と保守費が毎月出ていく</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><p>脆弱性のニュースを見るたびに、うちは大丈夫かと気になる</p></div>
+      </div>
+      <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
+      <p class="answer reveal">更新を頑張り続けるのではなく、<br><span class="hl">更新が要らない仕組みに</span>引っ越します。</p>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHY NOW</span>
+        <h2>この1か月だけでも、<br>「すぐ更新して」が続いています</h2>
+        <p>修正版が出ていても、更新が遅れたサイトが狙われます。</p>
+      </div>
+      <div class="features">
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></div><h3>本体の脆弱性が「悪用確認」の一覧に</h3><p>WordPress本体の脆弱性（CVE-2026-87902）が、2026年9月25日に米CISAの「悪用が確認された脆弱性」の一覧に追加されました。4.7系から7.1系まで、修正前の各版が対象です。</p><p class="src">出典：CISA KEV ／ WordPress セキュリティアドバイザリ（2026-09-22）</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></div><h3>修正版が出て、数日で狙われた</h3><p>本体の脆弱性2件を組み合わせた攻撃で、教育機関の計6サイトが改ざんされたと10月13日に公表されました。不審なアクセスが見つかったのは7月22日、修正版が出た5日後でした。</p><p class="src">出典：京都教育大学のお知らせ（2026-10-13）</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>土台の PHP にも重大な脆弱性</h3><p>WordPressを動かす PHP 自体にも重大な脆弱性2件が10月21日に公表されました。WordPressを最新にしても、サーバー側の更新が別に要ります。</p><p class="src">出典：php.net（2026-10-21）</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">HOW IT WORKS</span>
+        <h2>お客様がすることは、<br>URLを送って、見比べるだけ</h2>
+      </div>
+
+      <div class="mflow reveal">
+        <div class="fc fc-s"><span class="cap">① いまのサイトを診断</span><div class="card thread"><div class="thread-top"><i></i>無料診断のまとめ（例）</div><div class="tm parent"><span class="av hum">診</span><div><div class="name">株式会社サンプル 様<time>診断</time></div><div class="body"><div class="ex"><div><span>ページ数</span><b class="mk m-b">約40ページ</b></div><div><span>フォーム</span><b class="mk m-g">お問い合わせ 1つ</b></div><div><span>メール</span><b class="mk m-o">同じサーバーで利用中</b></div><div><span>判定</span><b class="mk m-r">お引っ越し向き</b></div></div></div></div></div></div></div>
+        <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="fc fc-s"><span class="cap">② 写し取って作り直す</span><div class="card thread"><div class="thread-top"><i></i>作業の記録（例）</div><div class="tm"><span class="av hum">P</span><div><div class="name">ParanoAI 導入支援<time>作業</time></div><div class="body"><span class="mk m-b">40ページ</span>を写し取り、静的サイトに作り直しました<div class="q">文章・画像はそのまま ／ 旧URLは転送を設定</div><span class="mk m-g">お問い合わせフォーム</span>は作り直して、届く先も同じに。<br><span class="mk m-o">メール</span>が届き続ける設定も確認済み</div></div></div></div></div>
+        <div class="arr"><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+        <div class="fc fc-s"><span class="cap">③ 突き合わせて切り替え</span><div class="card thread"><div class="thread-top"><i></i>切り替え前の確認（例）</div><div class="tm"><span class="av hum">P</span><div><div class="name">ParanoAI 導入支援<time>確認</time></div><div class="body">旧サイトの全URLを新サイトで開きました<div class="tcard"><b class="mk m-b">40 / 40 表示OK</b><div class="mt">転送 6本 ／ フォーム送信テスト 済み</div><span class="chip p">切り替え日を決める</span><span class="chip">見比べる</span></div><span class="mk m-r">お引っ越し向き</span>の判定どおり進みました</div></div></div></div></div>
+      </div>
+      <p class="alt">数字は説明用の見本です。実際のページ数・本数は診断でお知らせします。</p>
+
+      <div class="steps">
+        <div class="step reveal"><div class="num">STEP 01</div><h3>URLを送る</h3><p>フォームかメールで、サイトのURLを1つ。それだけで診断を始めます。</p><span class="who cus">お客様</span></div>
+        <div class="step reveal"><div class="num">STEP 02</div><h3>診断と見積</h3><p>ページ数・フォーム・メールの使い方を調べ、向き不向きと費用を1枚でお送りします。</p><span class="who staff">ParanoAI</span></div>
+        <div class="step reveal"><div class="num">STEP 03</div><h3>写し取り・作り直し</h3><p>AI（Claude Code）で全ページを写し、全URLを機械で突き合わせ、人の目でも見比べて仕上げます。</p><span class="who auto">AI＋人</span></div>
+        <div class="step reveal"><div class="num">STEP 04</div><h3>見比べて確認</h3><p>新旧のサイトを並べて見ていただき、OKをいただいてから切り替えます。</p><span class="who cus">お客様</span></div>
+        <div class="step reveal"><div class="num">STEP 05</div><h3>立ち会いで切り替え</h3><p>日にちを決めて切り替え、旧サーバーは落ち着くまで残します。</p><span class="who staff">ParanoAI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">CONCEPT</span>
+        <h2>見られるたびに動くサイトから、<br>出来上がったページを配るサイトへ</h2>
+        <p>脆弱性の多くは「中で動くプログラム」に見つかります。動く部分を、問い合わせフォームだけに絞ります。</p>
+      </div>
+      <div class="hub reveal">
+        <svg viewBox="0 0 860 300" role="img" aria-label="左はWordPress。訪問のたびにプラグイン、本体、PHP、データベースの4層が動き、それぞれ更新が要る。右はお引っ越し後。出来上がったページをCloudflareから配るだけで、動くのは問い合わせフォームだけ。">
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#67716B"/></marker>
+          <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F7A5C"/><stop offset=".5" stop-color="#1F5A45"/><stop offset="1" stop-color="#123A2C"/></linearGradient></defs>
+          <g font-family="Hiragino Sans, Yu Gothic, sans-serif">
+            <text x="20" y="30" font-size="18" font-weight="800" fill="#B3261E">いま（WordPress）</text>
+            <rect x="20" y="56" width="96" height="60" rx="14" fill="#F4F7F5" stroke="#E1E8E3"/><text x="68" y="92" font-size="14" text-anchor="middle" fill="#16211B">訪問者</text>
+            <path d="M120 86 L160 86" stroke="#67716B" stroke-width="2.5" marker-end="url(#ah)"/>
+            <g font-size="14" text-anchor="middle" fill="#16211B">
+              <rect x="166" y="46" width="220" height="34" rx="10" fill="#FCEBEA" stroke="#F2CFCC"/><text x="276" y="68">プラグイン（入れた数だけ）</text>
+              <rect x="166" y="86" width="220" height="34" rx="10" fill="#FCEBEA" stroke="#F2CFCC"/><text x="276" y="108">テーマ・WordPress本体</text>
+              <rect x="166" y="126" width="220" height="34" rx="10" fill="#FCEBEA" stroke="#F2CFCC"/><text x="276" y="148">PHP（プログラムの実行）</text>
+              <rect x="166" y="166" width="220" height="34" rx="10" fill="#FCEBEA" stroke="#F2CFCC"/><text x="276" y="188">データベース・管理画面</text>
+            </g>
+            <text x="276" y="236" font-size="15" text-anchor="middle" fill="#B3261E" font-weight="800">4つとも、それぞれ更新が要る</text>
+            <line x1="430" y1="24" x2="430" y2="280" stroke="#E1E8E3" stroke-width="2" stroke-dasharray="6 6"/>
+            <text x="460" y="30" font-size="18" font-weight="800" fill="#1F5A45">お引っ越し後（静的サイト）</text>
+            <rect x="460" y="56" width="96" height="60" rx="14" fill="#F4F7F5" stroke="#E1E8E3"/><text x="508" y="92" font-size="14" text-anchor="middle" fill="#16211B">訪問者</text>
+            <path d="M560 86 L600 86" stroke="#67716B" stroke-width="2.5" marker-end="url(#ah)"/>
+            <rect x="606" y="46" width="236" height="80" rx="16" fill="url(#gb)"/><text x="724" y="80" font-size="15" text-anchor="middle" fill="#fff" font-weight="800">出来上がったページを配るだけ</text><text x="724" y="104" font-size="13" text-anchor="middle" fill="#fff">Cloudflare の配信網</text>
+            <rect x="606" y="140" width="236" height="56" rx="14" fill="#F3F8F5" stroke="#CFE3D7"/><text x="724" y="173" font-size="14" text-anchor="middle" fill="#1F5A45">動くのは問い合わせフォームだけ</text>
+            <text x="724" y="236" font-size="15" text-anchor="middle" fill="#1F5A45" font-weight="800">WordPressの管理画面が無くなる</text>
+          </g>
+        </svg>
+        <div class="hub-legend">
+          <div class="reveal"><b>更新が要らない</b><p>WordPress本体・プラグイン・PHPそのものがサイトから無くなるので、それらのアップデート作業も無くなります。</p></div>
+          <div class="reveal"><b>表示は Cloudflare から</b><p>Cloudflare の配信網から、出来上がったページを届けます。</p></div>
+          <div class="reveal"><b>中身は貴社のもの</b><p>ご希望に応じて、サイトの中身を貴社名義のアカウントで管理する形にできます。</p></div>
+        </div>
+      </div>
+      <p class="demo-note" style="text-align:center">※ 攻撃をすべて防げると約束するものではありません。狙われる入口を減らす、という考え方です。</p>
+    </div>
+  </section>
+
+  <section id="keep" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHAT CHANGES</span>
+        <h2>お客様から見えるものは、<br><span class="hl">変えないこと</span>を基本にします</h2>
+      </div>
+
+      <div class="benefit reveal">
+        <div class="b-text">
+          <span class="b-no">01</span><span class="b-when">見た目と文章</span>
+          <h3>見慣れたサイトのまま、<br>裏側だけが変わる</h3>
+          <p>全ページの文章・画像・並びをそのまま写します。文章は要約も言い換えもしません。直したい所があれば、この機会にご相談ください。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>ドメインはいまのまま。契約先も変えなくて構いません</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>新旧を並べて見比べてから切り替えます</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>スマホでの見え方も、あわせて確認します</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i>新旧の見比べ（例）</div><div class="cmp"><div><span class="cmp-l">いま</span><div class="site-mock"><div class="sm-hero"></div><div class="sm-row"><i></i><i></i><i></i></div><div class="sm-line"></div><div class="sm-line s"></div></div></div><div><span class="cmp-l g">お引っ越し後</span><div class="site-mock"><div class="sm-hero"></div><div class="sm-row"><i></i><i></i><i></i></div><div class="sm-line"></div><div class="sm-line s"></div></div></div></div><div class="body" style="padding:10px 14px 14px;font-size:.8125rem">文章・画像・並び 一致 <span class="chip p">OK</span></div></div>
+        </div>
+      </div>
+
+      <div class="benefit rev reveal">
+        <div class="b-text">
+          <span class="b-no">02</span><span class="b-when">URLと検索</span>
+          <h3>旧サイトの全URLを、<br>新サイトで開いて確かめる</h3>
+          <p>ページのURLはそのまま残します。WordPress特有の形で変わるURLは、旧URLから新URLへ自動で転送し、検索やブックマークからの入口を切らないようにします。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>サイトマップと実際のリンクから、全URLを洗い出す</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>1本ずつ機械で開いて、表示と転送を確認</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>確認の結果は一覧でお渡しします</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i>全URLの確認結果（例）</div><div class="tm"><span class="av hum">P</span><div><div class="name">突き合わせ<time>切り替え前</time></div><div class="body"><div class="dm-row"><span><b>/</b><em class="d">表示OK</em></span><span class="chip p">OK</span></div><div class="dm-row"><span><b>/company/</b><em class="d">表示OK</em></span><span class="chip p">OK</span></div><div class="dm-row"><span><b>/?p=128</b><em class="d">→ /news/128/</em></span><span class="chip">転送</span></div><div class="dm-row"><span><b>/contact/</b><em class="d">送信テスト済み</em></span><span class="chip p">OK</span></div></div></div></div></div>
+        </div>
+      </div>
+
+      <div class="benefit reveal">
+        <div class="b-text">
+          <span class="b-no">03</span><span class="b-when">フォームとメール</span>
+          <h3>問い合わせは同じ所に届き、<br>メールも止めない</h3>
+          <p>問い合わせフォームは作り直して、届く先のメールアドレスも同じにします。いまのサーバーでメールを使っているかを診断で確かめ、使っている場合は切り替えの前に、届き続けるように設定します。</p>
+          <ul class="b-list">
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>ご希望で、問い合わせを Slack や LINE にも通知</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>送った人への自動返信メールも、ご希望でご用意します</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>切り替えの前後で送信テストを行います</li>
+          </ul>
+        </div>
+        <div class="b-visual" aria-hidden="true">
+          <div class="card thread"><div class="thread-top"><i></i># お問い合わせ ／ 通知（例）</div><div class="tm"><span class="av hum">通</span><div><div class="name">ホームページ<time>10:24</time></div><div class="body">📩 お問い合わせが届きました<div class="q">お名前：田中 様 ／ 内容：見積もりのご相談</div>同じ内容を info@ 宛てにもメールで送りました <span class="chip p">確認した</span></div></div></div></div>
+        </div>
+      </div>
+      <p class="demo-note" style="text-align:center">※画面はイメージです。お名前は架空のものです。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">CASE</span>
+        <h2>テニス施設の公式サイトを、<br>同じやり方で引っ越しました</h2>
+        <p>引っ越し元はノーコードのサイト作成サービスでした。WordPressの場合も、同様の手順で進めます。</p>
+      </div>
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="k">全URLを確認</div><div class="v">95<small>/95</small></div><div class="k">旧サイトの全URLを新サイトで開いて、すべて表示</div></div>
+        <div class="stat"><div class="k">入口を切らない</div><div class="v">64<small>本</small></div><div class="k">URLが変わったページは自動で転送</div></div>
+        <div class="stat"><div class="k">申込の通知</div><div class="v">Slack</div><div class="k">体験申込のフォームを作り直し、施設のSlackと自動返信メールへ</div></div>
+        <div class="stat"><div class="k">更新が止まらない</div><div class="v">自分<small>で</small></div><div class="k">コーチがお知らせを書ける編集画面を用意</div></div>
+      </div>
+      <p class="demo-note" style="text-align:center">2026年9〜10月に実施。95/95 は2026年9月29日の実測です。</p>
+    </div>
+  </section>
+
+  <section class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">USE CASES</span>
+        <h2>「読んでもらって、問い合わせを受ける」<br>サイトに</h2>
+      </div>
+      <div class="inds">
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-badge"/></svg></div>会社案内・<br>コーポレートサイト</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-salon"/></svg></div>店舗・サロンの<br>サイト</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-gym"/></svg></div>施設・教室・<br>スクール</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-seminar"/></svg></div>士業・医院の<br>サイト</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-house"/></svg></div>不動産・<br>工務店</div>
+        <div class="ind reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-school"/></svg></div>お知らせが<br>月に数本まで</div>
+      </div>
+      <p class="ind-note">10〜100ページ程度のサイトを想定しています。ネットショップ（WooCommerce など）、会員ログイン、WordPressの中で予約システムを動かしているサイト、毎日たくさん記事を出すメディアは、個別にご相談ください（お受けできない場合があります）。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">WHY US</span>
+        <h2>AIで速く写し取り、<br>機械と人の目で確かめます</h2>
+      </div>
+      <div class="reasons">
+        <div class="reason reveal"><span class="no">01</span><span class="lbl">REASON</span><h3>文章を変えずに写す</h3><p>AIは要約や言い換えをしがちです。写し取りでは文章に手を加えないことを決まりにし、新旧を突き合わせて確かめます。</p></div>
+        <div class="reason reveal"><span class="no">02</span><span class="lbl">REASON</span><h3>切り替えは戻せる形で</h3><p>切り替えの前に戻す手順を用意し、旧サーバーはしばらく残したまま様子を見ます。日程はお客様のご都合に合わせます。</p></div>
+        <div class="reason reveal"><span class="no">03</span><span class="lbl">REASON</span><h3>自分たちで直せるようにもなれる</h3><p>更新は月額の代行でお引き受けできます。社内で直せるようになりたい場合は <a href="/training/">AIエージェント研修</a> もご用意しています。</p></div>
+      </div>
+      <div class="hub reveal" style="margin-top:32px">
+        <svg viewBox="0 0 860 200" role="img" aria-label="写す、突き合わせる、見比べるの3段階。AIが全ページを写し、機械が全URLを開いて確認し、最後に人とお客様が新旧を見比べる。">
+          <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1F5A45"/></marker></defs>
+          <g font-family="Hiragino Sans, Yu Gothic, sans-serif">
+            <rect x="20" y="30" width="230" height="140" rx="16" fill="#F3F8F5" stroke="#CFE3D7"/>
+            <circle cx="135" cy="72" r="24" fill="#1F5A45"/><text x="135" y="78" font-size="16" text-anchor="middle" fill="#fff" font-weight="800">AI</text>
+            <text x="135" y="122" font-size="17" text-anchor="middle" fill="#16211B" font-weight="800">写す</text>
+            <text x="135" y="148" font-size="13" text-anchor="middle" fill="#4A5550">全ページの文章・画像をそのまま</text>
+            <path d="M262 100 L300 100" stroke="#1F5A45" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#ah2)"/>
+            <rect x="315" y="30" width="230" height="140" rx="16" fill="#F3F8F5" stroke="#CFE3D7"/>
+            <circle cx="430" cy="72" r="24" fill="#1F5A45"/><text x="430" y="78" font-size="14" text-anchor="middle" fill="#fff" font-weight="800">機械</text>
+            <text x="430" y="122" font-size="17" text-anchor="middle" fill="#16211B" font-weight="800">突き合わせる</text>
+            <text x="430" y="148" font-size="13" text-anchor="middle" fill="#4A5550">旧サイトの全URLを1本ずつ開く</text>
+            <path d="M557 100 L595 100" stroke="#1F5A45" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#ah2)"/>
+            <rect x="610" y="30" width="230" height="140" rx="16" fill="#FFF8D6" stroke="#F3DE86"/>
+            <circle cx="725" cy="72" r="24" fill="#FFD43B"/><text x="725" y="78" font-size="14" text-anchor="middle" fill="#16211B" font-weight="800">人</text>
+            <text x="725" y="122" font-size="17" text-anchor="middle" fill="#16211B" font-weight="800">見比べる</text>
+            <text x="725" y="148" font-size="13" text-anchor="middle" fill="#4A5550">私たちと、最後にお客様の目で</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">FLOW</span>
+        <h2>URLを送っていただくところから、<br>旧サーバーの解約まで</h2>
+        <p>お客様にお願いすることは、太字で書いています。</p>
+      </div>
+      <div class="flow">
+        <div class="hub reveal" style="margin-bottom:24px">
+          <svg viewBox="0 0 860 120" role="img" aria-label="進め方の時間の流れ。無料診断、見積・ご依頼、作り直し・突き合わせ、見比べ・切り替え、2週間ほど様子を見て旧サーバーの解約。黄色はお客様にお願いすること。">
+            <g font-family="Hiragino Sans, Yu Gothic, sans-serif">
+              <line x1="60" y1="46" x2="800" y2="46" stroke="#CFE3D7" stroke-width="4"/>
+              <circle cx="60" cy="46" r="18" fill="#FFD43B"/><text x="60" y="51" font-size="13" text-anchor="middle" font-weight="800" fill="#16211B">01</text>
+              <circle cx="245" cy="46" r="18" fill="#FFD43B"/><text x="245" y="51" font-size="13" text-anchor="middle" font-weight="800" fill="#16211B">02</text>
+              <circle cx="430" cy="46" r="18" fill="#1F5A45"/><text x="430" y="51" font-size="13" text-anchor="middle" font-weight="800" fill="#fff">03</text>
+              <circle cx="615" cy="46" r="18" fill="#FFD43B"/><text x="615" y="51" font-size="13" text-anchor="middle" font-weight="800" fill="#16211B">04</text>
+              <circle cx="800" cy="46" r="18" fill="#1F5A45"/><text x="800" y="51" font-size="13" text-anchor="middle" font-weight="800" fill="#fff">05</text>
+              <g font-size="14" text-anchor="middle" fill="#16211B" font-weight="700">
+                <text x="60" y="92">URLを送る</text><text x="245" y="92">見積・ご依頼</text><text x="430" y="92">作り直し・突き合わせ</text><text x="615" y="92">見比べ・切り替え</text><text x="800" y="92">解約のご案内</text>
+              </g>
+              <text x="707" y="24" font-size="12" text-anchor="middle" fill="#67716B">2週間ほど様子を見る</text>
+            </g>
+          </svg>
+        </div>
+        <ol>
+          <li class="reveal"><span class="n">01</span><div><h3>無料診断</h3><p><b>サイトのURLを送ってください。</b>ページ数・フォーム・メールの使い方・向き不向きを調べ、1枚にまとめてお送りします。</p></div></li>
+          <li class="reveal"><span class="n">02</span><div><h3>お見積もり・ご依頼</h3><p>ページ数とフォームの数で費用と日程をお出しします。<b>内容をご確認のうえ、ご依頼ください。</b></p></div></li>
+          <li class="reveal"><span class="n">03</span><div><h3>写し取り・作り直し・突き合わせ</h3><p>全ページを写して静的サイトに作り直し、旧サイトの全URLを新サイトで開いて確認します。フォームも作り直します。</p></div></li>
+          <li class="reveal"><span class="n">04</span><div><h3>見比べて確認・切り替え</h3><p><b>新旧を見比べてOKをください。</b>日にちを決めて、立ち会いで切り替えます。ドメインやサーバーの操作は、お客様ご自身に画面で行っていただく形も選べます。</p></div></li>
+          <li class="reveal"><span class="n">05</span><div><h3>旧サーバーの解約のご案内</h3><p>しばらく様子を見てから、解約の手順をご案内します。<b>解約の手続きはお客様の手で</b>行っていただきます。</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="price">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">PRICE</span>
+        <h2>無料診断のあと、<br>ページ数に合わせてお見積もり</h2>
+      </div>
+      <div class="plans">
+        <div class="plan main reveal">
+          <span class="pl">お引っ越し（初回）</span>
+          <div class="price">お見積もり<small>（無料診断のあと）</small></div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>無料診断（ページ数・フォーム・メール・向き不向き）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>全ページの写し取りと、静的サイトへの作り直し</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>全URLの突き合わせと、変わるURLの転送</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>問い合わせフォームの作り直し</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>切り替えの立ち会いと、旧サーバーの解約のご案内</li>
+          </ul>
+          <a class="btn btn-primary" href="/contact/?topic=hp">無料診断を申し込む</a>
+        </div>
+        <div class="plan reveal">
+          <span class="pl">月額の更新代行（任意）・ほかにかかる費用</span>
+          <div class="price">更新代行は<small>ご希望の方だけ</small></div>
+          <ul>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>文章・写真の差し替えやお知らせの追加を、ご依頼ベースでお引き受けします</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>ドメインの費用は、これまでどおりお客様のご契約でかかります</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>Cloudflare の費用は、この規模のサイトなら多くの場合かかりません（診断で確認します）</li>
+            <li><svg aria-hidden="true"><use href="#i-check"/></svg>旧サーバーは、切り替えから2週間ほど様子を見てから解約をご案内します</li>
+          </ul>
+          <a class="btn btn-ghost" href="/contact/?topic=hp">相談する</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="sec-bg">
+    <div class="container">
+      <div class="sec-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2>よくある質問</h2>
+      </div>
+      <div class="faq">
+        <details><summary><span class="q">Q</span>こちらで用意するものは何ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>診断はサイトのURLだけで始められます。ご依頼のあとは、ドメインを管理している会社の管理画面に入れることが必要です（切り替えのときに使います）。</p></details>
+        <details><summary><span class="q">Q</span>検索の順位は落ちませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>URLとページの中身をそのまま残し、変わるURLは旧URLから転送します。順位をお約束するものではありませんが、引っ越しで検索からの入口を切らないように作ります。</p></details>
+        <details><summary><span class="q">Q</span>引っ越したあと、文章は自分で直せますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>WordPressの管理画面は無くなります。月額の更新代行でお引き受けするほか、お知らせなどを書ける簡単な編集画面をご用意することもできます（範囲はご相談）。</p></details>
+        <details><summary><span class="q">Q</span>メールが止まりませんか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>いまのサーバーでメールを使っているかを診断で確かめます。使っている場合は、切り替えの前に届き続ける設定を済ませ、切り替えの前後で送受信を確認します。</p></details>
+        <details><summary><span class="q">Q</span>うまくいかなかったらどうなりますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>切り替えは、元に戻す手順を先に用意してから行います。旧サーバーは切り替えのあともしばらく残し、様子を見てから解約をご案内します。</p></details>
+        <details><summary><span class="q">Q</span>サイトの中身をAIに送っても大丈夫ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>写し取るのは、どなたでも見られる公開中のページです。作業にはAI（Claude Code）を使います。管理画面のログイン情報はお預かりせずに進められます。</p></details>
+        <details><summary><span class="q">Q</span>ブログの記事が多くても大丈夫ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>過去の記事も写し取れます。ただ、毎日記事を出すような使い方は、WordPressのままの方が合う場合があります。診断で正直にお伝えします。</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="container">
+      <h2>いまのサイトのURLを、<br>1つ送ってください</h2>
+      <p>向いているか・どう引っ越すかを1枚にまとめてお返しします。「うちのサイトでもできるのか」という段階のご相談で構いません。診断だけでも大丈夫です。</p>
+      <div class="row">
+        <span class="btn-wrap"><span class="bubble">URLを送るだけ・無料</span>
+          <a class="btn btn-primary btn-lg" href="/contact/?topic=hp">無料診断を申し込む<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+        <a class="btn btn-ghost btn-lg" href="/contact/?topic=hp"><svg aria-hidden="true"><use href="#i-mail"/></svg>まず相談する</a>
+      </div>
+      <p class="meta">担当：杉田 光 ／ contact@parano-ai.com</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="container">
+    <span>HPお引っ越し（WordPress乗り換え代行）／ ParanoAI 導入支援<br>WordPress は WordPress Foundation、Cloudflare は Cloudflare, Inc.、Slack は Slack Technologies, LLC、LINE は LINEヤフー株式会社、Claude Code は Anthropic の商標または登録商標です。本ページは各社と提携・承認の関係にありません。画面・氏名はイメージで、実在の人物・組織とは関係ありません。</span>
+    <span><a href="/">ParanoAI</a>　／　<a href="/training/">AIエージェント研修</a>　／　杉田 光</span>
+  </div>
+</footer>
+
+<a class="floating" href="/contact/?topic=hp" aria-label="無料診断を申し込む">
+  <span class="ic" aria-hidden="true"><svg><use href="#i-arrow"/></svg></span>
+  <span><small>URLを送るだけ・無料</small>無料診断を申し込む</span>
+</a>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+</body>
+</html>
+</body>
+</html>
