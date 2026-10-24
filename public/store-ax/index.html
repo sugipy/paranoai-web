@@ -96,6 +96,7 @@
   .logo > span:last-child { white-space: nowrap; }
   @media (max-width: 400px) { .logo { font-size: .9375rem; gap: 8px; } .header-cta .btn { padding: .55em 1em; font-size: .8125rem; } }
   @media (min-width: 560px) { .header-cta .btn-ghost { display: inline-flex; } }
+  @media (max-width: 360px) { .logo > span:last-child { white-space: normal; } .logo-t { font-size: .8125rem; line-height: 1.3; } }
 
   /* ── ヒーロー ── */
   .hero {
@@ -186,7 +187,7 @@
   .stat { padding: 22px 14px; text-align: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .stat:nth-child(2n) { border-right: 0; }
   @media (min-width: 768px) { .stat { border-bottom: 0; } .stat:nth-child(2n) { border-right: 1px solid var(--line); } .stat:last-child { border-right: 0; } }
-  .stat .k { font-size: .75rem; color: var(--ink-3); font-weight: 700; }
+  .stat .k { font-size: .75rem; color: var(--ink-3); font-weight: 700; text-wrap: balance; }
   .stat .v { font-size: 1.75rem; font-weight: 800; color: var(--brand); line-height: 1.3; }
   .stat .v small { font-size: .875rem; color: var(--ink); margin-left: 2px; }
   .after-stats { margin-top: -56px; padding-top: 128px; }
@@ -527,6 +528,117 @@
   .r-line { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; font-weight: 700; }
   .r-line .t-av { background: var(--brand); color: #fff; flex: none; }
   .r-line .chip { margin: 0; flex: none; }
+
+  /* ── ファーストビュー（AIの自動化を前に出す版） ── */
+  .hero.hero-ai {
+    color: #fff;
+    background:
+      radial-gradient(720px 440px at 82% 22%, rgba(52, 211, 153, .30) 0%, transparent 65%),
+      radial-gradient(620px 420px at 6% 96%, rgba(56, 189, 248, .16) 0%, transparent 65%),
+      linear-gradient(160deg, #0B2119 0%, #06140F 55%, #07181C 100%);
+  }
+  .hero-ai::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,.11) 1px, transparent 1.3px); background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 62% 40%, #000 25%, transparent 78%);
+            mask-image: radial-gradient(ellipse 80% 70% at 62% 40%, #000 25%, transparent 78%);
+  }
+  .hero-ai .container { position: relative; }
+  .hero-ai .tag { background: rgba(255,255,255,.07); border-color: rgba(110,231,183,.35); color: #D1FAE5; box-shadow: 0 0 24px rgba(52,211,153,.18); }
+  .hero-ai .tag b { background: #6EE7B7; color: #052E1F; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .hero-ai .tag b svg { width: 12px; height: 12px; }
+  .hero-ai h1 { font-size: clamp(2.125rem, 5.2vw, 3.625rem); line-height: 1.28; color: #fff; }
+  .grad { background: linear-gradient(90deg, #6EE7B7 0%, #5EEAD4 45%, #93E9FF 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero-ai .lead { color: rgba(255,255,255,.78); }
+  .hero-ai .lead b { color: #fff; }
+  .hero-ai .btn-primary { background: linear-gradient(135deg, #7CF0C4, #34D399); color: #052E1F; box-shadow: 0 0 0 1px rgba(110,231,183,.5), 0 10px 34px rgba(52,211,153,.38); }
+  .hero-ai .btn-primary:hover { background: linear-gradient(135deg, #9AF5D3, #4ADEA8); }
+  .hero-ai .btn-ghost { background: rgba(255,255,255,.04); color: #fff; border-color: rgba(255,255,255,.45); }
+  .hero-ai .btn-ghost:hover { background: rgba(255,255,255,.1); }
+  .hero-ai .hero-points { color: rgba(255,255,255,.86); }
+  .hero-ai .hero-points svg { color: #10B981; }
+  .ai-vis { position: relative; }
+  .ai-apps, .ai-wires { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .visual.ai-vis { display: block; min-height: 0; }
+  .mini { min-width: 0; padding: 9px 10px 10px; border-radius: 12px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); display: grid; gap: 7px; align-content: start; }
+  .mn-h { display: flex; align-items: center; gap: 5px; font-size: .6875rem; font-weight: 700; color: rgba(255,255,255,.88); white-space: nowrap; }
+  .mn-h svg { width: 14px; height: 14px; color: #6EE7B7; flex: none; }
+  .mn-inbox { display: grid; grid-template-columns: auto 1fr; gap: 4px 6px; align-items: center; font-size: .5625rem; line-height: 1.5; }
+  .mn-inbox i { height: 5px; border-radius: 3px; background: rgba(255,255,255,.16); }
+  .mn-shift { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; height: 50px; align-content: center; }
+  .mn-shift > * { text-align: center; border-radius: 4px; font-size: .5625rem; line-height: 1.9; text-decoration: none; }
+  .mn-shift s { background: rgba(248,113,113,.2); color: #FCA5A5; position: relative; }
+  .mn-shift s::after { content: ""; position: absolute; left: 18%; right: 18%; top: 50%; border-top: 1.5px solid #FCA5A5; }
+  .mn-shift b { background: rgba(52,211,153,.25); color: #A7F3D0; }
+  .mn-bars { display: flex; align-items: flex-end; gap: 4px; height: 50px; }
+  .mn-bars i { flex: 1; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, #6EE7B7, rgba(52,211,153,.35)); }
+  .mn-cal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; height: 50px; align-content: center; }
+  .mn-cal i { height: 12px; border-radius: 3px; background: rgba(255,255,255,.1); }
+  .mn-cal i.on { background: rgba(147,233,255,.45); }
+  @media (max-width: 559px) { .mini { padding: 8px 7px; } .mn-h svg { display: none; } .mn-inbox { grid-template-columns: 1fr; } .mn-inbox i { display: none; } .mn-shift { gap: 2px; } }
+  .ai-wires { height: 34px; }
+  .ai-wires i { justify-self: center; width: 2px; height: 100%; position: relative; border-radius: 2px; background: linear-gradient(180deg, rgba(110,231,183,.15), rgba(110,231,183,.6)); }
+  .ai-wires i::after { content: ""; position: absolute; left: -2px; top: 40%; width: 6px; height: 6px; border-radius: 50%; background: #A7F3D0; box-shadow: 0 0 10px #6EE7B7; animation: wire 1.8s linear infinite; }
+  .ai-wires i:nth-child(2)::after { animation-delay: .45s; }
+  .ai-wires i:nth-child(3)::after { animation-delay: .9s; }
+  .ai-wires i:nth-child(4)::after { animation-delay: 1.35s; }
+  @keyframes wire { from { top: 100%; opacity: 0; } 20% { opacity: 1; } to { top: -6px; opacity: 0; } }
+  .cs-wrap { position: relative; }
+  .console {
+    border-radius: 18px; padding: 16px 18px 30px;
+    background: linear-gradient(180deg, rgba(17, 42, 33, .94), rgba(9, 24, 19, .96)); border: 1px solid rgba(110,231,183,.3);
+    box-shadow: 0 30px 70px rgba(0,0,0,.45), 0 0 60px rgba(52,211,153,.2);
+  }
+  .cs-bar { display: flex; align-items: center; gap: 5px; font-size: .6875rem; color: rgba(255,255,255,.6); font-weight: 700; margin-bottom: 12px; }
+  .cs-bar i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.2); }
+  .cs-bar span { margin-left: 6px; }
+  .cs-bar .live { margin-left: auto; font-style: normal; display: inline-flex; align-items: center; gap: 6px; color: #6EE7B7; white-space: nowrap; }
+  .cs-bar .live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #34D399; animation: pulse 1.6s ease-out infinite; }
+  @keyframes pulse { from { box-shadow: 0 0 0 0 rgba(52,211,153,.7); } to { box-shadow: 0 0 0 8px rgba(52,211,153,0); } }
+  .cs-say { font-size: .875rem; font-weight: 700; line-height: 1.6; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; }
+  .cs-say > span:first-child { display: block; font-size: .6875rem; color: rgba(255,255,255,.6); margin-bottom: 2px; }
+  .cs-tasks { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 6px; }
+  .cs-tasks li { display: grid; grid-template-columns: 22px 1fr auto; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.08); font-size: .8125rem; }
+  .cs-tasks small { font-size: .6875rem; color: rgba(255,255,255,.62); white-space: nowrap; }
+  .cs-tasks .st { width: 22px; height: 22px; border-radius: 50%; background: rgba(52,211,153,.2); color: #6EE7B7; display: grid; place-items: center; }
+  .cs-tasks .st svg { width: 13px; height: 13px; }
+  .cs-tasks .run { border-color: rgba(110,231,183,.4); background: rgba(52,211,153,.09); }
+  .cs-tasks .run .st { background: none; border: 2px solid rgba(110,231,183,.25); border-top-color: #6EE7B7; animation: spin .9s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .cs-prog { width: 64px; height: 6px; border-radius: 99px; background: rgba(255,255,255,.12); overflow: hidden; }
+  .cs-prog i { display: block; height: 100%; width: 62%; border-radius: inherit; background: linear-gradient(90deg, #34D399, #93E9FF); animation: prog 2.4s ease-in-out infinite alternate; }
+  @keyframes prog { from { width: 35%; } to { width: 85%; } }
+  .cs-foot { display: flex; align-items: center; gap: 10px; font-size: .8125rem; line-height: 1.55; color: rgba(255,255,255,.84); padding-top: 12px; border-top: 1px dashed rgba(255,255,255,.14); }
+  .cs-foot .t-av { background: linear-gradient(135deg, #6EE7B7, #34D399); color: #052E1F; flex: none; }
+  .cs-foot b { color: #fff; }
+  .cs-foot .chip.p { margin: 0 0 0 auto; flex: none; background: #6EE7B7; border-color: #6EE7B7; color: #052E1F; }
+  .ai-float {
+    position: absolute; left: 18px; bottom: -18px; display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent); color: var(--ink); font-weight: 800; font-size: .8125rem; border-radius: 999px; padding: 8px 16px; box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  }
+  .ai-float svg { width: 15px; height: 15px; }
+  .hero-ai .img-note { position: static; text-align: right; color: rgba(255,255,255,.55); margin: 30px 0 0; }
+  .cs-say, .cs-tasks li, .cs-foot { animation: csIn .5s ease both; }
+  .cs-say { animation-delay: .2s; }
+  .cs-tasks li:nth-child(1) { animation-delay: .7s; }
+  .cs-tasks li:nth-child(2) { animation-delay: 1.1s; }
+  .cs-tasks li:nth-child(3) { animation-delay: 1.5s; }
+  .cs-tasks li:nth-child(4) { animation-delay: 1.9s; }
+  .cs-foot { animation-delay: 2.4s; }
+  @keyframes csIn { from { opacity: 0; transform: translateY(6px); } }
+  @media (max-width: 559px) {
+    .cs-tasks li { grid-template-columns: 22px 1fr; row-gap: 2px; }
+    .cs-tasks small, .cs-prog { grid-column: 2; }
+    .cs-foot { flex-wrap: wrap; }
+  }
+  @media (prefers-reduced-motion: reduce) { .hero-ai *, .hero-ai *::before, .hero-ai *::after { animation: none !important; } }
+
+  /* お悩み（短い版） */
+  .pains.short { grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 880px; margin: 0 auto; }
+  @media (min-width: 768px) { .pains.short { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+  .pains.short .pain { flex-direction: column; align-items: center; text-align: center; gap: 12px; padding: 22px 12px 20px; }
+  .pains.short .pain p { font-size: 1.0625rem; line-height: 1.5; }
+  @media (max-width: 559px) { .pains.short .pain p { font-size: .9375rem; } }
   .r-line.x { color: var(--ink-3); text-decoration: line-through; background: transparent; border-style: dashed; }
   .r-line.on { border-color: var(--brand); background: var(--brand-ll); color: var(--brand-d); }
   .r-tl { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; font-weight: 700; padding: 4px 2px; }
@@ -585,6 +697,7 @@
 
     <symbol id="i-store" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5L5.5 4h13L20 9.5"/><path d="M4 9.5c0 1.4 1.1 2.5 2.7 2.5S9.3 10.9 9.3 9.5c0 1.4 1.2 2.5 2.7 2.5s2.7-1.1 2.7-2.5c0 1.4 1.1 2.5 2.6 2.5S20 10.9 20 9.5"/><path d="M5.5 12v8h13v-8M10 20v-4.5h4V20"/></g></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5l5.5 3.5-5.5 3.5z" fill="currentColor"/></g></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5c.5 4.6 2.9 7 7.5 7.5-4.6.5-7 2.9-7.5 7.5-.5-4.6-2.9-7-7.5-7.5 4.6-.5 7-2.9 7.5-7.5zM19 15.5c.2 1.8 1.2 2.8 3 3-1.8.2-2.8 1.2-3 3-.2-1.8-1.2-2.8-3-3 1.8-.2 2.8-1.2 3-3z"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></g></symbol>
   </defs>
 </svg>
@@ -606,12 +719,12 @@
 </header>
 
 <main id="top">
-  <div class="hero">
+  <div class="hero hero-ai">
     <div class="container">
       <div>
-        <span class="tag"><b>NEW</b>店舗オーナー向け・1対1の対面</span>
-        <h1>「あとで返そう」が<br class="pc">溜まる毎日を、<br><span class="hl"><span class="blue">横に座って</span>その場で</span><br>片付けます。</h1>
-        <p class="lead">オーナーご本人のパソコンに <b>Claude Code</b> を入れ、<b>その日に届いている仕事を3〜4件</b>、その場でAIと片付けて帰る<b>約3時間の対面研修</b>です。練習問題は使いません。あなたがするのは、声で頼んで「OK」を押すことだけです。</p>
+        <span class="tag"><b><svg aria-hidden="true"><use href="#i-spark"/></svg>AI自動化</b><span><span class="nw">店舗オーナー向け・</span><span class="nw">1対1の対面</span></span></span>
+        <h1>お店の手作業を、<br><span class="grad">AIが自動で</span><br>片付ける。</h1>
+        <p class="lead"><span class="nw">連絡の仕分けも、</span><span class="nw">シフトの修正も、</span><span class="nw">売上の集計も。</span><br><b><span class="nw">声で頼めば、</span><span class="nw">AIが代わりに</span><span class="nw">手を動かします。</span></b><br><span class="nw">講師が横に座って、</span><span class="nw">あなたのパソコンで</span><span class="nw">始めるところまで</span><span class="nw">一緒にやる</span><b><span class="nw">約3時間の</span></b><span class="nw"><b>対面研修</b>です。</span></p>
         <div class="hero-cta">
           <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
             <a class="btn btn-primary btn-lg" href="/contact/?topic=training">導入を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
@@ -626,23 +739,31 @@
         </ul>
       </div>
 
-      <div class="visual sa" role="img" aria-label="画面イメージ。溜まった連絡をAIが予約・シフト・その他に分けて順番を付けた画面と、スタッフの休みの連絡を受けて管理画面の出勤をAIが消した画面。">
-        <div class="card v-inbox">
-          <div class="bar"><i></i><i></i><i></i></div>
-          <div class="label">あなた → AI（声で）</div>
-          <div class="say-me">「未読を、予約・シフト・その他に分けて、どこから返すか並べて」</div>
-          <div class="sorted">
-            <div><span class="mk m-b">予約</span><b>5件</b><em>今日の分を先に</em></div>
-            <div><span class="mk m-o">シフト</span><b>3件</b><em>休みの連絡 1件</em></div>
-            <div><span class="mk m-g">その他</span><b>4件</b><em>あとでまとめて</em></div>
-          </div>
+      <div class="visual ai-vis" role="img" aria-label="画面イメージ。声で「未読の仕分け、休みの出勤の削除、先月の売上。順番にお願い」と頼むと、AIが連絡・出勤表・売上・予定を操作して、未読12件の仕分け、出勤4日分の削除、売上の集計を終え、予定をカレンダーへ移している。最後に「確認してOKを押してください」と出ている。">
+        <div class="ai-apps">
+          <div class="mock mini"><div class="mn-h"><svg aria-hidden="true"><use href="#i-inbox"/></svg>連絡</div>
+            <div class="mn-inbox"><span class="mk m-b">予約</span><i></i><span class="mk m-o">シフト</span><i></i><span class="mk m-g">その他</span><i></i></div></div>
+          <div class="mock mini"><div class="mn-h"><svg aria-hidden="true"><use href="#i-badge"/></svg>出勤表</div>
+            <div class="mn-shift"><s>月</s><s>火</s><s>水</s><s>木</s><b>金</b></div></div>
+          <div class="mock mini"><div class="mn-h"><svg aria-hidden="true"><use href="#i-chart"/></svg>売上</div>
+            <div class="mn-bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:78%"></i><i style="height:100%"></i></div></div>
+          <div class="mock mini"><div class="mn-h"><svg aria-hidden="true"><use href="#i-cal"/></svg>予定</div>
+            <div class="mn-cal"><i class="on"></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i></div></div>
         </div>
-        <div class="float-badge">その日の仕事を、<br>その場で片付ける</div>
-        <div class="card v-admin">
-          <div class="t-head">管理画面 ／ 出勤表</div>
-          <div class="shift"><span>スタッフA</span><s>月</s><s>火</s><s>水</s><s>木</s><span class="ok">金</span></div>
-          <div class="ai-row"><span class="t-av">AI</span><span>休みの連絡を受けて、<b>4日分の出勤を消しました</b>。確認してください。</span></div>
-          <span class="chip p">OK</span><span class="chip">元に戻す</span>
+        <div class="ai-wires" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="cs-wrap">
+          <div class="console">
+            <div class="cs-bar"><i></i><i></i><i></i><span>あなたのパソコン ／ Claude Code</span><em class="live">AIが作業中</em></div>
+            <div class="cs-say"><span>あなた（声で）</span><span class="nw">「未読の仕分け、</span><span class="nw">休みの出勤の削除、</span><span class="nw">先月の売上。</span><span class="nw">順番にお願い」</span></div>
+            <ol class="cs-tasks">
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>未読12件を仕分け</b><small>予約5・シフト3・その他4</small></li>
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>休みの出勤を削除</b><small>管理画面・4日分</small></li>
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>先月の売上を集計</b><small>スプレッドシート</small></li>
+              <li class="run"><span class="st"></span><b>予定をカレンダーへ移行中</b><span class="cs-prog"><i></i></span></li>
+            </ol>
+            <div class="cs-foot"><span class="t-av">AI</span><span><span class="nw">3件終わりました。</span><span class="nw"><b>確認して「OK」</b>を押してください。</span></span><span class="chip p">OK</span></div>
+          </div>
+          <div class="ai-float"><svg aria-hidden="true"><use href="#i-spark"/></svg>あなたは声で頼むだけ</div>
         </div>
         <p class="img-note">※画面はイメージです</p>
       </div>
@@ -654,7 +775,7 @@
       <div class="stats-grid reveal">
         <div class="stat"><div class="k">かたち</div><div class="v">1対1<small>対面</small></div><div class="k">あなたのお店で・あなたのPCで</div></div>
         <div class="stat"><div class="k">時間</div><div class="v">約3<small>時間</small></div><div class="k">ほぼ全部が実演です</div></div>
-        <div class="stat"><div class="k">片付ける仕事</div><div class="v">3〜4<small>件</small></div><div class="k">その日に届いている仕事から</div></div>
+        <div class="stat"><div class="k">片付ける仕事</div><div class="v">3〜4<small>件</small></div><div class="k"><span class="nw">その日に</span><span class="nw">届いた仕事から</span></div></div>
         <div class="stat"><div class="k">覚える操作</div><div class="v">2<small>つ</small></div><div class="k">あとは声で頼むだけ</div></div>
       </div>
     </div>
@@ -664,15 +785,15 @@
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">PROBLEM</span>
-        <h2>お店の手作業、<br>オーナーが1人で抱えていませんか？</h2>
+        <h2>お店の手作業、<br>オーナーが1人で<span class="nw">抱えていませんか？</span></h2>
       </div>
-      <div class="pains">
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-inbox"/></svg></span><p>予約・シフト・問い合わせの連絡が混ざって溜まり、1件ずつ開いて返すのがつらい</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></span><p>スタッフの休みの連絡が来るたびに、管理画面を手で直している</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><p>売上を知りたいたびに、スプレッドシートを開いて探している</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>予定が別々のアプリに分かれていて、移したいのに手が回らない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></span><p>ChatGPTは触ったことがあるけれど、お店の仕事には使えていない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>AIの設定を自分でやろうとして、途中で止まってしまった</p></div>
+      <div class="pains short">
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-inbox"/></svg></span><p>連絡が溜まって<br>返せない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-cal"/></svg></span><p>シフトの修正が<br>毎回手作業</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><p>売上を見るたび<br>シートを探す</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-unlink"/></svg></span><p>予定がアプリに<br>散らばっている</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></span><p>AIを仕事に<br>使えていない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>AIの設定で<br>止まってしまった</p></div>
       </div>
       <div class="ba-mock reveal" role="img" aria-label="画面イメージ。これまでは休みの連絡が来るたびに管理画面で1日ずつ出勤を消していた。AIに頼むと、連絡を伝えるだけで4日分がまとめて消え、確認してOKを押すだけになる。">
         <div class="bm before">
@@ -689,7 +810,7 @@
           <span class="bm-tag a">AIで</span>
           <div class="card bm-screen">
             <div class="bm-bar"><i></i><i></i><i></i><span>あなた → AI（声で）</span></div>
-            <div class="say-me">「スタッフAの今週の出勤、休みの連絡が来たから全部消して」</div>
+            <div class="say-me"><span class="nw">「スタッフAの今週の出勤、</span><span class="nw">休みの連絡が来たから</span><span class="nw">全部消して」</span></div>
             <div class="shift"><span>スタッフA</span><s>月</s><s>火</s><s>水</s><s>木</s><span class="ok">金</span></div>
             <div class="ai-row"><span class="t-av">AI</span><span><b>4日分を消しました</b>。確認してください。</span></div>
             <span class="chip p">OK</span><span class="chip">元に戻す</span>
@@ -698,7 +819,7 @@
         <p class="img-note">※画面はイメージです</p>
       </div>
       <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
-      <p class="answer reveal">講師が横に座って、<span class="hl">あなたの仕事をその場で</span>、<br>AIと一緒に片付けます。</p>
+      <p class="answer reveal"><span class="nw">講師が横に座って、</span><span class="hl nw">あなたの仕事をその場で、</span><br><span class="nw">AIと一緒に</span><span class="nw">片付けます。</span></p>
     </div>
   </section>
 
