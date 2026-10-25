@@ -1,8 +1,9 @@
 ---
 // トップ（ParanoAI 導入支援の入口）。2026-10-25 作り直し: 見本＝/store-ax/ の骨格と部品（public/store-ax/index.html の CSS を複製）。
+// 同日、杉田さん指示で店舗の事例をトップから外し、正面を Claude Code の対面AIエージェント研修に変更（中身の正本は public/training/）。
 // Base レイアウトと Arc UI の部品は使わない（明朝の読み込みと foundation.css を外すため）。CSS とスクリプトは is:inline でそのまま出す。
-const title = "ParanoAI｜AIの使い方より、今日の仕事を一緒に片付ける導入支援";
-const description = "ParanoAI は、講師が横に座って、あなたのパソコンでその日の仕事をAIと片付けるところから始めるAI導入支援です。AIエージェント研修、HPお引っ越し、LINE運用代行、YouTube立ち上げ支援、Slackアプリ（リマインド人・勤タイ人、いまは先行登録）を、困りごと別にご案内します。";
+const title = "ParanoAI｜Claude Code のAIエージェント研修（対面）とAI導入支援";
+const description = "ParanoAI は、Claude Code を使った2日間の対面のAIエージェント研修で、貴社の実業務をAIエージェントに任せるところまで進めるAI導入支援です。HPお引っ越し、LINE運用代行、YouTube立ち上げ支援、Slackアプリ（リマインド人・勤タイ人、いまは先行登録）も、困りごと別にご案内します。";
 const url = new URL("/", Astro.site).href;
 ---
 <!doctype html>
@@ -13,7 +14,7 @@ const url = new URL("/", Astro.site).href;
 <title>{title}</title>
 <meta name="description" content={description}>
 <meta property="og:title" content={title}>
-<meta property="og:description" content="横に座って、今日の仕事をAIと片付ける。研修・HPお引っ越し・LINE運用代行・YouTube立ち上げ支援・Slackアプリ（先行登録）。">
+<meta property="og:description" content="Claude Code を使った、2日間の対面のAIエージェント研修。HPお引っ越し・LINE運用代行・YouTube立ち上げ支援・Slackアプリ（先行登録）。">
 <meta property="og:url" content={url}>
 <meta property="og:type" content="website">
 <link rel="canonical" href={url}>
@@ -683,6 +684,7 @@ const url = new URL("/", Astro.site).href;
   .btn-primary { background: var(--grad); }
   .btn-primary:hover { background: var(--brand-d); }
   .hero .hero-points svg { color: var(--brand); }
+  .hero .tag b { white-space: nowrap; flex: none; }
 
   /* ヒーロー右: 白地の上に、AIが作業中のパソコン画面を1枚 */
   .visual.top-vis { min-height: 0; display: block; }
@@ -702,6 +704,11 @@ const url = new URL("/", Astro.site).href;
   .tr .shift { margin: 0; grid-template-columns: 1.7fr repeat(5, 1fr); }
   .tr-bars { display: flex; align-items: flex-end; gap: 5px; height: 34px; }
   .tr-bars i { flex: 1; border-radius: 3px 3px 0 0; background: var(--brand); opacity: .85; }
+  .tr-msg { display: grid; grid-template-columns: 22px 1fr; gap: 8px; margin: 0; font-size: .75rem; line-height: 1.55; }
+  .tr-msg .t-av { background: var(--brand); color: #fff; }
+  .tr-map { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: .75rem; line-height: 1.45; }
+  .tr-map b { display: block; }
+  .tr-map span { color: var(--brand); font-weight: 700; }
   .tr-note { display: flex; align-items: center; gap: 6px; font-weight: 700; color: var(--brand-d); }
   .tr-note svg { width: 16px; height: 16px; color: var(--brand); flex: none; }
   .top-vis .img-note { position: static; text-align: right; margin: 10px 0 0; font-size: .75rem; color: var(--ink-3); }
@@ -709,7 +716,7 @@ const url = new URL("/", Astro.site).href;
   @media (prefers-reduced-motion: reduce) { .top-vis *, .top-vis *::before, .top-vis *::after { animation: none !important; } }
   .stats-note { grid-column: 1 / -1; border-top: 1px solid var(--line); padding: 8px 16px; font-size: .75rem; color: var(--ink-3); text-align: center; }
 
-  /* 実例（4件を2列で） */
+  /* 節の下のボタン */
   .case-more { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 20px; margin-top: 36px; }
   .case-more p { font-size: .8125rem; color: var(--ink-3); }
 
@@ -838,11 +845,11 @@ const url = new URL("/", Astro.site).href;
       <span class="logo-t">ParanoAI<small>AI導入支援 ／ 研修・制作・運用代行・Slackアプリ</small></span>
     </a>
     <nav class="nav" aria-label="ページ内">
-      <a href="#case">実例</a><a href="#entry">入口を選ぶ</a><a href="#how">進め方</a><a href="#price">料金の目安</a><a href="#faq">よくある質問</a><a href="#about">運営者</a>
+      <a href="#steps">研修の中身</a><a href="#entry">入口を選ぶ</a><a href="#how">進め方</a><a href="#price">料金の目安</a><a href="#faq">よくある質問</a><a href="#about">運営者</a>
     </nav>
     <div class="header-cta">
-      <a class="btn btn-ghost" href="#case">実例を見る</a>
-      <a class="btn btn-primary" href="/contact/">相談する</a>
+      <a class="btn btn-ghost" href="#steps">研修の中身</a>
+      <a class="btn btn-primary" href="/contact/?topic=training">相談する</a>
     </div>
   </div>
 </header>
@@ -851,50 +858,48 @@ const url = new URL("/", Astro.site).href;
   <div class="hero">
     <div class="container">
       <div>
-        <span class="tag"><b>AI導入支援</b><span>講師が横に座る・実例つき</span></span>
-        <h1>AIの使い方より、<br><span class="hl blue">今日の仕事を</span><br>一緒に片付けます。</h1>
-        <p class="lead">練習問題は使いません。その日に届いた連絡や、いつもの集計を、<b class="nw">あなたのパソコンで</b>AIに頼むところまで、横に座って一緒にやります。<span class="nw">サイトの引っ越しや、</span><span class="nw">LINEの毎月の運用、</span><span class="nw">YouTubeの立ち上げも相談できます。</span></p>
+        <span class="tag"><b>AI導入支援</b><span>Claude Code を使った、2日間の対面研修</span></span>
+        <h1><span class="nw">Claude Codeの</span><span class="nw">対面研修で、</span><br><span class="hl blue">自社の仕事を</span><br><span class="nw">AIエージェントに</span><span class="nw">任せる。</span></h1>
+        <p class="lead">エンジニアのいない会社のための、<b>対面のAIエージェント研修</b>です。経営者も一緒に、貴社の実業務から1つ題材を選び、2日間で<b class="nw">決まった時刻に自分から動く</b>ところまで持っていきます。<span class="nw">サイトの引っ越しや、</span><span class="nw">LINEの毎月の運用、</span><span class="nw">YouTubeの立ち上げも相談できます。</span></p>
         <div class="hero-cta">
           <span class="btn-wrap"><span class="bubble">ご相談は無料</span>
-            <a class="btn btn-primary btn-lg" href="/contact/">いまの仕事を相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
-          <span class="btn-wrap"><span class="bubble">4件の前後と、ご本人の言葉</span>
-            <a class="btn btn-ghost btn-lg" href="#case"><svg aria-hidden="true"><use href="#i-play"/></svg>実例を見る</a></span>
+            <a class="btn btn-primary btn-lg" href="/contact/?topic=training">研修について相談する<svg aria-hidden="true"><use href="#i-arrow"/></svg></a></span>
+          <span class="btn-wrap"><span class="bubble">6万円〜（税込）</span>
+            <a class="btn btn-ghost btn-lg" href="/training/">研修のページを見る</a></span>
         </div>
         <ul class="hero-points">
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>あなたの仕事・あなたのPCで</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>プログラミング不要</li>
-          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>お客さまへの返信は、送る前にご本人が確認</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>貴社の実業務が題材</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>経営層と現場が同じ部屋で</li>
+          <li><svg aria-hidden="true"><use href="#i-check-c"/></svg>2日で「自分から動く」まで</li>
         </ul>
       </div>
 
-      <div class="visual top-vis" role="img" aria-label="画面イメージ。声で「未読の仕分けと、休みの出勤の削除と、先月の売上。順番にお願い」と頼むと、AIが未読12件の仕分け、出勤4日分の削除、売上の集計を終え、予定をカレンダーへ移している。最後に「確認してOKを押してください」と出ている。">
+      <div class="visual top-vis" role="img" aria-label="画面イメージ。受講者が「日報フォルダを読んで、担当者別の表にして。件数も数え直して」と頼むと、AIエージェントが日報を読み、担当者別の表を作り、件数を確かめ、頼み方を手順書に保存している。下には、毎朝8時にSlackへ届くまとめと、経営層が持ち帰る「次に任せる業務の地図」がある。">
         <div class="cs-wrap">
-          <div class="top-badge"><span class="ic" aria-hidden="true"><svg><use href="#i-chat"/></svg></span><span>あなたは声で頼んで<br>「OK」を押すだけ</span></div>
+          <div class="top-badge"><span class="ic" aria-hidden="true"><svg><use href="#i-spark"/></svg></span><span>2日間で3段目まで<br>頼めば動く → 毎回同じに → 自分から動く</span></div>
           <div class="console">
-            <div class="cs-bar"><i></i><i></i><i></i><span>あなたのパソコン ／ Claude Code</span><em class="live">AIが作業中</em></div>
-            <div class="cs-say"><span>あなた（声で）</span><span class="nw">「未読の仕分けと、</span><span class="nw">休みの出勤の削除と、</span><span class="nw">先月の売上。</span><span class="nw">順番にお願い」</span></div>
+            <div class="cs-bar"><i></i><i></i><i></i><span>受講者のPC ／ Claude Code</span><em class="live">AIが作業中</em></div>
+            <div class="cs-say"><span>受講者の頼み方</span><span class="nw">「日報フォルダを読んで、</span><span class="nw">担当者別の表にして。</span><span class="nw">件数も数え直して」</span></div>
             <ol class="cs-tasks">
-              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>未読12件を仕分け</b><small>予約5・シフト3・その他4</small></li>
-              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>休みの出勤を削除</b><small>管理画面・4日分</small></li>
-              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>先月の売上を集計</b><small>スプレッドシート</small></li>
-              <li class="run"><span class="st"></span><b>予定をカレンダーへ移行中</b><span class="cs-prog"><i></i></span></li>
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>日報を読み込む</b><small>日報フォルダ</small></li>
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>担当者別の表を作る</b><small>スプレッドシート</small></li>
+              <li><span class="st"><svg aria-hidden="true"><use href="#i-check"/></svg></span><b>件数を数え直す</b><small>元の日報と一致</small></li>
+              <li class="run"><span class="st"></span><b>頼み方を手順書に保存中</b><span class="cs-prog"><i></i></span></li>
             </ol>
-            <div class="cs-foot"><span class="t-av">AI</span><span><span class="nw">3件終わりました。</span><span class="nw"><b>確認して「OK」</b>を押してください。</span></span><span class="chip p">OK</span></div>
+            <div class="cs-foot"><span class="t-av">AI</span><span><span class="nw">表を作りました。</span><span class="nw"><b>次からは「いつものやつ」</b>で呼び出せます。</span></span><span class="chip p">表を開く</span></div>
           </div>
         </div>
         <div class="top-results" aria-hidden="true">
           <div class="card mock tr">
-            <div class="bm-bar"><i></i><i></i><i></i><span>管理画面 ／ 出勤表</span></div>
-            <div class="shift"><span>スタッフA</span><s>月</s><s>火</s><s>水</s><s>木</s><span class="ok">金</span></div>
-            <p class="tr-note"><svg><use href="#i-check-c"/></svg>4日分を削除しました</p>
+            <div class="bm-bar"><i></i><i></i><i></i><span>Slack ／ #日次まとめ</span></div>
+            <p class="tr-msg"><span class="t-av">AI</span><span><b>毎朝 8:00</b><br>昨日の分をまとめました。申込 3件、対応待ち 1件です</span></p>
           </div>
           <div class="card mock tr">
-            <div class="bm-bar"><i></i><i></i><i></i><span>売上シート</span></div>
-            <div class="tr-bars"><i style="height:45%"></i><i style="height:62%"></i><i style="height:50%"></i><i style="height:78%"></i><i style="height:100%"></i></div>
-            <p class="tr-note"><svg><use href="#i-check-c"/></svg>先月の合計を出しました</p>
+            <div class="bm-bar"><i></i><i></i><i></i><span>研修後の地図（経営層）</span></div>
+            <ol class="tr-map"><li><b>日報の集計</b><span>エージェントに任せる</span></li><li><b>見積書の作成</b><span>次に任せる候補</span></li></ol>
           </div>
         </div>
-        <p class="img-note">※画面と数字は説明用のイメージです。実例の数字は下の帯にあります</p>
+        <p class="img-note">※画面はイメージです。題材は貴社の業務から決めます</p>
       </div>
     </div>
   </div>
@@ -902,11 +907,10 @@ const url = new URL("/", Astro.site).href;
   <div class="stats">
     <div class="container">
       <div class="stats-grid reveal">
-        <div class="stat"><div class="k">かたち</div><div class="v">1対1<small>対面</small></div><div class="k">あなたのお店で・あなたのPCで</div></div>
-        <div class="stat"><div class="k">その場で片付けた仕事</div><div class="v">4<small>件</small></div><div class="k">集計・管理画面・移行・仕分け</div></div>
-        <div class="stat"><div class="k">かかった時間</div><div class="v">約2<small>時間</small></div><div class="k">準備込み</div></div>
-        <div class="stat"><div class="k">そのあと</div><div class="v">1〜2<small>週間後</small></div><div class="k">フォローで止まった所を直す</div></div>
-        <p class="stats-note">2026年10月、店舗オーナーと行った回の数字です（ご本人の了承済み）。約3時間の設計で、この回は準備込み約2時間で終わりました。</p>
+        <div class="stat"><div class="k">研修期間</div><div class="v">2<small>日間</small></div><div class="k">1日4時間・計8時間</div></div>
+        <div class="stat"><div class="k">費用</div><div class="v">6<small>万円〜</small></div><div class="k">税込</div></div>
+        <div class="stat"><div class="k">受講</div><div class="v">1〜5<small>名</small></div><div class="k">経営層＋現場</div></div>
+        <div class="stat"><div class="k">形式</div><div class="v">対面</div><div class="k">貴社にて実施</div></div>
       </div>
     </div>
   </div>
@@ -915,57 +919,45 @@ const url = new URL("/", Astro.site).href;
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">PROBLEM</span>
-        <h2>AIを入れたいのに、<br><span class="nw">その手前で</span><span class="nw">止まっていませんか？</span></h2>
+        <h2>AIは入れた。<br><span class="nw">でも、仕事は</span><span class="nw">減っていませんか？</span></h2>
       </div>
       <div class="pains short">
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>何に使えばいいか<br>分からない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></span><p>ChatGPTは触ったが<br>仕事に入らない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-alert"/></svg></span><p>AIの設定で<br>止まってしまった</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-team"/></svg></span><p>社内に作れる人が<br>いない</p></div>
-        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-yen"/></svg></span><p>外に頼むと高く、<br>直すたびにお金がかかる</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></span><p>チャットAIに毎回<br>同じ説明をしている</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></span><p>日報の集計や見積書を<br>毎回手で作っている</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-team"/></svg></span><p>経営者と現場で<br>AIの温度差がある</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-user-q"/></svg></span><p>社内にエンジニアが<br>いない</p></div>
+        <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-undo"/></svg></span><p>ツールを入れても<br>元のやり方に戻った</p></div>
         <div class="pain reveal"><span class="ic"><svg aria-hidden="true"><use href="#i-house"/></svg></span><p>HPやLINEが<br>古いまま</p></div>
       </div>
       <div class="arrow-down" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg></div>
-      <p class="answer reveal"><span class="nw">あなたの仕事で、</span><span class="hl nw">その場でやってみせます。</span></p>
+      <p class="answer reveal"><span class="nw">任せる業務を決める経営者と、</span><span class="nw">業務を知る現場が、</span><br><span class="hl nw">同じ部屋で</span><span class="nw">受けます。</span></p>
     </div>
   </section>
 
-  <section id="case">
+  <section id="steps">
     <div class="container">
       <div class="sec-head reveal">
-        <span class="eyebrow">CASE STUDY</span>
-        <h2>横に座って約2時間。<br><span class="hl">オーナーの手作業を、その場で4件</span></h2>
-        <p>スタッフが客先へ出向くタイプの店舗のオーナーと行った回です（2026年10月）。店名・お名前・業種は、ご本人の了承を得て伏せています。研修は約3時間の設計ですが、この回は準備込み約2時間で終わりました。</p>
+        <span class="eyebrow">3 STEPS</span>
+        <h2>頼めば動く。毎回同じに動く。<br><span class="hl">自分から動く。</span></h2>
+        <p>この研修でいう「エージェント」は、この3段を上がっていくAIのことです。2日間で、3段目まで貴社の題材で試します。</p>
       </div>
-      <div class="cases">
-        <article class="case reveal">
-          <div class="c-top"><span class="c-no">01</span><h3>売上の集計</h3></div>
-          <figure class="c-shot"><div class="c-vis"><div class="mock-sheet" role="img" aria-label="イラスト。売上のスプレッドシートから、AIが先月の合計を出した画面。"><div class="bm-bar"><i></i><i></i><i></i><span>売上シート</span></div><div class="ms-grid"><span class="h">日付</span><span class="h">担当</span><span class="h">金額</span><span>1日</span><span>A</span><span class="mask"></span><span>2日</span><span>B</span><span class="mask"></span><span>…</span><span>…</span><span>…</span></div><div class="ai-row"><span class="t-av">AI</span><span>先月の合計は <b>●●●,●●●円</b> です</span></div></div></div><figcaption>イラスト（金額は伏せています）</figcaption></figure>
-          <div class="ba"><div class="b"><b>これまで</b>スプレッドシートを開いて探す</div><div class="a"><b>AIで</b>先月の売上合計を出させ、ご本人が答えを知っている数字で、その場で正しいと確かめた</div></div>
-          <p class="voice">「おお、合ってます」</p>
-        </article>
-        <article class="case reveal">
-          <div class="c-top"><span class="c-no">02</span><h3>管理画面の出勤の削除</h3></div>
-          <figure class="c-shot"><div class="c-vis"><img src="/store-ax/img/case02_shift.jpg" alt="オーナーが連絡を伝えると、AIが4日分の出勤をまとめて削除した場面" width="1280" height="720" loading="lazy" decoding="async"></div><figcaption>導入事例の動画より（お顔と画面はぼかしています）</figcaption></figure>
-          <div class="ba"><div class="b"><b>これまで</b>休みの連絡が来るたびに、管理画面を手で直す</div><div class="a"><b>AIで</b>研修中に届いた休みの連絡を受けて、4日分の出勤をAIが削除。ログインはご本人の手で</div></div>
-          <p class="voice">「できてる」</p>
-        </article>
-        <article class="case reveal">
-          <div class="c-top"><span class="c-no">03</span><h3>カレンダーの移行</h3></div>
-          <figure class="c-shot"><div class="c-vis"><div class="mock-cal" role="img" aria-label="イラスト。別のカレンダーアプリの予定を、AIがGoogleカレンダーへ移した画面。"><div class="mc-col"><span class="mc-h">別のアプリ</span><i></i><i></i><i class="s"></i><i></i></div><div class="mc-arr"><span class="t-av">AI</span><svg aria-hidden="true"><use href="#i-arrow"/></svg><small>書き出し方を<br>自分で探す</small></div><div class="mc-col g"><span class="mc-h">Googleカレンダー</span><i></i><i></i><i class="s"></i><i></i></div></div></div><figcaption>イラスト</figcaption></figure>
-          <div class="ba"><div class="b"><b>これまで</b>予定が別のカレンダーアプリにあり、移したいが手が回らない</div><div class="a"><b>AIで</b>書き出しの方法をAIが自分で探し、Googleカレンダーへ移した</div></div>
-          <p class="voice">「勝手にやってくれるってのはすごいね」</p>
-        </article>
-        <article class="case reveal">
-          <div class="c-top"><span class="c-no">04</span><h3>溜まった連絡の仕分け</h3></div>
-          <figure class="c-shot"><div class="c-vis"><img src="/store-ax/img/case04_inbox.jpg" alt="未読の連絡をAIが予約・シフト・その他に分けた場面" width="1280" height="720" loading="lazy" decoding="async"></div><figcaption>導入事例の動画より（お顔と画面はぼかしています）</figcaption></figure>
-          <div class="ba"><div class="b"><b>これまで</b>1件ずつ開いて読み、返す順番を考える</div><div class="a"><b>AIで</b>未読を「予約・シフト・その他」に分け、どこから返すか順番を付けた。送る前には必ずご本人が確認する</div></div>
-          <p class="voice">「この会話を聞いてたんじゃないかレベルだよ」</p>
-        </article>
+      <div class="features">
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chat"/></svg></div><h3>01 頼めば動く</h3><p>チャットで頼むと、ファイル・表・文書ができます。伝わる頼み方の4点（目的・材料・完成形・確認）と、「できました」を確かめて直させる方法を身につけます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-key"/></svg></div><h3>02 毎回同じに動く</h3><p>うまくいった頼み方を手順書（スキル）にして、合言葉で呼び出せるようにします。結果は、ふだん使っているSlack・スプレッドシート・メールの下書きに届けます。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><h3>03 自分から動く</h3><p>決まった時刻やSlackへの書き込みをきっかけに、頼まなくても動きます。安全に使う決まりと、社内のAI利用ルールもここで作ります。</p></div>
+      </div>
+      <div class="sec-head reveal" style="margin-top:72px;margin-bottom:32px">
+        <span class="eyebrow">AFTER 2 DAYS</span>
+        <h2>2日後、経営層と現場が<br>それぞれ持ち帰るもの</h2>
+      </div>
+      <div class="features">
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-chart"/></svg></div><h3>経営層：次に任せる業務の地図</h3><p>業務を「エージェントに任せる／人がやる」に仕分け、次に任せる業務を優先順位つきで決めます。AI利用ルール（A4・1枚）と、3か月後に見る指標も1つ。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>現場：動くエージェントが1つ</h3><p>決めた題材を、皆さん自身の手で、その場で動くところまで作ります。</p></div>
+        <div class="feature reveal"><div class="ic"><svg aria-hidden="true"><use href="#i-key"/></svg></div><h3>現場：自分で直すための手順書</h3><p>「仕様が変わったから直したい」を自分たちでできるように、うまく動かないときの直し方まで手を動かして覚えます。</p></div>
       </div>
       <div class="case-more reveal">
-        <a class="btn btn-ghost" href="/store-ax/#case"><svg aria-hidden="true"><use href="#i-play"/></svg>動画と詳しい進め方を見る</a>
-        <p>この回の進め方は「リラクゼーション店舗 AIコンサル」のページにまとめています</p>
+        <a class="btn btn-ghost" href="/training/">研修の詳しい中身を見る<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <p>経営層の同席は、1日目の冒頭90分と2日目の最後60分です</p>
       </div>
     </div>
   </section>
@@ -980,10 +972,9 @@ const url = new URL("/", Astro.site).href;
       <div class="doors">
         <div class="door reveal">
           <div class="door-h"><span class="ic"><svg aria-hidden="true"><use href="#i-term"/></svg></span><p>「毎日の事務が、手で回っている」</p></div>
-          <span class="door-to"><svg aria-hidden="true"><use href="#i-arrow"/></svg>横に座って、AIを入れる</span>
+          <span class="door-to"><svg aria-hidden="true"><use href="#i-arrow"/></svg>対面の研修で、AIエージェントに任せる</span>
           <ul class="prods">
-            <li><a href="/store-ax/"><span><b>リラクゼーション店舗 AIコンサル</b><small>対面・約3時間。あなたのPCで、その日の仕事を片付ける</small></span><span class="pr ask">お見積もり</span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-            <li><a href="/training/"><span><b>AIエージェント研修</b><small>2日間・対面。貴社の業務から1つ選んで、AIエージェントに任せる</small></span><span class="pr">6万円（税込）から</span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+            <li><a href="/training/"><span><b>AIエージェント研修</b><small>Claude Code を使った2日間の対面研修。貴社の業務から1つ選んで、AIエージェントに任せる</small></span><span class="pr">6万円（税込）から</span><svg class="go" aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
           </ul>
         </div>
         <div class="door reveal">
@@ -1024,11 +1015,11 @@ const url = new URL("/", Astro.site).href;
         <p>最初から全部を変える必要はありません。いちばん手が回っていない仕事を1つ選ぶところから始めます。</p>
       </div>
       <div class="ladder">
-        <div class="rung reveal"><span class="rh"><span class="n">01</span><svg class="ri" aria-hidden="true"><use href="#i-term"/></svg></span><h3>1つ片付ける</h3><p>横に座って、その日の仕事をAIで片付けます。社内で作れる人を育てたいなら、2日間の研修で自社の業務を1つAIエージェントに任せます。</p><span class="ex">リラクゼーション店舗 AIコンサル／AIエージェント研修</span></div>
+        <div class="rung reveal"><span class="rh"><span class="n">01</span><svg class="ri" aria-hidden="true"><use href="#i-term"/></svg></span><h3>1つ任せてみる</h3><p>2日間の対面研修で、貴社の業務を1つAIエージェントに任せます。現場には動くエージェントと直すための手順書、経営層には次に任せる業務の地図が残ります。</p><span class="ex">AIエージェント研修</span></div>
         <div class="rung reveal"><span class="rh"><span class="n">02</span><svg class="ri" aria-hidden="true"><use href="#i-bell"/></svg></span><h3>続く仕事を任せる</h3><p>サイトの引っ越しやLINEの毎月の配信は、こちらで引き受けます（LINEは送る前に必ず貴社が確認）。YouTubeは、毎週出せる形まで一緒に立ち上げます。</p><span class="ex">HPお引っ越し／LINE運用代行／YouTube立ち上げ支援</span></div>
         <div class="rung reveal"><span class="rh"><span class="n">03</span><svg class="ri" aria-hidden="true"><use href="#i-cal"/></svg></span><h3>月ごとに見直す</h3><p>作ったツールの手直しや次の一本づくりを、月ごとの伴走や個別の制作でお手伝いします。SlackアプリのAIの同僚（リマインド人・勤タイ人）は、いまは先行登録で順にご案内しています。</p><span class="ex">導入支援（月ごとの伴走）／世界のAI同僚</span><a class="btn btn-ghost" href="https://app.parano-ai.com/order">導入支援を依頼する</a></div>
       </div>
-      <p class="how-note reveal">対面の導入と研修で横に座るのは、講師の杉田です。手直しや制作の実作業は、審査を通ったメンバーが業務委託で担い、設計と品質の確認は杉田が受け持ちます。導入支援のご依頼は、目的・いまのやり方・ご予算の目安を伺い、2営業日以内にご連絡します。</p>
+      <p class="how-note reveal">研修の講師は杉田です。手直しや制作の実作業は、審査を通ったメンバーが業務委託で担い、設計と品質の確認は杉田が受け持ちます。導入支援のご依頼は、目的・いまのやり方・ご予算の目安を伺い、2営業日以内にご連絡します。</p>
     </div>
   </section>
 
@@ -1036,12 +1027,12 @@ const url = new URL("/", Astro.site).href;
     <div class="container">
       <div class="sec-head reveal">
         <span class="eyebrow">WHY US</span>
-        <h2>講師が自分の事業でAIを使っていて、<br>そのまま見せられます</h2>
+        <h2>「教えられる」ではなく、<br>「作って動かしてきた」講師です</h2>
       </div>
       <div class="reasons">
-        <div class="reason reveal"><span class="no">01</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-chart"/></svg></span><span class="lbl">REASON</span><h3>講師が、一番使っている</h3><p>講師の杉田は、自身が経営に関わるテニススクールの事務をAIで回し、発信や採用にもAIを使っています。その実例を、加工せずにお見せします。</p></div>
-        <div class="reason reveal"><span class="no">02</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-inbox"/></svg></span><span class="lbl">REASON</span><h3>練習問題を使わない</h3><p>研修のための研修はしません。その日に届いている連絡や、いま困っている作業を、そのまま本番で片付けます。</p></div>
-        <div class="reason reveal"><span class="no">03</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-cal"/></svg></span><span class="lbl">REASON</span><h3>やりっぱなしにしない</h3><p>対面の導入は1〜2週間後のフォローで、止まった所を直します。研修では、現場に動くエージェントと、自分で直すための手順書が残ります。</p></div>
+        <div class="reason reveal"><span class="no">01</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-chart"/></svg></span><span class="lbl">REASON</span><h3>講師の会社で、毎日動いている</h3><p>講師は、自分が経営に携わる会社の業務をAIエージェントで実際に回している実務家です。研修では、デモ用の作り物ではなく、毎日動いている仕組みをお見せします。</p></div>
+        <div class="reason reveal"><span class="no">02</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-inbox"/></svg></span><span class="lbl">REASON</span><h3>貴社の実業務が題材</h3><p>事前の打ち合わせで業務内容を伺い、題材にする業務を一緒に決めます。講師が代わりに作るのではなく、詰まったところを一緒に解きます。</p></div>
+        <div class="reason reveal"><span class="no">03</span><span class="r-ic" aria-hidden="true"><svg><use href="#i-cal"/></svg></span><span class="lbl">REASON</span><h3>やりっぱなしにしない</h3><p>研修のあと、30日後と90日後に各15分、使い続けられているかを一緒に確認します。現場には、自分で直すための手順書が残ります。</p></div>
       </div>
     </div>
   </section>
@@ -1054,13 +1045,13 @@ const url = new URL("/", Astro.site).href;
         <p>公開している料金です。それ以外は、お話を伺ってからお見積もりします。</p>
       </div>
       <div class="price-list reveal">
-        <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-seminar"/></svg></span><span><b>AIエージェント研修</b><small>2日間・対面</small></span><span class="v">6万円<small>（税込）から</small></span></div>
+        <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-seminar"/></svg></span><span><b>AIエージェント研修</b><small>Claude Code・2日間・対面。参加は5名までを含みます。Claude のご契約は貴社で</small></span><span class="v">6万円<small>（税込）から</small></span></div>
         <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-house"/></svg></span><span><b>HPお引っ越し</b><small>WordPressのサイトを、見た目と文章そのままで</small></span><span class="v">10万円<small>（税込）から</small></span></div>
         <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-thread"/></svg></span><span><b>リマインド人</b><small>Slackアプリ。その月に依頼者か担当者になった人だけ数えます。いまは先行登録（招待制）</small></span><span class="v">300円<small>／人・月（税抜）</small></span></div>
         <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-badge"/></svg></span><span><b>勤タイ人</b><small>Slackアプリ。その月に1回以上打刻した人だけ数えます。いまは先行登録（招待制）</small></span><span class="v">200円<small>／人・月（税抜）</small></span></div>
-        <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-yen"/></svg></span><span><b>リラクゼーション店舗 AIコンサル・AI HP制作・LINE運用代行・YouTube立ち上げ支援</b><small>中身と量を伺ってから決めます</small></span><span class="v ask">お見積もり</span></div>
+        <div class="row"><span class="p-ic" aria-hidden="true"><svg><use href="#i-yen"/></svg></span><span><b>AI HP制作・LINE運用代行・YouTube立ち上げ支援</b><small>中身と量を伺ってから決めます</small></span><span class="v ask">お見積もり</span></div>
       </div>
-      <p class="price-note">含まれるもの・別にかかる費用は、各商品のページに書いています。</p>
+      <p class="price-note">含まれるもの・別にかかる費用は、各商品のページに書いています。AI HP制作は、ご相談のうえお見積もりします。</p>
     </div>
   </section>
 
@@ -1089,10 +1080,10 @@ const url = new URL("/", Astro.site).href;
       </div>
       <div class="faq">
         <details><summary><span class="q">Q</span>どの商品が合うか分からないのですが。<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>困っている業務を1つ伺えれば、研修・制作・ツール導入のどれが向いているかを含めてお答えします。どれにも当てはまらない、という段階のご相談で構いません。</p></details>
-        <details><summary><span class="q">Q</span>プログラミングはできなくても大丈夫ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>大丈夫です。対面の導入ではコードは書かず、声や文章でAIに頼み、AIが確認を求めてきたら「OK」を押す形で進めます。上の実例のオーナーも、Claude Codeは初めてでした。</p></details>
-        <details><summary><span class="q">Q</span>パスワードやお客さまの情報は大丈夫ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>対面の導入では、ログインのパスワードはご本人が手で入力し、お客さまに届くものは送る前にご本人が確認します。LINE運用代行でも、配信は送る前に必ず貴社が確認します。そのほかのご不安には、ご相談のときにお答えします。</p></details>
-        <details><summary><span class="q">Q</span>小さなお店や会社でも相談できますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>上の実例は、予約・シフト・連絡・集計をご自身で回しているオーナーとの回でした。お店や会社の形によって進め方が変わるので、まずは様子をお聞かせください。</p></details>
-        <details><summary><span class="q">Q</span>来てもらえる地域はどこですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>伺える地域・日程は、ご相談のときにお知らせします。</p></details>
+        <details><summary><span class="q">Q</span>社内にエンジニアがいなくても受けられますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>はい。エンジニアのいない会社のための研修です。業務を一番よく分かっている現場の皆さんが、自分の言葉のままAIに任せられるようになることを目指します。</p></details>
+        <details><summary><span class="q">Q</span>パスワードやお客さまの情報は大丈夫ですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>研修では、個人情報・送信・削除・公開・支払いについて安全に使う決まりを扱い、社内のAI利用ルールを一緒に作ります。LINE運用代行では、配信は送る前に必ず貴社が確認します。そのほかのご不安には、ご相談のときにお答えします。</p></details>
+        <details><summary><span class="q">Q</span>経営者は2日間ずっと参加する必要がありますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>同席していただくのは、1日目の冒頭90分（業務の仕分けと題材の決定）と、2日目の最後60分（現場の実演と次の地図づくり）です。</p></details>
+        <details><summary><span class="q">Q</span>来てもらえる地域はどこですか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>研修は貴社に伺って行います。遠方への出張が必要な場合は、お見積もりのうえでご案内します。</p></details>
         <details><summary><span class="q">Q</span>作ったあと、自分たちで直せますか？<svg class="pm" aria-hidden="true"><use href="#i-plus"/></svg></summary><p>社内で作れる人を育てたい場合は、AIエージェント研修をおすすめします。現場には、動くエージェントと自分で直すための手順書が残ります。手が回らない間は、月ごとの伴走で手直しもお手伝いします。</p></details>
       </div>
     </div>
@@ -1142,7 +1133,7 @@ const url = new URL("/", Astro.site).href;
 
 <footer class="site">
   <div class="container">
-    <span>ParanoAI ／ 杉田 光 ／ contact@parano-ai.com<br>Claude、Claude Code は Anthropic の、ChatGPT は OpenAI の、Google カレンダー・YouTube は Google LLC の、LINE は LY Corporation の、Slack は Slack Technologies, LLC の、WordPress は WordPress Foundation の商標または登録商標です。本ページは各社と提携・承認の関係にありません。画面はイメージです。実例はお客さまの了承を得て、店名・お名前・業種を伏せて紹介しています。</span>
+    <span>ParanoAI ／ 杉田 光 ／ contact@parano-ai.com<br>Claude、Claude Code は Anthropic の、ChatGPT は OpenAI の、Google カレンダー・YouTube は Google LLC の、LINE は LY Corporation の、Slack は Slack Technologies, LLC の、WordPress は WordPress Foundation の商標または登録商標です。本ページは各社と提携・承認の関係にありません。画面・氏名はイメージで、実在の人物・組織とは関係ありません。</span>
     <span class="links"><a href="/contact/">お問い合わせ</a><a href="https://app.parano-ai.com/signup">副業メンバーの募集</a></span>
   </div>
 </footer>
