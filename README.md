@@ -8,7 +8,8 @@ https://parano-ai.com/ の公開ファイル（GitHub Pages）。ParanoAI 導入
 
 ## 作り（2026-10-10〜 Astro）
 
-- **Astro 5 ＋ React の島**。トップは `src/pages/index.astro`。研修・LINE・お問い合わせは `public/` の素のHTMLをそのまま配信。
+- **Astro 5**。トップは `src/pages/index.astro`。研修・LINE・お問い合わせほか各LPは `public/` の素のHTMLをそのまま配信。
+- **トップ（2026-10-25 作り直し）**: 見本＝`public/store-ax/` の骨格とCSSを複製した素のHTMLを `index.astro` に直書き（`<style is:inline>`・`<script is:inline>`）。Base レイアウト・明朝のWebフォント・Arc UI の部品と積み上げマス（Streak）は使っていない（部品のソースは残してある）。訴求の案と決めたこと（D1〜D6）の正本は `~/Desktop/Claude/03_projects/ParanoAI/トップLP再設計/`。直したら `npx astro build` → `python3 ~/Desktop/Claude/.claude/skills/LP制作/scripts/lp_check.py dist/index.html`。
 - **Arc UI（https://uiarc.dev 無料部品）** を `src/components/arc/` にソースごと同梱（in-view-title・activity-heatmap）。追加は `npx shadcn@latest add @uiarc/<名前>`。色は `src/styles/brand.css` 末尾で Arc のトークンをブランドの深緑に差し替え。activity-heatmap は表示文字を日本語化済み（再インストールすると英語に戻る）。Pro部品は未購入。
 - **積み上げマス**のデータ = `python3 tools/gen_activity.py`（~/Desktop 直下リポジトリのこの100日のコミット数。日付と件数だけ）。更新したら commit。
 - **公開**: main に push → GitHub Actions（`.github/workflows/deploy.yml`）がビルドして Pages へ。手元確認は `npm run build && npx astro preview`。
